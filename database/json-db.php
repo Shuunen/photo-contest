@@ -1,6 +1,7 @@
 <?php
 
 // Straussn's JSON-Databaseclass
+// https://github.com/strzlee/JsonDB.class.php
 // Handle JSON-Files like a very, very simple DB. Useful for little ajax applications.
 // Last change: 05-06-2012
 // Version: 1.0b
