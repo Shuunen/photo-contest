@@ -2,33 +2,33 @@
 
 require "./database/json-db.php";
 
+session_start();
+
 class App {
 
     function __construct() {
-        session_start();
-
+        
         $this->db = new JsonDB("./database/");
         $this->isUser = false;
         $this->isAdmin = false;
         $this->isLogged = false;
         $this->currentUser = null;
-        $this->successMessage = '';
-        $this->errorMessage = '';
+        $this->message = '';
+        $this->status = '';
 
-        if(isset($_SESSION['user'])){
-          $this->currentUser = $_SESSION['user'];
-          $this->isLogged = true;
-          if ($this->currentUser['email'] === 'admino') {
-              $this->isAdmin = true;
-          } else {
-              $this->isUser = true;
-          }
+        if (isset($_SESSION['user'])) {
+            $this->currentUser = $_SESSION['user'];
+            $this->isLogged = true;
+            if ($this->currentUser['email'] === 'admino') {
+                $this->isAdmin = true;
+            } else {
+                $this->isUser = true;
+            }
+        }      
 
-          $this->handleRequest();
-
-        }else{
-          $this->handleLogin();
-        }
+        $this->handleRequest();
+        
+        // var_dump($_SESSION);
     }
 
     function getGUID() {
@@ -73,43 +73,69 @@ class App {
         }
     }
 
-    function handleLogin() {
+    function handleLogin($request) {
 
-        $email = $password = '';
+        // var_dump($request);
 
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            // var_dump($_POST);
-            $email = $this->cleanInput($_POST["email"]);
-            $password = $this->cleanInput($_POST["password"]);
-            $user = $this->db->select('users', 'email', $email);
-            if (count($user) === 1) {
-                $user = $user[0];
-            } else if (count($user) > 1) {
-                $this->errorMessage = 'User ' . $email . ' has multiple instances';
+        if (!isset($request["email"]) || !isset($request["password"])) {
+            $this->message = 'Missing email or password';
+            $this->status = 'error';
+            return false;
+        }
+
+        $email = $this->cleanInput($request["email"]);
+        $password = $this->cleanInput($request["password"]);
+
+        $user = $this->db->select('users', 'email', $email);
+
+        if (count($user) === 1) {
+            $user = $user[0];
+            $this->status = 'success';
+        } else if (count($user) > 1) {
+            $this->message = 'User ' . $email . ' has multiple instances';
+            $this->status = 'error';
+        } else {
+            $this->message = 'User ' . $email . ' does not exists';
+            $this->status = 'error';
+        }
+
+        if ($this->status === 'success' && $user['pass'] === $password) {
+            $_SESSION['user'] = $user;
+            $this->currentUser = $user;
+            $this->isLogged = true;
+            $this->message = 'Login succesfull, welcome ' . $this->currentUser['name'];
+            if ($user['email'] === 'admino') {
+                $this->isAdmin = true;
             } else {
-                $this->errorMessage = 'User ' . $email . ' does not exists';
+                $this->isUser = true;
             }
-            if (strlen($this->errorMessage) === 0 && $user['pass'] === $password) {
-
-              $_SESSION['user'] = $user;
-                $this->currentUser = $user;
-                $this->isLogged = true;
-                $this->successMessage = 'Login succesfull, welcome <b>' . $this->currentUser['name'] . '</b>';
-                if ($user['email'] === 'admino') {
-                    $this->isAdmin = true;
-                } else {
-                    $this->isUser = true;
-                }
-            }
+        } else {
+            $this->message = 'Password does not match';
+            $this->status = 'error';
         }
     }
 
-    function handleRequest(){
-
-      if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        var_dump($_POST['type']);
-      }
-
+    function handleRequest() {
+        if ($_SERVER["REQUEST_METHOD"] == "GET") {
+            $request = $_GET;
+            if (!isset($request['type'])) {
+                // if no type, no ajax call
+                return;
+            }
+            $type = $request['type'];
+            if ($type === 'login') {
+                $this->handleLogin($request);
+            } else if ($type === 'vote') {
+                $this->handleVote($request);
+            } else if ($type === 'approval') {
+                $this->handleApproval($request);
+            } else {
+                $this->message = 'These request is not allowed';
+                $this->status = 'error';
+            }
+            echo json_encode(array('message' => $this->message, 'status' => $this->status), JSON_FORCE_OBJECT);
+            exit();
+        }
     }
 
 }

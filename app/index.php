@@ -1,7 +1,4 @@
 <?php
-
-var_dump($_POST);
-
 require "/app.php";
 $app = new App();
 // $db->createTable("photos");
@@ -32,7 +29,7 @@ $app = new App();
 
         <div class="container">
 
-            <h1 class="animated fadeInDown">UXD Photoshop Contest 2017</h1>
+            <h1 class="animated fadeInDown">UXD Photoshop Contest 2015</h1>
 
             <?php require './php/views/messages.php'; ?>
 

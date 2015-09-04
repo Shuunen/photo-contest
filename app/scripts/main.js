@@ -37,7 +37,19 @@ $(document).ready(function () {
     $('input.rating').rating();
 
     $('input.rating').on('change', function (event) {
-      console.info('Rating: ' + $(this).val());
+        console.info('Rating: ' + $(this).val());
+    });
+
+    $('form.login').submit(function (event) {
+        event.preventDefault();
+        var data = $(this).serialize();
+        $.ajax({
+            type: 'get',
+            data: data,
+            success: function (json) {
+                console.log(JSON.parse(json));
+            }
+        });
     });
 
 });
