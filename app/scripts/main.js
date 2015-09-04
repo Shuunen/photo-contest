@@ -34,6 +34,10 @@ $(document).ready(function () {
      });
      */
 
-    $('input.rating-tooltip-manual').rating();
+    $('input.rating').rating();
+
+    $('input.rating').on('change', function (event) {
+      console.info('Rating: ' + $(this).val());
+    });
 
 });

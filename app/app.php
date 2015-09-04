@@ -5,6 +5,7 @@ require "./database/json-db.php";
 class App {
 
     function __construct() {
+        session_start();
 
         $this->db = new JsonDB("./database/");
         $this->isUser = false;
@@ -13,8 +14,21 @@ class App {
         $this->currentUser = null;
         $this->successMessage = '';
         $this->errorMessage = '';
-        
-        $this->handleLogin();
+
+        if(isset($_SESSION['user'])){
+          $this->currentUser = $_SESSION['user'];
+          $this->isLogged = true;
+          if ($this->currentUser['email'] === 'admino') {
+              $this->isAdmin = true;
+          } else {
+              $this->isUser = true;
+          }
+
+          $this->handleRequest();
+
+        }else{
+          $this->handleLogin();
+        }
     }
 
     function getGUID() {
@@ -76,6 +90,8 @@ class App {
                 $this->errorMessage = 'User ' . $email . ' does not exists';
             }
             if (strlen($this->errorMessage) === 0 && $user['pass'] === $password) {
+
+              $_SESSION['user'] = $user;
                 $this->currentUser = $user;
                 $this->isLogged = true;
                 $this->successMessage = 'Login succesfull, welcome <b>' . $this->currentUser['name'] . '</b>';
@@ -86,6 +102,14 @@ class App {
                 }
             }
         }
+    }
+
+    function handleRequest(){
+
+      if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        var_dump($_POST['type']);
+      }
+
     }
 
 }

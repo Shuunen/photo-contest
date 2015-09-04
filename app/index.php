@@ -2,7 +2,7 @@
 
 var_dump($_POST);
 
-require "./php/app.php";
+require "/app.php";
 $app = new App();
 // $db->createTable("photos");
 // $db->insert("photos", array("id" => getGUID(), "userId" => "romain-racamier_4D3435B4-F929-5AAE-A7B4-653FD7991950", "file" => "water-801925_1920.jpg"), true);
@@ -24,11 +24,12 @@ $app = new App();
         <link href="../bower_components/animate-css/animate.min.css" rel="stylesheet">
         <link href="../bower_components/slick.js/slick/slick.css" rel="stylesheet">
         <link href="../bower_components/slick.js/slick/slick-theme.css" rel="stylesheet">
-        <link href="./styles/css/main.css" rel="stylesheet">
+        <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <link href="/styles/css/main.css" rel="stylesheet">
     </head>
 
     <body>
-            
+
         <div class="container">
 
             <h1 class="animated fadeInDown">UXD Photoshop Contest 2017</h1>
