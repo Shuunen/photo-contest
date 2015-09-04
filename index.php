@@ -8,6 +8,8 @@ $isUser = false;
 $isAdmin = false;
 $isLogged = false;
 $currentUser = null;
+$errorMessage = '';
+$successMessage = '';
 $email = $password = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -16,12 +18,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user = $db->select('users', 'email', $email);
     if (count($user) === 1) {
         $user = $user[0];
+    } else if (count($user) > 1) {
+        $errorMessage = 'User ' . $email . ' has multiple instances';
     } else {
-        exit('error : multiple users share the same email');
+        $errorMessage = 'User ' . $email . ' does not exists';
     }
-    if ($user['pass'] === $password) {
+    if (strlen($errorMessage) === 0 && $user['pass'] === $password) {
         $currentUser = $user;
         $isLogged = true;
+        $successMessage = 'Login succesfull, welcome <b>' . $currentUser['name'] . '</b>';
         if ($user['email'] === 'admino') {
             $isAdmin = true;
         } else {
@@ -31,8 +36,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 
-// $db->createTable("users");
-// $db->insert("users", array("id" => "d133-4d2053569645-a5d2-f3d68e4d6ee7", "name" => "Romùain, Raçamièr !:p"), true);
+// $db->createTable("photos");
+// $db->insert("photos", array("id" => getGUID(), "userId" => "romain-racamier_4D3435B4-F929-5AAE-A7B4-653FD7991950", "file" => "water-801925_1920.jpg"), true);
+// $db->insert("photos", array("id" => getGUID(), "userId" => "romain-racamier_4D3435B4-F929-5AAE-A7B4-653FD7991950", "file" => "workstation-405768_1920.jpg"), true);
 
 // $db->insert("users", array("name" => "Michèl Albàn"), true);
 
@@ -49,6 +55,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>UXD Photoshop contest 2015</title>
     <link href="./libraries/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="./libraries/animate.css/animate.min.css" rel="stylesheet">
+    <link href="./libraries/slick/slick.css" rel="stylesheet">
+    <link href="./libraries/slick/slick-theme.css" rel="stylesheet">
     <link href="./styles/css/main.css" rel="stylesheet">
 </head>
 
@@ -61,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     /* generate id for new user */
     $users = $db->selectAll("users");
-    foreach ($users as $i => $user) {
+    foreach ($users as $user) {
         if (!isset($user['id'])) {
             $user['id'] = tokenize($user['name']) . '_' . getGUID();
             $db->update('users', 'name', $user['name'], $user);
@@ -72,9 +80,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
     <div class="row hero">
+
         <div class="col-md-12">
             <h1 class="animated fadeInDown">UXD Photoshop Contest 2015</h1>
         </div>
+
+        <?php if (strlen($successMessage) > 0) : ?>
+            <div class="col-xs-8 col-xs-offset-2 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 animated fadeIn">
+                <div class="alert alert-success" role="alert"><?php echo $successMessage ?></div>
+            </div>
+        <?php endif; ?>
+
+        <?php if (strlen($errorMessage) > 0) : ?>
+            <div class="col-xs-8 col-xs-offset-2 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 animated fadeIn">
+                <div class="alert alert-danger" role="alert"><?php echo $errorMessage ?></div>
+            </div>
+        <?php endif; ?>
+
         <?php if (!$isLogged) : ?>
             <div class="col-xs-8 col-xs-offset-2 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 animated fadeInUp">
                 <form class="form-horizontal" method="post">
@@ -83,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                         <div class="col-sm-10">
                             <input type="text" name="email" class="form-control" id="inputEmail3"
-                                   placeholder="Email" value="romain.racamier">
+                                   placeholder="Email" value="michel.alban@amdocs.com">
                         </div>
                     </div>
                     <div class="form-group">
@@ -91,7 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                         <div class="col-sm-10">
                             <input type="password" name="password" class="form-control" id="inputPassword3"
-                                   placeholder="Password" value="mypass">
+                                   placeholder="Password" value="albanPass">
                         </div>
                     </div>
                     <div class="form-group">
@@ -102,8 +124,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </form>
             </div>
         <?php else : ?>
-            <div class="col-md-12 animated fadeInUp">
-                Welcome <?php echo($currentUser['name']) ?>
+            <div class="col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2 animated fadeInLeft">
+                <h2>My gallery</h2>
+            </div>
+            <div class="col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2 animated fadeInUp">
+                <?php $photos = $db->select("photos", "userId", $currentUser['id']); ?>
+                <?php if (count($photos)) : ?>
+                    <div class="gallery">
+                        <?php foreach ($photos as $photo) : ?>
+                            <div class="item">
+                                <img src="./photos/<?php echo $currentUser['id'] . '/' . $photo['file'] ?>">
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php else : ?>
+                    <b>You do not have any photos actually, you should add some.</b>
+                <?php endif; ?>
             </div>
         <?php endif; ?>
     </div>
@@ -112,8 +148,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!-- /container -->
 
 <script src="./libraries/jquery/jquery.min.js"></script>
+<script src="./libraries/slick/slick.min.js"></script>
 <script src="./libraries/bootstrap/js/bootstrap.min.js"></script>
 <script async src='http://localhost:3000/browser-sync/browser-sync-client.2.9.1.js'></script>
+<script src="./scripts/main.js"></script>
 
 </body>
 </html>

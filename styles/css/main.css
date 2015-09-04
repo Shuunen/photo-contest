@@ -1,27 +1,53 @@
 html.login {
-  background: url(../../photos/backgrounds/dandelion-302129_1920.jpg) no-repeat center center fixed;
+  background: url(../../photos/backgrounds/dandelion-302129_1920.jpg) no-repeat center center fixed; }
+  html.login .hero {
+    margin-top: 100px; }
+  html.login .form-horizontal {
+    margin-top: 10px; }
+    html.login .form-horizontal .control-label {
+      color: white; }
+
+html {
+  background: url(../../photos/backgrounds/dandelion-302129_1920-inverted.jpg) no-repeat center center fixed;
   background-size: cover; }
-  html.login:after {
+  html:after {
     content: '';
-    background-color: rgba(8, 8, 8, 0.4);
+    background-color: rgba(8, 8, 8, 0.7);
     position: fixed;
     width: 100%;
     height: 100%;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     z-index: 0; }
-  html.login body {
-    position: relative;
-    background-color: transparent;
-    z-index: 10; }
-  html.login .hero {
-    margin-top: 100px; }
-  html.login h1 {
-    color: white;
-    text-align: center; }
-  html.login .form-horizontal {
-    margin-top: 50px; }
-    html.login .form-horizontal .control-label {
-      color: white; }
+
+body {
+  position: relative;
+  background-color: transparent;
+  z-index: 10;
+  color: white;
+  text-shadow: 1px 1px 2px #2c2c2c; }
+
+h1 {
+  margin-top: 50px;
+  margin-bottom: 30px;
+  text-align: center; }
+
+.gallery {
+  margin-top: 20px; }
+  .gallery .slick-slide {
+    outline: none; }
+  .gallery img {
+    height: 500px;
+    margin: auto; }
+
+.alert-success {
+  color: #7FB880;
+  background-color: rgba(100, 100, 100, 0.3);
+  border-color: #5D9057; }
+
+.alert-danger {
+  color: #FFE6E5;
+  background-color: rgba(236, 133, 133, 0.3);
+  border-color: #CA344C; }
 
 /*# sourceMappingURL=main.css.map */
