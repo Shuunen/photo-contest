@@ -1,10 +1,11 @@
 
-<?php global $successMessage, $errorMessage ?>
+<?php if (isset($_SESSION['message']) && strlen($_SESSION['message']) > 0) : ?>     
 
-<?php if (strlen($successMessage) > 0) : ?>           
-    <div class="alert alert-success animated fadeIn" role="alert"><?php echo $successMessage ?></div>
-<?php endif; ?>
+    <?php $alertClass = 'alert-' . ($_SESSION['messageStatus'] === 'success' ? 'success' : 'danger') ?>
 
-<?php if (strlen($errorMessage) > 0) : ?>
-    <div class="alert alert-danger animated fadeIn" role="alert"><?php echo $errorMessage ?></div>
+    <div class="alert <?php echo $alertClass ?> animated fadeIn" role="alert"><?php echo $_SESSION['message'] ?></div>
+
+    <?php $_SESSION['message'] = '' ?>
+    <?php $_SESSION['messageStatus'] = '' ?>
+
 <?php endif; ?>

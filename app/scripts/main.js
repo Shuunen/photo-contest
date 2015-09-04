@@ -43,11 +43,13 @@ $(document).ready(function () {
     $('form.login').submit(function (event) {
         event.preventDefault();
         var data = $(this).serialize();
+        data += '&ajax=true';
         $.ajax({
             type: 'get',
             data: data,
             success: function (json) {
-                console.log(JSON.parse(json));
+                // console.log(json);
+                window.location.reload();
             }
         });
     });
