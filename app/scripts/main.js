@@ -54,4 +54,21 @@ $(document).ready(function () {
         });
     });
 
+    var galleryUploader = new qq.FineUploader({
+        element: document.getElementById("fine-uploader-gallery"),
+        template: 'qq-template-gallery',
+        request: {
+            endpoint: './php/fine-uploader/endpoint.php'
+        },
+        thumbnails: {
+            placeholders: {
+                waitingPath: './placeholders/waiting-generic.png',
+                notAvailablePath: './placeholders/not_available-generic.png'
+            }
+        },
+        validation: {
+            allowedExtensions: ['jpeg', 'jpg', 'gif', 'png']
+        }
+    });
+
 });

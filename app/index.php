@@ -21,6 +21,7 @@ $app = new App();
         <link href="../bower_components/animate-css/animate.min.css" rel="stylesheet">
         <link href="../bower_components/slick.js/slick/slick.css" rel="stylesheet">
         <link href="../bower_components/slick.js/slick/slick-theme.css" rel="stylesheet">
+        <link href="../crappy_bower_component/fine-uploader/fine-uploader-gallery.min.css" rel="stylesheet">
         <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
         <link href="./styles/css/main.css" rel="stylesheet">
     </head>
@@ -37,6 +38,7 @@ $app = new App();
                 <?php require './php/views/login.php'; ?>
             <?php else : ?>
                 <?php require './php/views/my-photos.php'; ?>
+                <?php require './php/views/upload.php'; ?>
             <?php endif; ?>
 
         </div>
@@ -44,6 +46,7 @@ $app = new App();
 
         <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
         <script type="text/javascript" src="../bower_components/slick.js/slick/slick.min.js"></script>
+        <script type="text/javascript" src="../crappy_bower_component/fine-uploader/fine-uploader.min.js"></script>
         <script type="text/javascript" src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="../bower_components/bootstrap-rating/bootstrap-rating.min.js"></script>
         <script type="text/javascript" src="./scripts/main.js"></script>
