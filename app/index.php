@@ -1,6 +1,7 @@
 <?php
 require "/app.php";
 $app = new App();
+$viewsDir = __DIR__ . '/php/views/';
 // $db->createTable("photos");
 // $db->insert("photos", array("id" => getGUID(), "userId" => "romain-racamier_4D3435B4-F929-5AAE-A7B4-653FD7991950", "file" => "water-801925_1920.jpg"), true);
 // $db->insert("photos", array("id" => getGUID(), "userId" => "romain-racamier_4D3435B4-F929-5AAE-A7B4-653FD7991950", "file" => "workstation-405768_1920.jpg"), true);
@@ -21,23 +22,24 @@ $app = new App();
         <link href="../bower_components/animate-css/animate.min.css" rel="stylesheet">
         <link href="../bower_components/slick.js/slick/slick.css" rel="stylesheet">
         <link href="../bower_components/slick.js/slick/slick-theme.css" rel="stylesheet">
+        <link href="./crappy_bower_component/fine-uploader/fine-uploader-gallery.min.css" rel="stylesheet">
         <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="../bower_components/zoomwall/zoomwall.css" />
         <link href="/styles/css/main.css" rel="stylesheet">
     </head>
 
     <body>
-
         <div class="container-fluid">
 
             <h1 class="animated fadeInDown">UXD Photoshop Contest 2015</h1>
 
-            <?php require './php/views/messages.php'; ?>
+            <?php require $viewsDir . 'messages.php'; ?>
 
             <?php if (!$app->isLogged) : ?>
-                <?php require './php/views/login.php'; ?>
+                <?php require $viewsDir . 'login.php'; ?>
             <?php else : ?>
-                <?php require './php/views/my-photos.php'; ?>
+                <?php require $viewsDir . 'my-photos.php'; ?>
+                <?php require $viewsDir . 'upload.php'; ?>
             <?php endif; ?>
 
         </div>
@@ -45,6 +47,7 @@ $app = new App();
 
         <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
         <script type="text/javascript" src="../bower_components/slick.js/slick/slick.min.js"></script>
+        <script type="text/javascript" src="./crappy_bower_component/fine-uploader/fine-uploader.min.js"></script>
         <script type="text/javascript" src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="../bower_components/bootstrap-rating/bootstrap-rating.min.js"></script>
         <script type="text/javascript" src="../bower_components/zoomwall/zoomwall.js"></script>

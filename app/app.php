@@ -1,20 +1,18 @@
 <?php
 
-require "./database/json-db.php";
+require "./app/database/json-db.php";
 
 session_start();
 
 class App {
 
     function __construct() {
-        
-        $this->db = new JsonDB("./database/");
+
+        $this->db = new JsonDB("./app/database/");
         $this->isUser = false;
         $this->isAdmin = false;
         $this->isLogged = false;
         $this->currentUser = null;
-        $this->message = '';
-        $this->status = '';
 
         if (isset($_SESSION['user'])) {
             $this->currentUser = $_SESSION['user'];
@@ -24,10 +22,10 @@ class App {
             } else {
                 $this->isUser = true;
             }
-        }      
+        }
 
         $this->handleRequest();
-        
+
         // var_dump($_SESSION);
     }
 
@@ -78,8 +76,8 @@ class App {
         // var_dump($request);
 
         if (!isset($request["email"]) || !isset($request["password"])) {
-            $this->message = 'Missing email or password';
-            $this->status = 'error';
+            $_SESSION['message'] = 'Missing email or password';
+            $_SESSION['messageStatus'] = 'error';
             return false;
         }
 
@@ -90,51 +88,73 @@ class App {
 
         if (count($user) === 1) {
             $user = $user[0];
-            $this->status = 'success';
+            $_SESSION['messageStatus'] = 'success';
         } else if (count($user) > 1) {
-            $this->message = 'User ' . $email . ' has multiple instances';
-            $this->status = 'error';
+            $_SESSION['message'] = 'User ' . $email . ' has multiple instances';
+            $_SESSION['messageStatus'] = 'error';
         } else {
-            $this->message = 'User ' . $email . ' does not exists';
-            $this->status = 'error';
+            $_SESSION['message'] = 'User ' . $email . ' does not exists';
+            $_SESSION['messageStatus'] = 'error';
         }
 
-        if ($this->status === 'success' && $user['pass'] === $password) {
+        if ($_SESSION['messageStatus'] === 'success' && $user['pass'] === $password) {
             $_SESSION['user'] = $user;
+            $_SESSION['message'] = 'Login succesfull, welcome ' . $this->currentUser['name'];
             $this->currentUser = $user;
             $this->isLogged = true;
-            $this->message = 'Login succesfull, welcome ' . $this->currentUser['name'];
             if ($user['email'] === 'admino') {
                 $this->isAdmin = true;
             } else {
                 $this->isUser = true;
             }
         } else {
-            $this->message = 'Password does not match';
-            $this->status = 'error';
+            $_SESSION['message'] = 'Email or password does not match';
+            $_SESSION['messageStatus'] = 'error';
         }
+    }
+
+    function handleAddPhoto($request) {
+
+        if (isset($request['photoUrl'])) {
+            $this->db->insert("photos", array("id" => $this->getGUID(), "userId" => $this->currentUser['id'], "file" => $request['photoUrl']), true);
+            $_SESSION['message'] = 'Image ' . $request['photoUrl'] . ' added to db';
+            $_SESSION['messageStatus'] = 'success';
+        } else {
+            $_SESSION['message'] = 'No photoUrl given';
+            $_SESSION['messageStatus'] = 'error';
+        }
+
     }
 
     function handleRequest() {
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
+
             $request = $_GET;
+
             if (!isset($request['type'])) {
-                // if no type, no ajax call
+                // if no particular type
                 return;
             }
+
             $type = $request['type'];
             if ($type === 'login') {
                 $this->handleLogin($request);
+            } else if ($type === 'addPhoto') {
+                $this->handleAddPhoto($request);
             } else if ($type === 'vote') {
                 $this->handleVote($request);
             } else if ($type === 'approval') {
                 $this->handleApproval($request);
             } else {
-                $this->message = 'These request is not allowed';
-                $this->status = 'error';
+                $_SESSION['message'] = 'These request is not allowed';
+                $_SESSION['messageStatus'] = 'error';
             }
-            echo json_encode(array('message' => $this->message, 'status' => $this->status), JSON_FORCE_OBJECT);
-            exit();
+
+            if (isset($request['ajax'])) {
+                // if ajax, print json and exit
+                echo json_encode(array('message' => $_SESSION['message'], 'messageStatus' => $_SESSION['messageStatus']), JSON_FORCE_OBJECT);
+                die();
+            }
         }
     }
 
