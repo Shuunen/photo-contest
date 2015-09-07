@@ -1,4 +1,4 @@
-<h2 class="animated fadeInLeft">My photos</h2>
+<h2 class="animated fadeInDown">my photos | upload photos</h2><br>
 <?php
 $photos = $app->db->select("photos", "userId", $app->currentUser['id']);
 $categories = [];
@@ -7,16 +7,26 @@ $categories['most_creative '] = 'Most creative';
 $categories['funniest'] = 'Funiest';
 $categories['40'] = '40';
 ?>
+<?php $photoPath = './app/photos/' . $app->currentUser['id'] . '/' ?>
 <?php if (count($photos)) : ?>
-    <div class="gallery animated fadeInUp">
+    <div class="gallery">
         <?php foreach ($photos as $photo) : ?>
             <div class="item">
-                <img src="./app/photos/<?php echo $app->currentUser['id'] . '/' . $photo['file'] ?>">
-                <?php foreach ($categories as $id => $category) : ?>
-                    <span><?php print $category; ?> : </span>
-                    <span><input name="rating-<?php print $id; ?>" type="hidden" class="rating" data-filled="fa fa-star fa-3x" data-filled-selected="fa fa-star fa-3x" data-empty="fa fa-star-o fa-3x"></span><br>
+                <img src="<?php echo $photoPath . $photo['file'] ?>">
+                <div class="ratings">
+                    <?php foreach ($categories as $id => $category) : ?>
+                        <div class="rating">
+                            <div class="category"><?php print $category; ?> : </div>
+                            <div class="stars"><input name="rating-<?php print $id; ?>" type="hidden" class="rating" data-filled="fa fa-star fa-3x" data-filled-selected="fa fa-star fa-3x" data-empty="fa fa-star-o fa-3x"></div>
+                        </div>
                     <?php endforeach; ?>
+                </div>
             </div>
+        <?php endforeach; ?>
+    </div>
+    <div class="gallery-nav">
+        <?php foreach ($photos as $photo) : ?>
+            <img src="<?php echo $photoPath . $photo['file'] ?>">
         <?php endforeach; ?>
     </div>
 <?php else : ?>

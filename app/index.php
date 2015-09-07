@@ -24,6 +24,7 @@ $viewsDir = __DIR__ . '/php/views/';
     <link href="./bower_components/slick.js/slick/slick-theme.css" rel="stylesheet">
     <link href="./crappy_bower_component/fine-uploader/fine-uploader-gallery.min.css" rel="stylesheet">
     <link href="./bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="./bower_components/zoomwall/zoomwall.css" rel="stylesheet">
     <link href="./app/styles/css/main.css" rel="stylesheet">
 </head>
 
@@ -43,6 +44,7 @@ $viewsDir = __DIR__ . '/php/views/';
     <?php endif; ?>
 
 </div>
+    
 <!-- /container -->
 
 <script type="text/javascript" src="./bower_components/jquery/dist/jquery.min.js"></script>
@@ -50,6 +52,7 @@ $viewsDir = __DIR__ . '/php/views/';
 <script type="text/javascript" src="./crappy_bower_component/fine-uploader/fine-uploader.min.js"></script>
 <script type="text/javascript" src="./bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="./bower_components/bootstrap-rating/bootstrap-rating.min.js"></script>
+<script type="text/javascript" src="./bower_components/zoomwall/zoomwall.js"></script>
 <script type="text/javascript" src="./app/scripts/main.js"></script>
 
 </body>
