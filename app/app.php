@@ -5,8 +5,7 @@ include './app/php/ImageResize/ImageResize.php';
 
 session_start();
 
-class App
-{
+class App {
 
     function __construct() {
 

@@ -1,5 +1,4 @@
-
-<?php if (isset($_SESSION['message']) && strlen($_SESSION['message']) > 0) : ?>     
+<?php if (isset($_SESSION['message']) && strlen($_SESSION['message']) > 0) : ?>
 
     <?php $alertClass = 'alert-' . ($_SESSION['messageStatus'] === 'success' ? 'success' : 'danger') ?>
 

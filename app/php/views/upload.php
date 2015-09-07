@@ -7,7 +7,7 @@
     <div class="qq-uploader-selector qq-uploader qq-gallery" qq-drop-area-text="or directly drop files here...">
         <div class="qq-total-progress-bar-container-selector qq-total-progress-bar-container">
             <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
-                 class="qq-total-progress-bar-selector qq-progress-bar qq-total-progress-bar"></div>
+                class="qq-total-progress-bar-selector qq-progress-bar qq-total-progress-bar"></div>
         </div>
         <div class="qq-upload-drop-area-selector qq-upload-drop-area" qq-hide-dropzone>
             <span class="qq-upload-drop-area-text-selector"></span>
@@ -26,7 +26,7 @@
 
                 <div class="qq-progress-bar-container-selector qq-progress-bar-container">
                     <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
-                         class="qq-progress-bar-selector qq-progress-bar"></div>
+                        class="qq-progress-bar-selector qq-progress-bar"></div>
                 </div>
                 <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
 
@@ -43,7 +43,7 @@
                     <div class="qq-file-name">
                         <span class="qq-upload-file-selector qq-upload-file"></span>
                         <span class="qq-edit-filename-icon-selector qq-edit-filename-icon"
-                              aria-label="Edit filename"></span>
+                            aria-label="Edit filename"></span>
                     </div>
                     <input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
                     <span class="qq-upload-size-selector qq-upload-size"></span>
