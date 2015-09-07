@@ -10,7 +10,7 @@
     "jquery": "~2.1.1",
     "normalize.css": "~3.0.3",
     "slick.js": "~1.5.0",
-    "zoomwall": "~1.0.1"
+    "bootstrap-sass": "~3.3.5"
   },
   "resolutions": {
     "jquery": ">=1.7"
