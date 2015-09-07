@@ -55,6 +55,7 @@ $(document).ready(function () {
         var galleryUploader = new qq.FineUploader({
             element: document.getElementById("fine-uploader-gallery"),
             template: 'qq-template-gallery',
+            autoUpload: false,
             request: {
                 endpoint: './app/php/fine-uploader/endpoint.php',
                 params: {
@@ -88,6 +89,9 @@ $(document).ready(function () {
                     bAllUploaded = true;
                 }
             }
+        });
+        qq(document.getElementById("uploadButton")).attach('click', function () {
+            galleryUploader.uploadStoredFiles();
         });
     }
 
