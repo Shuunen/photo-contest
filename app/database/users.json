@@ -1,20 +1,20 @@
 [
   {
-    "name": "Admino",
     "email": "admino",
     "pass": "admino",
-    "id": "admino_A18B439C-800F-D989-C95E-104E34D926F5"
+    "id": "A70DC6A8-72AA-2FAB-13FF-75D8728CE31F",
+    "name": "Admino"
   },
   {
-    "name": "Romain Racamier",
     "email": "romain.racamier",
     "pass": "mypass",
-    "id": "romain-racamier_4D3435B4-F929-5AAE-A7B4-653FD7991950"
+    "id": "B52E0CBB-5546-4E8F-3AF0-BA476FF73F73",
+    "name": "Romain Racamier"
   },
   {
-    "id": "michel-alban_00AB44D5-E244-224B-96FB-6D5C9BA033BE",
-    "name": "Mich\u00e8l Alb\u00e0n",
-    "email": "michel.alban@amdocs.com",
-    "pass": "albanPass"
+    "email": "michel.alban",
+    "pass": "albanPass",
+    "id": "78FB0F8A-2CC6-4D4F-C014-9A03C4DCD432",
+    "name": "Michel Alban"
   }
 ]

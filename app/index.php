@@ -2,6 +2,7 @@
 require "/app.php";
 $app = new App();
 $viewsDir = __DIR__ . '/php/views/';
+// $app->generateUsersIdAndName();
 // $db->createTable("photos");
 // $db->insert("photos", array("id" => getGUID(), "userId" => "romain-racamier_4D3435B4-F929-5AAE-A7B4-653FD7991950", "file" => "water-801925_1920.jpg"), true);
 // $db->insert("photos", array("id" => getGUID(), "userId" => "romain-racamier_4D3435B4-F929-5AAE-A7B4-653FD7991950", "file" => "workstation-405768_1920.jpg"), true);

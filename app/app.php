@@ -5,7 +5,8 @@ include './app/php/ImageResize/ImageResize.php';
 
 session_start();
 
-class App {
+class App
+{
 
     function __construct() {
 
@@ -26,24 +27,22 @@ class App {
         }
 
         $this->handleRequest();
-
-        // var_dump($_SESSION);
     }
 
     function getGUID() {
         $charid = strtoupper(md5(uniqid(rand(), true)));
         $hyphen = chr(45); // "-"
         $uuid = substr($charid, 0, 8) . $hyphen
-                . substr($charid, 8, 4) . $hyphen
-                . substr($charid, 12, 4) . $hyphen
-                . substr($charid, 16, 4) . $hyphen
-                . substr($charid, 20, 12);
+            . substr($charid, 8, 4) . $hyphen
+            . substr($charid, 12, 4) . $hyphen
+            . substr($charid, 16, 4) . $hyphen
+            . substr($charid, 20, 12);
         return $uuid;
     }
 
     function tokenize($str, $replace = array(), $delimiter = '-') {
         if (!empty($replace)) {
-            $str = str_replace((array) $replace, ' ', $str);
+            $str = str_replace((array)$replace, ' ', $str);
         }
 
         $clean = strtr($str, '� áâãäçèéêëìíîïñòóôõöùúûüýÿÀ�?ÂÃÄÇÈÉÊËÌ�?Î�?ÑÒÓÔÕÖÙÚÛÜ�?', 'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY');
@@ -62,12 +61,13 @@ class App {
         return $data;
     }
 
-    function generateUsersIds() {
+    function generateUsersIdAndName() {
         $users = $this->db->selectAll("users");
         foreach ($users as $user) {
             if (!isset($user['id'])) {
-                $user['id'] = tokenize($user['name']) . '_' . getGUID();
-                $this->db->update('users', 'name', $user['name'], $user);
+                $user['id'] = $this->getGUID();
+                $user['name'] = ucwords(trim(preg_replace("/\W/", ' ', $user['email'])));
+                $this->db->update('users', 'email', $user['email'], $user);
             }
         }
     }
@@ -119,24 +119,24 @@ class App {
         if (isset($request['photoUrl'])) {
 
 
-            try{
-              // create thumb
-              if (!file_exists('./app/photos/'.$this->currentUser['id'].'/thumbs')) {
-                mkdir('./app/photos/'.$this->currentUser['id'].'/thumbs', 0777, TRUE);
-              }
-              $image = new \Eventviva\ImageResize('./app/photos/'.$this->currentUser['id'].'/'.$request['photoUrl']);
-              $image->resizeToHeight(200);
-              $image->save('./app/photos/'.$this->currentUser['id'].'/thumbs/'.$request['photoUrl']);
-              //end create thumb
+            try {
+                // create thumb
+                if (!file_exists('./app/photos/' . $this->currentUser['id'] . '/thumbs')) {
+                    mkdir('./app/photos/' . $this->currentUser['id'] . '/thumbs', 0777, TRUE);
+                }
+                $image = new \Eventviva\ImageResize('./app/photos/' . $this->currentUser['id'] . '/' . $request['photoUrl']);
+                $image->resizeToHeight(200);
+                $image->save('./app/photos/' . $this->currentUser['id'] . '/thumbs/' . $request['photoUrl']);
+                //end create thumb
 
-              $this->db->insert("photos", array("id" => $this->getGUID(), "userId" => $this->currentUser['id'], "file" => $request['photoUrl']), true);
+                $this->db->insert("photos", array("id" => $this->getGUID(), "userId" => $this->currentUser['id'], "file" => $request['photoUrl']), true);
 
-              $_SESSION['message'] = 'Image ' . $request['photoUrl'] . ' added to db and thumbnail created';
-              $_SESSION['messageStatus'] = 'success';
+                $_SESSION['message'] = 'Image ' . $request['photoUrl'] . ' added to db and thumbnail created';
+                $_SESSION['messageStatus'] = 'success';
 
             } catch (Exception $e) {
-              $_SESSION['message'] = 'Fail to create thumbnail for Image ' . $request['photoUrl'] ;
-              $_SESSION['messageStatus'] = 'error';
+                $_SESSION['message'] = 'Fail to create thumbnail for Image ' . $request['photoUrl'];
+                $_SESSION['messageStatus'] = 'error';
 
             }
 
