@@ -1,4 +1,3 @@
-<h2 class="animated fadeInDown">my photos | upload photos</h2><br>
 <?php
 $photos = $app->db->select("photos", "userId", $app->currentUser['id']);
 $categories = [];
@@ -6,9 +5,10 @@ $categories['travels'] = 'Travels ';
 $categories['most_creative '] = 'Most creative';
 $categories['funniest'] = 'Funiest';
 $categories['40'] = '40';
+$photoPath = './app/photos/' . $app->currentUser['id'] . '/';
 ?>
-<?php $photoPath = './app/photos/' . $app->currentUser['id'] . '/' ?>
 <?php if (count($photos)) : ?>
+    <h2>My photos</h2>
     <div class="gallery">
         <?php foreach ($photos as $photo) : ?>
             <div class="item">
@@ -30,5 +30,5 @@ $categories['40'] = '40';
         <?php endforeach; ?>
     </div>
 <?php else : ?>
-    <b>You do not have any photos actually, you should add some.</b>
+    <div class="alert alert-info" role="alert">You do not submit any photos actually, you should <strong>upload some</strong>.</div>
 <?php endif; ?>
