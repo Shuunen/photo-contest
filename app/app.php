@@ -1,6 +1,7 @@
 <?php
 
 require "./app/database/json-db.php";
+include './app/php/ImageResize/ImageResize.php';
 
 session_start();
 
@@ -116,9 +117,29 @@ class App {
     function handleAddPhoto($request) {
 
         if (isset($request['photoUrl'])) {
-            $this->db->insert("photos", array("id" => $this->getGUID(), "userId" => $this->currentUser['id'], "file" => $request['photoUrl']), true);
-            $_SESSION['message'] = 'Image ' . $request['photoUrl'] . ' added to db';
-            $_SESSION['messageStatus'] = 'success';
+
+
+            try{
+              // create thumb
+              if (!file_exists('./app/photos/'.$this->currentUser['id'].'/thumbs')) {
+                mkdir('./app/photos/'.$this->currentUser['id'].'/thumbs', 0777, TRUE);
+              }
+              $image = new \Eventviva\ImageResize('./app/photos/'.$this->currentUser['id'].'/'.$request['photoUrl']);
+              $image->resizeToHeight(200);
+              $image->save('./app/photos/'.$this->currentUser['id'].'/thumbs/'.$request['photoUrl']);
+              //end create thumb
+
+              $this->db->insert("photos", array("id" => $this->getGUID(), "userId" => $this->currentUser['id'], "file" => $request['photoUrl']), true);
+
+              $_SESSION['message'] = 'Image ' . $request['photoUrl'] . ' added to db and thumbnail created';
+              $_SESSION['messageStatus'] = 'success';
+
+            } catch (Exception $e) {
+              $_SESSION['message'] = 'Fail to create thumbnail for Image ' . $request['photoUrl'] ;
+              $_SESSION['messageStatus'] = 'error';
+
+            }
+
         } else {
             $_SESSION['message'] = 'No photoUrl given';
             $_SESSION['messageStatus'] = 'error';
@@ -126,7 +147,7 @@ class App {
     }
 
     function handleLogout() {
-        
+
         if (ini_get("session.use_cookies")) {
             $params = session_get_cookie_params();
             setcookie(session_name(), '', time() - 42000,
@@ -136,7 +157,7 @@ class App {
         }
 
         session_destroy();
-        
+
         $_SESSION['message'] = 'User has been disconnected';
         $_SESSION['messageStatus'] = 'success';
     }
