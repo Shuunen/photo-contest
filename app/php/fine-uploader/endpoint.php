@@ -31,7 +31,6 @@
 // Include the upload handler class
 require_once "handler.php";
 
-
 $uploader = new UploadHandler();
 
 // Specify the list of valid extensions, ex. array("jpeg", "xml", "bmp")
@@ -47,31 +46,31 @@ $uploader->inputName = "qqfile"; // matches Fine Uploader's default inputName va
 $uploader->chunksFolder = "chunks";
 
 $method = $_SERVER["REQUEST_METHOD"];
+
 if ($method == "POST") {
+
     header("Content-Type: text/plain");
 
     // Assumes you have a chunking.success.endpoint set to point here with a query parameter of "done".
     // For example: /myserver/handlers/endpoint.php?done
     if (isset($_GET["done"])) {
         $result = $uploader->combineChunks("files");
-    }
-    // Handles upload requests
+    } // Handles upload requests
     else {
         // Call handleUpload() with the name of the folder, relative to PHP's getcwd()
-        $result = $uploader->handleUpload("files");
+        $result = $uploader->handleUpload("../../photos");
 
         // To return a name used for uploaded file you can use the following line.
         $result["uploadName"] = $uploader->getUploadName();
     }
 
     echo json_encode($result);
-}
-// for delete file requests
+
+} // for delete file requests
 else if ($method == "DELETE") {
     $result = $uploader->handleDelete("files");
     echo json_encode($result);
-}
-else {
+} else {
     header("HTTP/1.0 405 Method Not Allowed");
 }
 

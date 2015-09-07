@@ -1,6 +1,6 @@
 <?php
 
-require "./database/json-db.php";
+require "./app/database/json-db.php";
 
 session_start();
 
@@ -8,7 +8,7 @@ class App {
 
     function __construct() {
 
-        $this->db = new JsonDB("./database/");
+        $this->db = new JsonDB("./app/database/");
         $this->isUser = false;
         $this->isAdmin = false;
         $this->isLogged = false;
@@ -113,6 +113,19 @@ class App {
         }
     }
 
+    function handleAddPhoto($request) {
+
+        if (isset($request['photoUrl'])) {
+            $this->db->insert("photos", array("id" => $this->getGUID(), "userId" => $this->currentUser['id'], "file" => $request['photoUrl']), true);
+            $_SESSION['message'] = 'Image ' . $request['photoUrl'] . ' added to db';
+            $_SESSION['messageStatus'] = 'success';
+        } else {
+            $_SESSION['message'] = 'No photoUrl given';
+            $_SESSION['messageStatus'] = 'error';
+        }
+
+    }
+
     function handleRequest() {
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
@@ -126,6 +139,8 @@ class App {
             $type = $request['type'];
             if ($type === 'login') {
                 $this->handleLogin($request);
+            } else if ($type === 'addPhoto') {
+                $this->handleAddPhoto($request);
             } else if ($type === 'vote') {
                 $this->handleVote($request);
             } else if ($type === 'approval') {
@@ -135,8 +150,6 @@ class App {
                 $_SESSION['messageStatus'] = 'error';
             }
 
-            echo "requestajax:" . $request['ajax'];
-            
             if (isset($request['ajax'])) {
                 // if ajax, print json and exit
                 echo json_encode(array('message' => $_SESSION['message'], 'messageStatus' => $_SESSION['messageStatus']), JSON_FORCE_OBJECT);

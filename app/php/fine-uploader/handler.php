@@ -143,7 +143,8 @@ class UploadHandler {
         // Save a chunk
         $totalParts = isset($_REQUEST['qqtotalparts']) ? (int)$_REQUEST['qqtotalparts'] : 1;
 
-        $uuid = $_REQUEST['qquuid'];
+        // $uuid = $_REQUEST['qquuid'];
+        $uuid = $_REQUEST['userId'];
         if ($totalParts > 1){
         # chunked upload
 

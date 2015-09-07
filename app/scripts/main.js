@@ -54,20 +54,43 @@ $(document).ready(function () {
         });
     });
 
+    var bAllUploaded = false;
+    var bAllAdded = false;
     var galleryUploader = new qq.FineUploader({
         element: document.getElementById("fine-uploader-gallery"),
         template: 'qq-template-gallery',
         request: {
-            endpoint: './php/fine-uploader/endpoint.php'
+            endpoint: './app/php/fine-uploader/endpoint.php',
+            params: {
+                userId: document.getElementsByName('userId')[0].value
+            }
         },
         thumbnails: {
             placeholders: {
-                waitingPath: './placeholders/waiting-generic.png',
-                notAvailablePath: './placeholders/not_available-generic.png'
+                waitingPath: './app/placeholders/waiting-generic.png',
+                notAvailablePath: './app/placeholders/not_available-generic.png'
             }
         },
         validation: {
             allowedExtensions: ['jpeg', 'jpg', 'gif', 'png']
+        },
+        callbacks: {
+            onComplete: function (id, name, json) {
+                console.log(json);
+                $.ajax({
+                    type: 'get',
+                    data: 'type=addPhoto&photoUrl=' + json.uploadName + '&ajax=true',
+                    success: function (json) {
+                        console.log(json);
+                        if (bAllUploaded) {
+                            window.location.reload();
+                        }
+                    }
+                });
+            },
+            onAllComplete: function () {
+                bAllUploaded = true;
+            }
         }
     });
 
