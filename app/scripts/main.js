@@ -6,7 +6,7 @@ $(document).ready(function () {
         slidesToShow: 1,
         slidesToScroll: 1,
         // asNavFor: '.slider-for',
-        dots: true,
+        dots: false,
         centerMode: true,
         // centerPadding: '100px',
         focusOnSelect: true,
@@ -22,22 +22,10 @@ $(document).ready(function () {
         slidesToShow: 3,
         slidesToScroll: 1,
         asNavFor: '.gallery',
-        dots: true,
+        dots: false,
         centerMode: true,
         focusOnSelect: true
     });
-
-    /*
-     $('.slider-for').slick({
-     slidesToShow: 1,
-     slidesToScroll: 1,
-     arrows: false,
-     fade: true,
-     asNavFor: '.slider-nav'
-     });
-
-
-     */
 
     $('input.rating').rating();
 
