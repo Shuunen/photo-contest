@@ -6014,10 +6014,9 @@ body {
   z-index: 10;
   font-size: 16px; }
 
-.form-horizontal {
-  margin-top: 10px; }
-  .form-horizontal .control-label {
-    color: white; }
+.login {
+  max-width: 460px;
+  margin: 40px auto; }
 
 .dropdown-menu > li > a,
 .navbar {
@@ -6060,5 +6059,9 @@ h1, h2 {
   background-color: transparent; }
 .qq-gallery .qq-upload-button {
   width: 160px; }
+
+.badge {
+  font-size: 20px;
+  padding: 3px 8px; }
 
 /*# sourceMappingURL=main.css.map */

@@ -40,8 +40,17 @@ $(document).ready(function () {
         $.ajax({
             type: 'get',
             data: data,
-            success: function (json) {
-                // console.log(json);
+            success: function () {
+                window.location.reload();
+            }
+        });
+    });
+
+    $('#logoutLink').click(function(){
+         $.ajax({
+            type: 'get',
+            data: 'type=logout&ajax=true',
+            success: function () {
                 window.location.reload();
             }
         });

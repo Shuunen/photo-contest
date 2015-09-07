@@ -8,7 +8,7 @@ $categories['40'] = '40';
 $photoPath = './app/photos/' . $app->currentUser['id'] . '/';
 ?>
 <?php if (count($photos)) : ?>
-    <h2>My photos</h2>
+    <h2>My photos &nbsp;<span class="badge"><?php echo count($photos) ?></span></h2>
     <div class="gallery">
         <?php foreach ($photos as $photo) : ?>
             <div class="item">

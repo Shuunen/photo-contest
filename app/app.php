@@ -123,7 +123,22 @@ class App {
             $_SESSION['message'] = 'No photoUrl given';
             $_SESSION['messageStatus'] = 'error';
         }
+    }
 
+    function handleLogout() {
+        
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000,
+                $params["path"], $params["domain"],
+                $params["secure"], $params["httponly"]
+            );
+        }
+
+        session_destroy();
+        
+        $_SESSION['message'] = 'User has been disconnected';
+        $_SESSION['messageStatus'] = 'success';
     }
 
     function handleRequest() {
@@ -139,6 +154,8 @@ class App {
             $type = $request['type'];
             if ($type === 'login') {
                 $this->handleLogin($request);
+            } else if ($type === 'logout') {
+                $this->handleLogout();
             } else if ($type === 'addPhoto') {
                 $this->handleAddPhoto($request);
             } else if ($type === 'vote') {

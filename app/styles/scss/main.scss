@@ -17,16 +17,14 @@ body {
     // background-color: rgba(0, 0, 0, 0.12);
 }
 
-.form-horizontal {
-    margin-top: 10px;
-    .control-label {
-        color: white;
-    }
+.login {
+    max-width: 460px;
+    margin: 40px auto;
 }
 
 .dropdown-menu > li > a,
 .navbar {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 h1 {
@@ -81,4 +79,9 @@ h1, h2 {
 
     .qq-upload-button { width: 160px; }
 
+}
+
+.badge {
+    font-size: 20px;
+    padding: 3px 8px;
 }

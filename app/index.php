@@ -8,7 +8,7 @@ $viewsDir = __DIR__ . '/php/views/';
 // $db->insert("users", array("name" => "Michèl Albàn"), true);
 ?>
 <!DOCTYPE html>
-<html lang="en" class="<?php echo($app->isLogged ? '' : 'login') ?>">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
