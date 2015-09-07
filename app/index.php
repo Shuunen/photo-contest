@@ -22,12 +22,13 @@ $app = new App();
         <link href="../bower_components/slick.js/slick/slick.css" rel="stylesheet">
         <link href="../bower_components/slick.js/slick/slick-theme.css" rel="stylesheet">
         <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../bower_components/zoomwall/zoomwall.css" />
         <link href="/styles/css/main.css" rel="stylesheet">
     </head>
 
     <body>
 
-        <div class="container">
+        <div class="container-fluid">
 
             <h1 class="animated fadeInDown">UXD Photoshop Contest 2015</h1>
 
@@ -46,6 +47,7 @@ $app = new App();
         <script type="text/javascript" src="../bower_components/slick.js/slick/slick.min.js"></script>
         <script type="text/javascript" src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="../bower_components/bootstrap-rating/bootstrap-rating.min.js"></script>
+        <script type="text/javascript" src="../bower_components/zoomwall/zoomwall.js"></script>
         <script type="text/javascript" src="./scripts/main.js"></script>
 
     </body>
