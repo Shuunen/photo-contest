@@ -54,9 +54,10 @@ h1, h2 {
 }
 
 .gallery-slider {
-    margin-top: 20px;
+    margin: 0;
+    height: 100%;
     img {
-        height: 500px;
+        height: 86vh;
         margin:auto;
     }
     .slick-slide {
@@ -90,17 +91,18 @@ h1, h2 {
 }
 
 .ratings {
-    margin-top: 20px;
+    margin: 20px 0;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     .rating {
         display: flex;
-        flex-basis: 50%;
+        flex-basis: 270px;
         align-items: center;
         justify-content: center;
         .category {
-            width: 130px;
-            font-size: 18px;
+            margin-right: 10px;
+            font-size: 16px;
         }
     }
 }
@@ -137,6 +139,24 @@ h2 .badge {
     background-color: rgba(91, 192, 222, 0.7);
 }
 
-.modal-dialog {
-    min-width:50%;   
+.modal.fullscreen {
+    padding:0 !important;
+    .modal-dialog {
+        padding: 20px;
+        margin: 0;
+        width: 100vw;
+        height: 100vh;
+        .modal-content {  
+            height: 100%;
+            background-color: #313437;
+            .modal-body {
+                height: 100%;
+                & + button {
+                    position: absolute;
+                    bottom: 20px;
+                    right: 20px;
+                }
+            }
+        }
+    }
 }

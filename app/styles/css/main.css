@@ -6018,9 +6018,10 @@ h1, h2 {
     cursor: pointer; }
 
 .gallery-slider {
-  margin-top: 20px; }
+  margin: 0;
+  height: 100%; }
   .gallery-slider img {
-    height: 500px;
+    height: 86vh;
     margin: auto; }
   .gallery-slider .slick-slide {
     outline: none; }
@@ -6039,17 +6040,18 @@ h1, h2 {
   top: 30px; }
 
 .ratings {
-  margin-top: 20px;
+  margin: 20px 0;
   display: flex;
-  flex-wrap: wrap; }
+  flex-wrap: wrap;
+  justify-content: center; }
   .ratings .rating {
     display: flex;
-    flex-basis: 50%;
+    flex-basis: 270px;
     align-items: center;
     justify-content: center; }
     .ratings .rating .category {
-      width: 130px;
-      font-size: 18px; }
+      margin-right: 10px;
+      font-size: 16px; }
 
 .qq-gallery.qq-uploader {
   border: none;
@@ -6074,7 +6076,21 @@ h2 .badge {
 .alert-info {
   background-color: rgba(91, 192, 222, 0.7); }
 
-.modal-dialog {
-  min-width: 50%; }
+.modal.fullscreen {
+  padding: 0 !important; }
+  .modal.fullscreen .modal-dialog {
+    padding: 20px;
+    margin: 0;
+    width: 100vw;
+    height: 100vh; }
+    .modal.fullscreen .modal-dialog .modal-content {
+      height: 100%;
+      background-color: #313437; }
+      .modal.fullscreen .modal-dialog .modal-content .modal-body {
+        height: 100%; }
+        .modal.fullscreen .modal-dialog .modal-content .modal-body + button {
+          position: absolute;
+          bottom: 20px;
+          right: 20px; }
 
 /*# sourceMappingURL=main.css.map */

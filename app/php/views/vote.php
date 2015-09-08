@@ -33,14 +33,9 @@ function getRateForPhotoAndCategory($rates, $photoId, $categoryId) {
 <?php endif; ?>
 
 <?php if (count($photos)) : ?>
-    <div id="voteModal" tabindex="-1" role="dialog" class="modal fade">
+    <div id="voteModal" tabindex="-1" role="dialog" class="modal fullscreen fade">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Contributions slider &nbsp;<span class="badge"><?php echo count($photos) ?></span></h4>
-                </div>
                 <div class="modal-body">
                     <div class="gallery-slider">
                         <?php foreach ($photos as $photo) : ?>
@@ -53,7 +48,7 @@ function getRateForPhotoAndCategory($rates, $photoId, $categoryId) {
                                         <div class="rating">
                                             <div class="category" ><?php print $category['label']; ?> :</div>
                                             <div class="stars rating-category" data-catgerory-id="<?php print $category["id"]; ?>" data-photo-id="<?php print $photo['id'] ?>">
-                                                <input name="rating-<?php print $category["id"]; ?>" type="hidden" class="rating" data-filled="fa fa-star fa-3x" data-filled-selected="fa fa-star fa-3x" data-empty="fa fa-star-o fa-3x" value="<?php print getRateForPhotoAndCategory($rates, $photo['id'], $category["id"]); ?>"></span>
+                                                <input name="rating-<?php print $category["id"]; ?>" type="hidden" class="rating" data-filled="fa fa-star fa-2x" data-filled-selected="fa fa-star fa-2x" data-empty="fa fa-star-o fa-2x" value="<?php print getRateForPhotoAndCategory($rates, $photo['id'], $category["id"]); ?>"></span>
                                             </div>
                                         </div>
                                     <?php endforeach; ?>
@@ -62,9 +57,7 @@ function getRateForPhotoAndCategory($rates, $photoId, $categoryId) {
                         <?php endforeach; ?>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>                    
-                </div>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>                    
             </div>
         </div>
     </div>
