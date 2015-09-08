@@ -14,11 +14,13 @@ $photoPath = './app/photos/';
         <?php endforeach; ?>
     </div>
 <?php else : ?>
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="alert alert-info" role="alert">There is no contributions actually.</div>
-        </div>
-    </div>
+  <div class="container-fluid">
+      <div class="row">
+          <div class="col-md-8 col-md-offset-2">
+              <div class="alert alert-info" role="alert">There is no contributions actually.</div>
+          </div>
+      </div>
+  </div>
 <?php endif; ?>
 
 <?php if (count($photos)) : ?>
