@@ -10,7 +10,7 @@ $(document).ready(function () {
         centerMode: true,
         // centerPadding: '100px',
         focusOnSelect: true,
-        lazyLoad: 'ondemand',
+        lazyLoad: 'ondemand', // or progressive
         // variableWidth: true,
         // adaptiveHeight: true,
         speed: 500,

@@ -6020,7 +6020,7 @@ body {
 
 .dropdown-menu > li > a,
 .navbar {
-  font-size: 14px; }
+  font-size: 15px; }
 
 h1 {
   margin-top: 70px;
@@ -6038,8 +6038,11 @@ h1, h2 {
     margin: auto; }
 
 .gallery-nav img {
-  height: 180px;
-  margin-right: 20px; }
+  margin-right: 20px;
+  min-height: 200px; }
+.gallery-nav .slick-track {
+  max-height: 200px;
+  overflow: hidden; }
 
 .ratings {
   margin-top: 20px;
@@ -6060,7 +6063,15 @@ h1, h2 {
 .qq-gallery .qq-upload-button {
   width: 160px; }
 
-.badge {
+.navbar-default .navbar-text {
+  margin-left: 0;
+  color: darkgrey; }
+.navbar-default .badge {
+  margin-left: 4px;
+  font-weight: normal;
+  font-size: 14px; }
+
+h2 .badge {
   font-size: 20px;
   padding: 3px 8px; }
 

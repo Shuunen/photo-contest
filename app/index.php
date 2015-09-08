@@ -31,21 +31,21 @@ $viewsDir = __DIR__ . '/php/views/';
 
 <div class="container">
 
-    <?php if ($app->isLogged) : ?>
-        <?php require $viewsDir . 'nav.php'; ?>
-    <?php endif; ?>
+    <?php if ($app->isLogged) require $viewsDir . 'nav.php' ?>
 
     <div class="page-header">
         <h1 id="type">UXD Photoshop Contest 2015</h1>
     </div>
 
-    <?php require $viewsDir . 'messages.php'; ?>
+    <?php require $viewsDir . 'messages.php' ?>
 
-    <?php if (!$app->isLogged) : ?>
-        <?php require $viewsDir . 'login.php'; ?>
-    <?php else : ?>                
-        <?php require $viewsDir . 'user.php'; ?>
-    <?php endif; ?>
+    <?php
+    if (!$app->isLogged) {
+        require $viewsDir . 'login.php';
+    } else {
+        require $viewsDir . 'user.php';
+    }
+    ?>
 
 </div>
 

@@ -24,12 +24,12 @@ body {
 
 .dropdown-menu > li > a,
 .navbar {
-    font-size: 14px;
+    font-size: 15px;
 }
 
 h1 {
     margin-top: 70px;
-    margin-bottom: 20px;  
+    margin-bottom: 20px;
 }
 
 h1, h2 {
@@ -49,8 +49,12 @@ h1, h2 {
 
 .gallery-nav {
     img {
-        height: 180px;
         margin-right: 20px;
+        min-height: 200px;
+    }
+    .slick-track {
+        max-height: 200px;
+        overflow: hidden;
     }
 }
 
@@ -60,7 +64,7 @@ h1, h2 {
     flex-wrap: wrap;
     .rating {
         display: flex;
-        flex-basis:50%;
+        flex-basis: 50%;
         align-items: center;
         justify-content: center;
         .category {
@@ -71,17 +75,28 @@ h1, h2 {
 }
 
 .qq-gallery {
-
     &.qq-uploader {
         border: none;
         background-color: transparent;
     }
-
-    .qq-upload-button { width: 160px; }
-
+    .qq-upload-button {
+        width: 160px;
+    }
 }
 
-.badge {
+.navbar-default {
+    .navbar-text {
+        margin-left: 0;
+        color: darkgrey;
+    }
+    .badge {
+        margin-left: 4px;
+        font-weight: normal;
+        font-size: 14px;
+    }
+}
+
+h2 .badge {
     font-size: 20px;
     padding: 3px 8px;
 }
