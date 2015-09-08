@@ -1,6 +1,11 @@
 <?php
 
 require "./database/json-db.php";
+
+define('LAZER_DATA_PATH', realpath(dirname(__FILE__)).'/database/Lazer/'); //Path to folder with tables
+
+use Lazer\Classes\Database as Lazer;
+
 include './php/ImageResize/ImageResize.php';
 
 session_start();
@@ -24,6 +29,8 @@ class App {
                 $this->isUser = true;
             }
         }
+
+      $this->installDB();
 
         $this->handleRequest();
     }
@@ -121,7 +128,8 @@ class App {
                 $image->save('./photos/' . $this->currentUser['id'] . '/thumbs/' . $request['photoUrl']);
                 //end create thumb
 
-                $this->db->insert("photos", array("id" => $this->getGUID(), "userId" => $this->currentUser['id'], "file" => $request['photoUrl']), true);
+                $this->storePhotoToDB($request);
+
 
                 $_SESSION['message'] = 'Image ' . $request['photoUrl'] . ' added to db and thumbnail created';
                 $_SESSION['messageStatus'] = 'success';
@@ -137,6 +145,21 @@ class App {
             $_SESSION['message'] = 'No photoUrl given';
             $_SESSION['messageStatus'] = 'error';
         }
+    }
+
+    function storePhotoToDB($request){
+
+      //json-db
+      $this->db->insert("photos", array("id" => $this->getGUID(), "userId" => $this->currentUser['id'], "file" => $request['photoUrl']), true);
+
+      //Lazer
+      $photo = Lazer::table('photos');
+
+      $photo->photoid = $this->getGUID();
+      $photo->userid = $this->currentUser['id'];
+      $photo->filepath = $request['photoUrl'];
+      $photo->save();
+
     }
 
     function handleLogout() {
@@ -157,13 +180,34 @@ class App {
 
     function handleRate($request){
 
-      //if($this->db->select("rates"))
-      $this->db->selectMultiCond("rates", array("photoId"=>$request['photoId']), array("categoryId"=>$request['categoryId']), array("userId"=>$this->currentUser['id']));
+      $this->storeRateToDB($request);
 
-      $this->db->insert("rates", array("photoId" => $request['photoId'], "categoryId" => $request['categoryId'], "rate" =>$request['rate'], "userId" => $this->currentUser['id']), true);
       $_SESSION['message'] = 'Rate ' . $request['photoId'] . ' for the category '. $request['categoryId'] . ' with '.$request['rate'];
       $_SESSION['messageStatus'] = 'success';
 
+    }
+
+    function storeRateToDB($request){
+
+      //json-db
+      $this->db->insert("rates", array("photoId" => $request['photoId'], "categoryId" => $request['categoryId'], "rate" =>$request['rate'], "userId" => $this->currentUser['id']), true);
+
+      //Lazer
+      $existingRate = Lazer::table('rates')->where('photoid', '=', $request['photoId'])->andWhere('userid', '=', $this->currentUser['id'])->andWhere('categoryid', '=', $request['categoryId'])->find();
+
+      if($existingRate->count() == 0){
+        $rate = Lazer::table('rates');
+
+        $rate->photoid = $request['photoId'];
+        $rate->userid = $this->currentUser['id'];
+        $rate->categoryid = $request['categoryId'];
+        $rate->rate = $request['rate'];
+        $rate->save();
+      }else{
+
+        $existingRate->rate = $request['rate'];
+        $existingRate->save();
+      }
 
     }
 
@@ -199,6 +243,103 @@ class App {
                 die();
             }
         }
+    }
+
+    function installDB(){
+
+      //install users
+        try{
+            \Lazer\Classes\Helpers\Validate::table('users')->exists();
+        } catch(\Lazer\Classes\LazerException $e){
+            //Database doesn't exist
+
+            Lazer::create('users', array(
+                'userid' => 'string',
+                'name' => 'string',
+                'email' => 'string',
+                'pass' => 'string',
+                'role' => 'string',
+            ));
+
+            $user = Lazer::table('users');
+
+            $user->userid = $this->getGUID();
+            $user->name = 'Romain Racamier';
+            $user->email = 'romain.racamier';
+            $user->pass = 'mypass';
+            $user->role = 'admin';
+            $user->save();
+
+            $user->userid = $this->getGUID();
+            $user->name = 'Romain Racamier';
+            $user->email = 'michel.alban';
+            $user->pass = 'albanPass';
+            $user->role = 'user';
+            $user->save();
+        }
+
+      //install categories
+        try{
+            \Lazer\Classes\Helpers\Validate::table('categories')->exists();
+        } catch(\Lazer\Classes\LazerException $e){
+            //Database doesn't exist
+
+            Lazer::create('categories', array(
+                'categoryid' => 'string',
+                'label' => 'string',
+            ));
+
+            $category = Lazer::table('categories');
+
+            $category->categoryid = "travels";
+            $category->label = 'Travels';
+            $category->save();
+
+            $category->categoryid = "most_creative";
+            $category->label = 'Most creative';
+            $category->save();
+
+            $category->categoryid = "funniest";
+            $category->label = 'Funiest';
+            $category->save();
+
+            $category->categoryid = "40";
+            $category->label = '40';
+            $category->save();
+
+        }
+
+      //install photos
+        try{
+            \Lazer\Classes\Helpers\Validate::table('photos')->exists();
+        } catch(\Lazer\Classes\LazerException $e){
+            //Database doesn't exist
+
+            Lazer::create('photos', array(
+                'photoid' => 'string',
+                'userid' => 'string',
+                'filepath' => 'string',
+            ));
+
+
+        }
+
+      //install rates
+        try{
+            \Lazer\Classes\Helpers\Validate::table('rates')->exists();
+        } catch(\Lazer\Classes\LazerException $e){
+            //Database doesn't exist
+
+            Lazer::create('rates', array(
+                'photoid' => 'string',
+                'userid' => 'string',
+                'categoryid' => 'string',
+                'rate' => 'string',
+            ));
+
+
+        }
+
     }
 
 }
