@@ -25,14 +25,18 @@ function getRateForPhotoAndCategory($rates, $photoId, $categoryId) {
         <?php endforeach; ?>
     </div>
 <?php else : ?>
-    <div class="alert alert-info" role="alert">There is no contributions actually.</div>
-<?php endif; ?>
-
-<?php if (count($photos)) : ?>
-    <hr>
-    <h2>Contributions slider &nbsp;<span class="badge"><?php echo count($photos) ?></span></h2>
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
+            <div class="alert alert-info" role="alert">There is no contributions actually.</div>
+        </div>
+    </div>
+<?php endif; ?>
+
+<hr>
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <?php if (count($photos)) : ?>
+            <h2>Contributions slider &nbsp;<span class="badge"><?php echo count($photos) ?></span></h2>
             <div class="gallery-slider">
                 <?php foreach ($photos as $photo) : ?>
                     <div class="item">
@@ -52,8 +56,8 @@ function getRateForPhotoAndCategory($rates, $photoId, $categoryId) {
                     </div>
                 <?php endforeach; ?>
             </div>
-        </div>
+        <?php else : ?>
+            <div class="alert alert-info" role="alert">There is no contributions actually.</div>
+        <?php endif; ?>
     </div>
-<?php else : ?>
-    <div class="alert alert-info" role="alert">There is no contributions actually.</div>
-<?php endif; ?>
+</div>

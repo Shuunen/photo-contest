@@ -6053,7 +6053,7 @@ h1, h2 {
   border: none;
   background-color: transparent; }
 .qq-gallery .qq-upload-button {
-  width: 160px; }
+  width: 180px; }
 
 .navbar-default {
   background-color: #383838; }
@@ -6068,5 +6068,8 @@ h1, h2 {
 h2 .badge {
   font-size: 20px;
   padding: 3px 8px; }
+
+.alert-info {
+  background-color: rgba(91, 192, 222, 0.7); }
 
 /*# sourceMappingURL=main.css.map */
