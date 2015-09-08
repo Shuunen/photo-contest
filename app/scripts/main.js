@@ -97,15 +97,15 @@ $(document).ready(function () {
             template: 'qq-template-gallery',
             autoUpload: false,
             request: {
-                endpoint: './app/php/fine-uploader/endpoint.php',
+                endpoint: './php/fine-uploader/endpoint.php',
                 params: {
                     userId: userId
                 }
             },
             thumbnails: {
                 placeholders: {
-                    waitingPath: './app/placeholders/waiting-generic.png',
-                    notAvailablePath: './app/placeholders/not_available-generic.png'
+                    waitingPath: './placeholders/waiting-generic.png',
+                    notAvailablePath: './placeholders/not_available-generic.png'
                 }
             },
             validation: {

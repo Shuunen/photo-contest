@@ -2,7 +2,7 @@
 
 $photos = $app->getPhotosToVote();
 $categories = $app->getCategories();
-$photoPath = './app/photos/';
+$photoPath = './photos/';
 
 ?>
 

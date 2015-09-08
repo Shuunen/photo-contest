@@ -3,7 +3,7 @@
     <h2>My photos &nbsp;<span class="badge"><?php echo count($userPhotos) ?></span></h2>
     <div class="gallery-thumb">
         <?php foreach ($userPhotos as $photo) : ?>
-            <img src="<?php echo './app/photos/' . $photo->userid . '/'. 'thumbs/' . $photo->filepath ?>">
+            <img src="<?php echo './photos/' . $photo->userid . '/'. 'thumbs/' . $photo->filepath ?>">
         <?php endforeach; ?>
     </div>
 <?php else : ?>

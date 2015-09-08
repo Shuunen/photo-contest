@@ -36,7 +36,7 @@ function __autoload($class_name){
         <link href="./crappy_bower_component/fine-uploader/fine-uploader-gallery.min.css" rel="stylesheet">
         <!--        <link href="../bower_components/fine-uploader/_build/fine-uploader-gallery.min.css" rel="stylesheet">-->
         <link href="./bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-        <link href="./app/styles/css/main.css" rel="stylesheet">
+        <link href="./styles/css/main.css" rel="stylesheet">
     </head>
 
     <body>
@@ -63,7 +63,7 @@ function __autoload($class_name){
         <!--        <script type="text/javascript" src="../bower_components/fine-uploader/_build/fine-uploader.min.js"></script>-->
         <script type="text/javascript" src="./bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="./bower_components/bootstrap-rating/bootstrap-rating.min.js"></script>
-        <script type="text/javascript" src="./app/scripts/main.js"></script>
+        <script type="text/javascript" src="./scripts/main.js"></script>
 
     </body>
 
