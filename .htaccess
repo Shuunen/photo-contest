@@ -1,6 +1,5 @@
 <IfModule mod_rewrite.c>  
 RewriteEngine on
-#RewriteRule ^photo-contest/(.*)$ photo-contest/app/$1 [L]
 RewriteCond %{REQUEST_URI} !^/photo-contest/app/
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.*)$ /photo-contest/app/index.php [L,QSA]
