@@ -1,16 +1,16 @@
+/* global qq */
+
 $(document).ready(function () {
-
-//      zoomwall.create(document.getElementById('gallery'), true);
-
 
     $('.gallery').slick({
         slidesToShow: 1,
         slidesToScroll: 1,
         // asNavFor: '.slider-for',
-        dots: true,
+        dots: false,
         centerMode: true,
         // centerPadding: '100px',
         focusOnSelect: true,
+        lazyLoad: 'ondemand', // or progressive
         // variableWidth: true,
         // adaptiveHeight: true,
         speed: 500,
@@ -18,6 +18,14 @@ $(document).ready(function () {
         cssEase: 'linear'
     });
 
+    $('.gallery-nav').slick({
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        asNavFor: '.gallery',
+        dots: false,
+        centerMode: true,
+        focusOnSelect: true
+    });
 
     $('input.rating').rating();
 
@@ -42,51 +50,69 @@ $(document).ready(function () {
         $.ajax({
             type: 'get',
             data: data,
-            success: function (json) {
-                // console.log(json);
+            success: function () {
                 window.location.reload();
             }
         });
     });
 
-    var bAllUploaded = false;
-    var bAllAdded = false;
-    var galleryUploader = new qq.FineUploader({
-        element: document.getElementById("fine-uploader-gallery"),
-        template: 'qq-template-gallery',
-        request: {
-            endpoint: './app/php/fine-uploader/endpoint.php',
-            params: {
-                userId: document.getElementsByName('userId')[0].value
+    $('#logoutLink').click(function(){
+         $.ajax({
+            type: 'get',
+            data: 'type=logout&ajax=true',
+            success: function () {
+                window.location.reload();
             }
-        },
-        thumbnails: {
-            placeholders: {
-                waitingPath: './app/placeholders/waiting-generic.png',
-                notAvailablePath: './app/placeholders/not_available-generic.png'
-            }
-        },
-        validation: {
-            allowedExtensions: ['jpeg', 'jpg', 'gif', 'png']
-        },
-        callbacks: {
-            onComplete: function (id, name, json) {
-                console.log(json);
-                $.ajax({
-                    type: 'get',
-                    data: 'type=addPhoto&photoUrl=' + json.uploadName + '&ajax=true',
-                    success: function (json) {
-                        console.log(json);
-                        if (bAllUploaded) {
-                            window.location.reload();
-                        }
-                    }
-                });
-            },
-            onAllComplete: function () {
-                bAllUploaded = true;
-            }
-        }
+        });
     });
+
+    var userId = document.getElementsByName('userId')[0];
+    if (userId) {
+        userId = userId.value;
+        var bAllUploaded = false;
+        var bAllAdded = false;
+        var galleryUploader = new qq.FineUploader({
+            element: document.getElementById("fine-uploader-gallery"),
+            template: 'qq-template-gallery',
+            autoUpload: false,
+            request: {
+                endpoint: './app/php/fine-uploader/endpoint.php',
+                params: {
+                    userId: userId
+                }
+            },
+            thumbnails: {
+                placeholders: {
+                    waitingPath: './app/placeholders/waiting-generic.png',
+                    notAvailablePath: './app/placeholders/not_available-generic.png'
+                }
+            },
+            validation: {
+                allowedExtensions: ['jpeg', 'jpg', 'gif', 'png']
+            },
+            callbacks: {
+                onComplete: function (id, name, json) {
+                    console.log(json);
+                    $.ajax({
+                        type: 'get',
+                        data: 'type=addPhoto&photoUrl=' + json.uploadName + '&ajax=true',
+                        success: function (json) {
+                            console.log(json);
+                            if (bAllUploaded) {
+                                window.location.reload();
+                            }
+                        }
+                    });
+                },
+                onAllComplete: function () {
+                    bAllUploaded = true;
+                }
+            }
+        });
+        qq(document.getElementById("uploadButton")).attach('click', function () {
+            galleryUploader.uploadStoredFiles();
+        });
+    }
+
 
 });

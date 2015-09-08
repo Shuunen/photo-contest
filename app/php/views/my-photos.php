@@ -1,7 +1,10 @@
-<h2 class="animated fadeInLeft">My photos</h2>
 <?php
+
 $photos = $app->db->selectNot("photos", "userId", $app->currentUser['id']);
 $categories = $app->db->selectAll("category");
+$photoRootPath = './app/photos/';
+$photoPath = $photoRootPath . $app->currentUser['id'] . '/';
+
 $rates = $app->db->select("rates", "userId", $app->currentUser['id']);
 //var_dump($rates);
 
@@ -16,37 +19,36 @@ function getRateForPhotoAndCategory($rates, $photoId, $categoryId){
   return 0;
 }
 
+
 ?>
 <?php if (count($photos)) : ?>
-    <div class="gallery animated fadeInUp">
+    <h2>My photos &nbsp;<span class="badge"><?php echo count($photos) ?></span></h2>
+    <div class="gallery">
         <?php foreach ($photos as $photo) : ?>
             <div class="item">
-                <img src="./photos/<?php echo $photo['userId'] . '/' . $photo['file'] ?>">
-                <?php foreach ($categories as $category) : ?>
-                  <div class="rating-category" data-catgerory-id="<?php print $category["id"]; ?>" data-photo-id="<?php print $photo['id']?>">
-                    <span><?php print $category["label"]; ?> : </span>
-                    <span><input name="rating-<?php print $category["id"]; ?>" type="hidden" class="rating" data-filled="fa fa-star fa-3x" data-filled-selected="fa fa-star fa-3x" data-empty="fa fa-star-o fa-3x" value="<?php print getRateForPhotoAndCategory($rates,$photo['id'],$category["id"]);?>"></span>
-                    </div>
-              <?php endforeach; ?>
+
+                <img src="<?php echo $photoRootPath . $photo['userId'] . '/'. $photo['file'] ?>">
+
+                <div class="ratings">
+                    <?php foreach ($categories as $id => $category) : ?>
+                        <div class="rating">
+                            <div class="category" ><?php print $category['label']; ?> :</div>
+                            <div class="stars rating-category" data-catgerory-id="<?php print $category["id"]; ?>" data-photo-id="<?php print $photo['id']?>">
+                                <input name="rating-<?php print $category["id"]; ?>" type="hidden" class="rating" data-filled="fa fa-star fa-3x" data-filled-selected="fa fa-star fa-3x" data-empty="fa fa-star-o fa-3x" value="<?php print getRateForPhotoAndCategory($rates,$photo['id'],$category["id"]);?>"></span>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
             </div>
         <?php endforeach; ?>
     </div>
-<!--div class="row">
-  <?php foreach ($categories as $category) : ?>
-        <div class="rating-category" data-catgerory-id="<?php print $category["id"]; ?>" data-photo-id="">
-          <span><?php print $category["label"]; ?> : </span>
-          <span><input name="rating-<?php print $category["id"]; ?>" type="hidden" class="rating" data-filled="fa fa-star fa-3x" data-filled-selected="fa fa-star fa-3x" data-empty="fa fa-star-o fa-3x"></span>
-          </div>
-  <?php endforeach; ?>
-  <div id="gallery" class="zoomwall">
-      <?php foreach ($photos as $photo) : ?>
-      <?php endforeach; ?>
-
-      <img src="./photos/romain-racamier_4D3435B4-F929-5AAE-A7B4-653FD7991950/water-801925_480.jpg" data-highres="./photos/romain-racamier_4D3435B4-F929-5AAE-A7B4-653FD7991950/water-801925_1920.jpg" />
-      <img src="./photos/romain-racamier_4D3435B4-F929-5AAE-A7B4-653FD7991950/workstation-405768_480.jpg" data-highres="./photos/romain-racamier_4D3435B4-F929-5AAE-A7B4-653FD7991950/workstation-405768_1920.jpg" />
-
-  </div>
-</div-->
+    <div class="gallery-nav">
+        <?php foreach ($photos as $photo) : ?>
+            <img src="<?php echo $photoRootPath . $photo['userId'] . '/'. 'thumbs/' . $photo['file'] ?>">
+        <?php endforeach; ?>
+    </div>
 <?php else : ?>
-    <b>You do not have any photos actually, you should add some.</b>
+    <div class="alert alert-info" role="alert">You did not submit any photos yet, you should
+        <strong><a href="#" data-toggle="modal" data-target="#uploadModal">upload some</a></strong>.
+    </div>
 <?php endif; ?>

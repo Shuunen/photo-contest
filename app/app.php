@@ -1,6 +1,7 @@
 <?php
 
 require "./app/database/json-db.php";
+include './app/php/ImageResize/ImageResize.php';
 
 session_start();
 
@@ -17,7 +18,7 @@ class App {
         if (isset($_SESSION['user'])) {
             $this->currentUser = $_SESSION['user'];
             $this->isLogged = true;
-            if ($this->currentUser['email'] === 'admino') {
+            if (isset($this->currentUser['status']) && $this->currentUser['status'] === 'admin') {
                 $this->isAdmin = true;
             } else {
                 $this->isUser = true;
@@ -25,24 +26,22 @@ class App {
         }
 
         $this->handleRequest();
-
-        // var_dump($_SESSION);
     }
 
     function getGUID() {
         $charid = strtoupper(md5(uniqid(rand(), true)));
         $hyphen = chr(45); // "-"
         $uuid = substr($charid, 0, 8) . $hyphen
-                . substr($charid, 8, 4) . $hyphen
-                . substr($charid, 12, 4) . $hyphen
-                . substr($charid, 16, 4) . $hyphen
-                . substr($charid, 20, 12);
+            . substr($charid, 8, 4) . $hyphen
+            . substr($charid, 12, 4) . $hyphen
+            . substr($charid, 16, 4) . $hyphen
+            . substr($charid, 20, 12);
         return $uuid;
     }
 
     function tokenize($str, $replace = array(), $delimiter = '-') {
         if (!empty($replace)) {
-            $str = str_replace((array) $replace, ' ', $str);
+            $str = str_replace((array)$replace, ' ', $str);
         }
 
         $clean = strtr($str, '� áâãäçèéêëìíîïñòóôõöùúûüýÿÀ�?ÂÃÄÇÈÉÊËÌ�?Î�?ÑÒÓÔÕÖÙÚÛÜ�?', 'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY');
@@ -61,12 +60,13 @@ class App {
         return $data;
     }
 
-    function generateUsersIds() {
+    function generateUsersIdAndName() {
         $users = $this->db->selectAll("users");
         foreach ($users as $user) {
             if (!isset($user['id'])) {
-                $user['id'] = tokenize($user['name']) . '_' . getGUID();
-                $this->db->update('users', 'name', $user['name'], $user);
+                $user['id'] = $this->getGUID();
+                $user['name'] = ucwords(trim(preg_replace("/\W/", ' ', $user['email'])));
+                $this->db->update('users', 'email', $user['email'], $user);
             }
         }
     }
@@ -100,13 +100,6 @@ class App {
         if ($_SESSION['messageStatus'] === 'success' && $user['pass'] === $password) {
             $_SESSION['user'] = $user;
             $_SESSION['message'] = 'Login succesfull, welcome ' . $this->currentUser['name'];
-            $this->currentUser = $user;
-            $this->isLogged = true;
-            if ($user['email'] === 'admino') {
-                $this->isAdmin = true;
-            } else {
-                $this->isUser = true;
-            }
         } else {
             $_SESSION['message'] = 'Email or password does not match';
             $_SESSION['messageStatus'] = 'error';
@@ -116,14 +109,49 @@ class App {
     function handleAddPhoto($request) {
 
         if (isset($request['photoUrl'])) {
-            $this->db->insert("photos", array("id" => $this->getGUID(), "userId" => $this->currentUser['id'], "file" => $request['photoUrl']), true);
-            $_SESSION['message'] = 'Image ' . $request['photoUrl'] . ' added to db';
-            $_SESSION['messageStatus'] = 'success';
+
+
+            try {
+                // create thumb
+                if (!file_exists('./app/photos/' . $this->currentUser['id'] . '/thumbs')) {
+                    mkdir('./app/photos/' . $this->currentUser['id'] . '/thumbs', 0777, TRUE);
+                }
+                $image = new \Eventviva\ImageResize('./app/photos/' . $this->currentUser['id'] . '/' . $request['photoUrl']);
+                $image->resizeToHeight(200);
+                $image->save('./app/photos/' . $this->currentUser['id'] . '/thumbs/' . $request['photoUrl']);
+                //end create thumb
+
+                $this->db->insert("photos", array("id" => $this->getGUID(), "userId" => $this->currentUser['id'], "file" => $request['photoUrl']), true);
+
+                $_SESSION['message'] = 'Image ' . $request['photoUrl'] . ' added to db and thumbnail created';
+                $_SESSION['messageStatus'] = 'success';
+
+            } catch (Exception $e) {
+                $_SESSION['message'] = 'Fail to create thumbnail for Image ' . $request['photoUrl'];
+                $_SESSION['messageStatus'] = 'error';
+
+            }
+
         } else {
             $_SESSION['message'] = 'No photoUrl given';
             $_SESSION['messageStatus'] = 'error';
         }
+    }
 
+    function handleLogout() {
+
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000,
+                $params["path"], $params["domain"],
+                $params["secure"], $params["httponly"]
+            );
+        }
+
+        session_destroy();
+
+        $_SESSION['message'] = 'User has been disconnected';
+        $_SESSION['messageStatus'] = 'success';
     }
 
     function handleRate($request){
@@ -151,6 +179,8 @@ class App {
             $type = $request['type'];
             if ($type === 'login') {
                 $this->handleLogin($request);
+            } else if ($type === 'logout') {
+                $this->handleLogout();
             } else if ($type === 'addPhoto') {
                 $this->handleAddPhoto($request);
             } else if ($type === 'rate') {
