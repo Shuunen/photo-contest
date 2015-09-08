@@ -1,27 +1,16 @@
 <?php
-$photos = $app->db->selectNot("photos", "userId", $app->currentUser['id']);
-$categories = $app->db->selectAll("category");
+
+$photos = $app->getPhotosToVote();
+$categories = $app->getCategories();
 $photoPath = './app/photos/';
 
-$rates = $app->db->select("rates", "userId", $app->currentUser['id']);
-
-//var_dump($rates);
-
-function getRateForPhotoAndCategory($rates, $photoId, $categoryId) {
-    foreach ($rates as $rate) {
-        if ((isset($rate['photoId']) && $rate['photoId'] === $photoId) && (isset($rate['categoryId']) && $rate['categoryId'] === $categoryId)) {
-            return $rate['rate'];
-        }
-    }
-    return 0;
-}
 ?>
 
 <?php if (count($photos)) : ?>
     <h2>Contributions gallery &nbsp;<span class="badge"><?php echo count($photos) ?></span></h2>
     <div class="gallery">
         <?php foreach ($photos as $i => $photo) : ?>
-            <img data-toggle="modal" data-target="#voteModal" data-index="<?php echo $i ?>" src="<?php echo $photoPath . $photo['userId'] . '/' . 'thumbs/' . $photo['file'] ?>">
+            <img data-toggle="modal" data-target="#voteModal" data-index="<?php echo $i ?>" src="<?php echo $photoPath . $photo->userid . '/' . 'thumbs/' . $photo->filepath ?>">
         <?php endforeach; ?>
     </div>
 <?php else : ?>
@@ -41,14 +30,14 @@ function getRateForPhotoAndCategory($rates, $photoId, $categoryId) {
                         <?php foreach ($photos as $photo) : ?>
                             <div class="item">
 
-                                <img src="<?php echo $photoPath . $photo['userId'] . '/' . $photo['file'] ?>">
+                                <img src="<?php echo $photoPath . $photo->userid . '/' . $photo->filepath ?>">
 
                                 <div class="ratings">
-                                    <?php foreach ($categories as $id => $category) : ?>
+                                    <?php foreach ($categories as $category) : ?>
                                         <div class="rating">
-                                            <div class="category" ><?php print $category['label']; ?> :</div>
-                                            <div class="stars rating-category" data-catgerory-id="<?php print $category["id"]; ?>" data-photo-id="<?php print $photo['id'] ?>">
-                                                <input name="rating-<?php print $category["id"]; ?>" type="hidden" class="rating" data-filled="fa fa-star fa-2x" data-filled-selected="fa fa-star fa-2x" data-empty="fa fa-star-o fa-2x" value="<?php print getRateForPhotoAndCategory($rates, $photo['id'], $category["id"]); ?>"></span>
+                                            <div class="category" ><?php print $category->label; ?> :</div>
+                                            <div class="stars rating-category" data-catgerory-id="<?php print $category->categoryid; ?>" data-photo-id="<?php print $photo->photoid ?>">
+                                                <input name="rating-<?php print $category->categoryid; ?>" type="hidden" class="rating" data-filled="fa fa-star fa-2x" data-filled-selected="fa fa-star fa-2x" data-empty="fa fa-star-o fa-2x" value="<?php print $app->getRateForPhotoAndCategory($photo->photoid, $category->categoryid); ?>"></span>
                                             </div>
                                         </div>
                                     <?php endforeach; ?>
@@ -57,7 +46,7 @@ function getRateForPhotoAndCategory($rates, $photoId, $categoryId) {
                         <?php endforeach; ?>
                     </div>
                 </div>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>                    
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

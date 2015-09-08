@@ -1,9 +1,9 @@
-<?php $userPhotos = $app->db->select("photos", "userId", $app->currentUser['id']) ?>
+<?php $userPhotos = $app->getUserPhotos(); ?>
 <?php if (count($userPhotos)) : ?>
     <h2>My photos &nbsp;<span class="badge"><?php echo count($userPhotos) ?></span></h2>
     <div class="gallery-thumb">
         <?php foreach ($userPhotos as $photo) : ?>
-            <img src="<?php echo './app/photos/' . $photo['userId'] . '/'. 'thumbs/' . $photo['file'] ?>">
+            <img src="<?php echo './app/photos/' . $photo->userid . '/'. 'thumbs/' . $photo->filepath ?>">
         <?php endforeach; ?>
     </div>
 <?php else : ?>
