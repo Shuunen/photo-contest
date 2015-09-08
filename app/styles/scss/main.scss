@@ -46,9 +46,9 @@ h1, h2 {
         margin-bottom: 10px;
         margin-right: 10px;
         cursor: pointer;
-        
+
         &:hover {
-            
+
         }
     }
 }
@@ -58,6 +58,9 @@ h1, h2 {
     img {
         height: 500px;
         margin:auto;
+    }
+    .slick-slide {
+        outline: none;
     }
 }
 
@@ -131,5 +134,9 @@ h2 .badge {
 }
 
 .alert-info {
-  background-color: rgba(91, 192, 222, 0.7);
+    background-color: rgba(91, 192, 222, 0.7);
+}
+
+.modal-dialog {
+    min-width:50%;   
 }

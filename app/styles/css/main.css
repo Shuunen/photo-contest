@@ -6022,6 +6022,8 @@ h1, h2 {
   .gallery-slider img {
     height: 500px;
     margin: auto; }
+  .gallery-slider .slick-slide {
+    outline: none; }
 
 .gallery-nav.horizontal img {
   margin-right: 10px;
@@ -6071,5 +6073,8 @@ h2 .badge {
 
 .alert-info {
   background-color: rgba(91, 192, 222, 0.7); }
+
+.modal-dialog {
+  min-width: 50%; }
 
 /*# sourceMappingURL=main.css.map */

@@ -19,29 +19,34 @@ $(document).ready(function () {
         cssEase: 'linear'
     });
 
-/*
-    $('.gallery-nav.horizontal').slick({
-        slidesToShow: 3,
-        slidesToScroll: 1,
-        asNavFor: '.gallery',
-        arrows: false,
-        dots: false,
-        centerMode: true,
-        focusOnSelect: true
+    $('.gallery img').click(function () {
+        var index = $(this).data('index');
+        $('.gallery-slider').slick('slickGoTo', index);
     });
 
-    $('.gallery-nav.vertical').slick({
-        slidesToShow: 5,
-        slidesToScroll: 1,
-        asNavFor: '.gallery',
-        arrows: false,
-        dots: false,
-        centerMode: true,
-        focusOnSelect: true,
-        vertical: true,
-        verticalSwiping: true
-    });
-    */
+    /*
+     $('.gallery-nav.horizontal').slick({
+     slidesToShow: 3,
+     slidesToScroll: 1,
+     asNavFor: '.gallery',
+     arrows: false,
+     dots: false,
+     centerMode: true,
+     focusOnSelect: true
+     });
+
+     $('.gallery-nav.vertical').slick({
+     slidesToShow: 5,
+     slidesToScroll: 1,
+     asNavFor: '.gallery',
+     arrows: false,
+     dots: false,
+     centerMode: true,
+     focusOnSelect: true,
+     vertical: true,
+     verticalSwiping: true
+     });
+     */
 
     $('input.rating').rating();
 
@@ -52,7 +57,7 @@ $(document).ready(function () {
         var category = $(event.currentTarget).parents(".rating-category")
         $.ajax({
             type: 'get',
-            data: 'type=rate&photoId=' + category.attr("data-photo-id") +'&categoryId=' + category.attr("data-catgerory-id") +'&rate=' + $(this).val() + '&ajax=true',
+            data: 'type=rate&photoId=' + category.attr("data-photo-id") + '&categoryId=' + category.attr("data-catgerory-id") + '&rate=' + $(this).val() + '&ajax=true',
             success: function (json) {
                 console.log(json);
             }
@@ -72,8 +77,8 @@ $(document).ready(function () {
         });
     });
 
-    $('#logoutLink').click(function(){
-         $.ajax({
+    $('#logoutLink').click(function () {
+        $.ajax({
             type: 'get',
             data: 'type=logout&ajax=true',
             success: function () {
