@@ -1,15 +1,10 @@
 [
   {
-    "email": "admino",
-    "pass": "admino",
-    "id": "A70DC6A8-72AA-2FAB-13FF-75D8728CE31F",
-    "name": "Admino"
-  },
-  {
     "email": "romain.racamier",
     "pass": "mypass",
     "id": "B52E0CBB-5546-4E8F-3AF0-BA476FF73F73",
-    "name": "Romain Racamier"
+    "name": "Romain Racamier",
+    "status": "admin"
   },
   {
     "email": "michel.alban",

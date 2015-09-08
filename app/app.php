@@ -18,7 +18,7 @@ class App {
         if (isset($_SESSION['user'])) {
             $this->currentUser = $_SESSION['user'];
             $this->isLogged = true;
-            if ($this->currentUser['email'] === 'admino') {
+            if (isset($this->currentUser['status']) && $this->currentUser['status'] === 'admin') {
                 $this->isAdmin = true;
             } else {
                 $this->isUser = true;
@@ -100,13 +100,6 @@ class App {
         if ($_SESSION['messageStatus'] === 'success' && $user['pass'] === $password) {
             $_SESSION['user'] = $user;
             $_SESSION['message'] = 'Login succesfull, welcome ' . $this->currentUser['name'];
-            $this->currentUser = $user;
-            $this->isLogged = true;
-            if ($user['email'] === 'admino') {
-                $this->isAdmin = true;
-            } else {
-                $this->isUser = true;
-            }
         } else {
             $_SESSION['message'] = 'Email or password does not match';
             $_SESSION['messageStatus'] = 'error';
