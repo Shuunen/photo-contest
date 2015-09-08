@@ -6008,19 +6008,28 @@ h1, h2 {
   text-align: center; }
 
 .gallery {
-  margin-top: 30px; }
+  margin-top: 30px;
+  border-radius: 10px;
+  padding: 30px 20px;
+  background: rgba(0, 0, 0, 0.51); }
   .gallery .slick-slide {
     outline: none; }
   .gallery img {
     height: 700px;
     margin: auto; }
 
-.gallery-nav img {
-  margin-right: 20px;
-  min-height: 200px; }
-.gallery-nav .slick-track {
-  max-height: 200px;
+.gallery-nav.horizontal img {
+  margin-right: 10px;
+  min-height: 150px; }
+.gallery-nav.horizontal .slick-track {
+  max-height: 150px;
   overflow: hidden; }
+.gallery-nav.vertical img {
+  margin-bottom: 10px;
+  min-width: 150px; }
+.gallery-nav.vertical .slick-list {
+  height: 880px !important;
+  top: 30px; }
 
 .ratings {
   margin-top: 20px;

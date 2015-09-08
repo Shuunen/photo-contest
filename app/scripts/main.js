@@ -6,6 +6,7 @@ $(document).ready(function () {
         slidesToShow: 1,
         slidesToScroll: 1,
         // asNavFor: '.slider-for',
+        // arrows: false,
         dots: false,
         centerMode: true,
         // centerPadding: '100px',
@@ -18,13 +19,26 @@ $(document).ready(function () {
         cssEase: 'linear'
     });
 
-    $('.gallery-nav').slick({
+    $('.gallery-nav.horizontal').slick({
         slidesToShow: 3,
         slidesToScroll: 1,
         asNavFor: '.gallery',
+        arrows: false,
         dots: false,
         centerMode: true,
         focusOnSelect: true
+    });
+
+    $('.gallery-nav.vertical').slick({
+        slidesToShow: 5,
+        slidesToScroll: 1,
+        asNavFor: '.gallery',
+        arrows: false,
+        dots: false,
+        centerMode: true,
+        focusOnSelect: true,
+        vertical: true,
+        verticalSwiping: true
     });
 
     $('input.rating').rating();

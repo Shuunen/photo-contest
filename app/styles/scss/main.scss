@@ -38,6 +38,9 @@ h1, h2 {
 
 .gallery {
     margin-top: 30px;
+    border-radius: 10px;
+    padding: 30px 20px;
+    background: rgba(0, 0, 0, 0.51);
     .slick-slide {
         outline: none;
     }
@@ -48,13 +51,27 @@ h1, h2 {
 }
 
 .gallery-nav {
-    img {
-        margin-right: 20px;
-        min-height: 200px;
+    $size: 150px;
+    $spacing: 10px;
+    &.horizontal {        
+        img {
+            margin-right: $spacing;
+            min-height: $size;
+        }
+        .slick-track {
+            max-height: $size;
+            overflow: hidden;
+        }
     }
-    .slick-track {
-        max-height: 200px;
-        overflow: hidden;
+    &.vertical {
+        img {
+            margin-bottom: $spacing;
+            min-width: $size;
+        }
+        .slick-list {
+            height: 880px !important;
+            top: 30px;
+        }
     }
 }
 
