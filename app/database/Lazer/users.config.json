@@ -1,0 +1,1 @@
+{"last_id":2,"schema":{"id":"integer","userid":"string","name":"string","email":"string","pass":"string","role":"string"},"relations":{}}
