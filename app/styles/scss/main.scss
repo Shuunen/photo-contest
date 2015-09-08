@@ -57,7 +57,7 @@ h1, h2 {
     margin: 0;
     height: 100%;
     img {
-        height: 86vh;
+        height: 82vh;
         margin: auto;
     }
     .slick-slide {
@@ -167,4 +167,14 @@ h2 .badge {
     justify-content: center;
     height: 50px;
     line-height: 50px;
+}
+
+.moderation-controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px 0;
+    button {
+        margin-right: 15px;
+    }
 }

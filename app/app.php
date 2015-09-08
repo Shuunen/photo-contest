@@ -100,10 +100,9 @@ class App {
         $password = $this->cleanInput($request["password"]);
 
         //$user = $this->db->select('users', 'email', $email);
-        $userDB = Lazer::table('users')->where('email', '=', $email)->find();
+        $user = Lazer::table('users')->where('email', '=', $email)->find();
 
-        if (count($userDB) === 1) {
-            $user = $userDB;
+        if (count($user) === 1) {
             $_SESSION['messageStatus'] = 'success';
         } else if (count($user) > 1) {
             $_SESSION['message'] = 'User ' . $email . ' has multiple instances';
@@ -144,8 +143,8 @@ class App {
                 $_SESSION['messageStatus'] = 'success';
 
             } catch (Exception $e) {
-                var_dump($e);
-                exit();
+                // var_dump($e);
+                // exit();
                 $_SESSION['message'] = 'Fail to create thumbnail for Image ' . $request['photoUrl'];
                 $_SESSION['messageStatus'] = 'error';
             }
@@ -167,6 +166,7 @@ class App {
         $photo->photoid = $this->getGUID();
         $photo->userid = $this->currentUser->userid;
         $photo->filepath = $request['photoUrl'];
+        $photo->status = 'submitted';
         $photo->save();
 
     }
@@ -262,6 +262,10 @@ class App {
         return $photos = Lazer::table('photos')->where('userid', '!=', $this->currentUser->userid)->findAll();
     }
 
+    function getPhotosToModerate() {
+        return $photos = Lazer::table('photos')->where('status', '=', 'submitted')->findAll();
+    }
+
     function getUserPhotos() {
         return $photos = Lazer::table('photos')->where('userid', '=', $this->currentUser->userid)->findAll();
     }
@@ -304,7 +308,7 @@ class App {
             $user->save();
 
             $user->userid = $this->getGUID();
-            $user->name = 'Romain Racamier';
+            $user->name = 'Michel Alban';
             $user->email = 'michel.alban';
             $user->pass = 'albanPass';
             $user->role = 'user';
@@ -352,6 +356,7 @@ class App {
                 'photoid' => 'string',
                 'userid' => 'string',
                 'filepath' => 'string',
+                'status' => 'string'
             ));
 
 

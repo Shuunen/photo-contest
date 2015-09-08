@@ -1,4 +1,3 @@
-<?php $userPhotos = $app->getUserPhotos(); ?>
 <nav class="navbar navbar-default">
     <div class="container-fluid">
 
@@ -6,9 +5,11 @@
 
         <ul class="nav navbar-nav">
             <?php if ($app->isAdmin): ?>
-                <li><a href="#">Approve photos <span class="badge">42</span></a></li>
+                <?php $newPhotos = $app->getPhotosToModerate(); ?>
+                <li><a href="#" data-toggle="modal" data-target="#moderatePhotosModal">Moderate photos <span class="badge"><?php echo count($newPhotos) ?></span></a></li>
                 <li><a href="#">See results <span class="badge">14</span></a></li>
             <?php endif; ?>
+            <?php $userPhotos = $app->getUserPhotos(); ?>
             <li><a href="#" data-toggle="modal" data-target="#myPhotosModal">My photos
                     <span class="badge"><?php echo count($userPhotos) ?></span></a></li>
             <?php if ($app->submitOpened) : ?>
@@ -29,3 +30,7 @@
     </div>
     <!-- /.container-fluid -->
 </nav>
+
+<?php if ($app->isAdmin) {
+    require 'moderatePhotosModal.php';
+} ?>

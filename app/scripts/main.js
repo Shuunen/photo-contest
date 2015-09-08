@@ -47,6 +47,10 @@ $(document).ready(function () {
         });
     });
 
+    $('.reloadButton').click(function () {
+        window.location.reload();
+    });
+
     $('.countdown.voteOpened').countdown('2015/09/25')
         .on('update.countdown', function (event) {
             var format = '';
