@@ -5,12 +5,15 @@
         <p class="navbar-text">Available actions</p>
 
         <ul class="nav navbar-nav">
-            <?php if($app->isAdmin): ?>
+            <?php if ($app->isAdmin): ?>
                 <li><a href="#">Approve photos <span class="badge">42</span></a></li>
                 <li><a href="#">See results <span class="badge">14</span></a></li>
             <?php endif; ?>
-            <li><a href="#" data-toggle="modal" data-target="#myPhotosModal">My photos <span class="badge"><?php echo count($userPhotos) ?></span></a></li>
-            <li><a href="#" data-toggle="modal" data-target="#uploadModal">Submit photos</a></li>
+            <li><a href="#" data-toggle="modal" data-target="#myPhotosModal">My photos
+                    <span class="badge"><?php echo count($userPhotos) ?></span></a></li>
+            <?php if ($app->submitOpened) : ?>
+                <li><a href="#" data-toggle="modal" data-target="#uploadModal">Submit photos</a></li>
+            <?php endif; ?>
         </ul>
 
         <ul class="nav navbar-nav navbar-right">

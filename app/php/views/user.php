@@ -1,7 +1,9 @@
-<?php 
+<?php
 
 require 'vote.php';
 
-require 'uploadModal.php';
+if ($app->submitOpened) {
+    require 'uploadModal.php';
+}
 
 require 'myPhotosModal.php';

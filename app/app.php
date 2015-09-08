@@ -2,7 +2,9 @@
 
 require "./database/json-db.php";
 
-define('LAZER_DATA_PATH', realpath(dirname(__FILE__)).'/database/Lazer/'); //Path to folder with tables
+define('LAZER_DATA_PATH', realpath(dirname(__FILE__)) . '/database/Lazer/'); //Path to folder with tables
+
+date_default_timezone_set("Europe/Paris");
 
 use Lazer\Classes\Database as Lazer;
 
@@ -20,6 +22,12 @@ class App {
         $this->isLogged = false;
         $this->currentUser = null;
 
+        // vote are opened after September 25 & until October 25
+        $this->voteOpened = new DateTime('2015-09-25') < new DateTime("now") && new DateTime("now") <= new DateTime('2015-10-25');
+
+        // submit are opened until September 25
+        $this->submitOpened = new DateTime("now") <= new DateTime('2015-09-25');
+
         if (isset($_SESSION['user'])) {
             $this->currentUser = $_SESSION['user'];
             $this->isLogged = true;
@@ -30,7 +38,7 @@ class App {
             }
         }
 
-      $this->installDB();
+        $this->installDB();
 
         $this->handleRequest();
     }
@@ -92,7 +100,7 @@ class App {
         $password = $this->cleanInput($request["password"]);
 
         //$user = $this->db->select('users', 'email', $email);
-        $userDB = Lazer::table('users')->where('email','=',$email)->find();
+        $userDB = Lazer::table('users')->where('email', '=', $email)->find();
 
         if (count($userDB) === 1) {
             $user = $userDB;
@@ -148,18 +156,18 @@ class App {
         }
     }
 
-    function storePhotoToDB($request){
+    function storePhotoToDB($request) {
 
-      //json-db
+        //json-db
 //      $this->db->insert("photos", array("id" => $this->getGUID(), "userId" => $this->currentUser->userid, "file" => $request['photoUrl']), true);
 
-      //Lazer
-      $photo = Lazer::table('photos');
+        //Lazer
+        $photo = Lazer::table('photos');
 
-      $photo->photoid = $this->getGUID();
-      $photo->userid = $this->currentUser->userid;
-      $photo->filepath = $request['photoUrl'];
-      $photo->save();
+        $photo->photoid = $this->getGUID();
+        $photo->userid = $this->currentUser->userid;
+        $photo->filepath = $request['photoUrl'];
+        $photo->save();
 
     }
 
@@ -179,36 +187,36 @@ class App {
         $_SESSION['messageStatus'] = 'success';
     }
 
-    function handleRate($request){
+    function handleRate($request) {
 
-      $this->storeRateToDB($request);
+        $this->storeRateToDB($request);
 
-      $_SESSION['message'] = 'Rate ' . $request['photoId'] . ' for the category '. $request['categoryId'] . ' with '.$request['rate'];
-      $_SESSION['messageStatus'] = 'success';
+        $_SESSION['message'] = 'Rate ' . $request['photoId'] . ' for the category ' . $request['categoryId'] . ' with ' . $request['rate'];
+        $_SESSION['messageStatus'] = 'success';
 
     }
 
-    function storeRateToDB($request){
+    function storeRateToDB($request) {
 
-      //json-db
-      //$this->db->insert("rates", array("photoId" => $request['photoId'], "categoryId" => $request['categoryId'], "rate" =>$request['rate'], "userId" => $this->currentUser->userid), true);
+        //json-db
+        //$this->db->insert("rates", array("photoId" => $request['photoId'], "categoryId" => $request['categoryId'], "rate" =>$request['rate'], "userId" => $this->currentUser->userid), true);
 
-      //Lazer
-      $existingRate = Lazer::table('rates')->where('photoid', '=', $request['photoId'])->andWhere('userid', '=', $this->currentUser->userid)->andWhere('categoryid', '=', $request['categoryId'])->find();
+        //Lazer
+        $existingRate = Lazer::table('rates')->where('photoid', '=', $request['photoId'])->andWhere('userid', '=', $this->currentUser->userid)->andWhere('categoryid', '=', $request['categoryId'])->find();
 
-      if($existingRate->count() == 0){
-        $rate = Lazer::table('rates');
+        if ($existingRate->count() == 0) {
+            $rate = Lazer::table('rates');
 
-        $rate->photoid = $request['photoId'];
-        $rate->userid = $this->currentUser->userid;
-        $rate->categoryid = $request['categoryId'];
-        $rate->rate = $request['rate'];
-        $rate->save();
-      }else{
+            $rate->photoid = $request['photoId'];
+            $rate->userid = $this->currentUser->userid;
+            $rate->categoryid = $request['categoryId'];
+            $rate->rate = $request['rate'];
+            $rate->save();
+        } else {
 
-        $existingRate->rate = $request['rate'];
-        $existingRate->save();
-      }
+            $existingRate->rate = $request['rate'];
+            $existingRate->save();
+        }
 
     }
 
@@ -246,36 +254,36 @@ class App {
         }
     }
 
-    function getCategories(){
-      return $cat = Lazer::table('categories')->findAll();
+    function getCategories() {
+        return $cat = Lazer::table('categories')->findAll();
     }
 
-    function getPhotosToVote(){
-      return $photos = Lazer::table('photos')->where('userid', '!=', $this->currentUser->userid)->findAll();
+    function getPhotosToVote() {
+        return $photos = Lazer::table('photos')->where('userid', '!=', $this->currentUser->userid)->findAll();
     }
 
-    function getUserPhotos(){
-      return $photos = Lazer::table('photos')->where('userid', '=', $this->currentUser->userid)->findAll();
+    function getUserPhotos() {
+        return $photos = Lazer::table('photos')->where('userid', '=', $this->currentUser->userid)->findAll();
     }
 
 
-    function getRateForPhotoAndCategory( $photoId, $categoryId) {
+    function getRateForPhotoAndCategory($photoId, $categoryId) {
 
-      $rate = Lazer::table('rates')->where('photoid', '=', $photoId)->where('categoryid', '=', $categoryId)->where('userid', '=', $this->currentUser->userid)->find();
-      if($rate->count() == 0){
-        return 0;
-      }else{
-        return $rate->rate;
-      }
+        $rate = Lazer::table('rates')->where('photoid', '=', $photoId)->where('categoryid', '=', $categoryId)->where('userid', '=', $this->currentUser->userid)->find();
+        if ($rate->count() == 0) {
+            return 0;
+        } else {
+            return $rate->rate;
+        }
 
     }
 
-    function installDB(){
+    function installDB() {
 
-      //install users
-        try{
+        //install users
+        try {
             \Lazer\Classes\Helpers\Validate::table('users')->exists();
-        } catch(\Lazer\Classes\LazerException $e){
+        } catch (\Lazer\Classes\LazerException $e) {
             //Database doesn't exist
 
             Lazer::create('users', array(
@@ -303,10 +311,10 @@ class App {
             $user->save();
         }
 
-      //install categories
-        try{
+        //install categories
+        try {
             \Lazer\Classes\Helpers\Validate::table('categories')->exists();
-        } catch(\Lazer\Classes\LazerException $e){
+        } catch (\Lazer\Classes\LazerException $e) {
             //Database doesn't exist
 
             Lazer::create('categories', array(
@@ -334,10 +342,10 @@ class App {
 
         }
 
-      //install photos
-        try{
+        //install photos
+        try {
             \Lazer\Classes\Helpers\Validate::table('photos')->exists();
-        } catch(\Lazer\Classes\LazerException $e){
+        } catch (\Lazer\Classes\LazerException $e) {
             //Database doesn't exist
 
             Lazer::create('photos', array(
@@ -349,10 +357,10 @@ class App {
 
         }
 
-      //install rates
-        try{
+        //install rates
+        try {
             \Lazer\Classes\Helpers\Validate::table('rates')->exists();
-        } catch(\Lazer\Classes\LazerException $e){
+        } catch (\Lazer\Classes\LazerException $e) {
             //Database doesn't exist
 
             Lazer::create('rates', array(

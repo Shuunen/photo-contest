@@ -14,13 +14,13 @@ $photoPath = './photos/';
         <?php endforeach; ?>
     </div>
 <?php else : ?>
-  <div class="container-fluid">
-      <div class="row">
-          <div class="col-md-8 col-md-offset-2">
-              <div class="alert alert-info" role="alert">There is no contributions actually.</div>
-          </div>
-      </div>
-  </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="alert alert-info" role="alert">There is no contributions actually.</div>
+            </div>
+        </div>
+    </div>
 <?php endif; ?>
 
 <?php if (count($photos)) : ?>
@@ -34,16 +34,20 @@ $photoPath = './photos/';
 
                                 <img src="<?php echo $photoPath . $photo->userid . '/' . $photo->filepath ?>">
 
-                                <div class="ratings">
-                                    <?php foreach ($categories as $category) : ?>
-                                        <div class="rating">
-                                            <div class="category" ><?php print $category->label; ?> :</div>
-                                            <div class="stars rating-category" data-catgerory-id="<?php print $category->categoryid; ?>" data-photo-id="<?php print $photo->photoid ?>">
-                                                <input name="rating-<?php print $category->categoryid; ?>" type="hidden" class="rating" data-filled="fa fa-star fa-2x" data-filled-selected="fa fa-star fa-2x" data-empty="fa fa-star-o fa-2x" value="<?php print $app->getRateForPhotoAndCategory($photo->photoid, $category->categoryid); ?>"></span>
+                                <?php if ($app->voteOpened) : ?>
+                                    <div class="ratings">
+                                        <?php foreach ($categories as $category) : ?>
+                                            <div class="rating">
+                                                <div class="category"><?php print $category->label; ?> :</div>
+                                                <div class="stars rating-category" data-catgerory-id="<?php print $category->categoryid; ?>" data-photo-id="<?php print $photo->photoid ?>">
+                                                    <input name="rating-<?php print $category->categoryid; ?>" type="hidden" class="rating" data-filled="fa fa-star fa-2x" data-filled-selected="fa fa-star fa-2x" data-empty="fa fa-star-o fa-2x" value="<?php print $app->getRateForPhotoAndCategory($photo->photoid, $category->categoryid); ?>"></span>
+                                                </div>
                                             </div>
-                                        </div>
-                                    <?php endforeach; ?>
-                                </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                <?php else : ?>
+                                    <div class="countdown"></div>
+                                <?php endif; ?>
                             </div>
                         <?php endforeach; ?>
                     </div>
