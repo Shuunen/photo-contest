@@ -29,11 +29,11 @@ $photoPath = './app/photos/' . $app->currentUser['id'] . '/';
     </div>
     <div class="gallery-nav">
         <?php foreach ($photos as $photo) : ?>
-            <img src="<?php echo $photoPath . $photo['file'] ?>">
+            <img src="<?php echo $photoPath . 'thumbs/' . $photo['file'] ?>">
         <?php endforeach; ?>
     </div>
 <?php else : ?>
-    <div class="alert alert-info" role="alert">You do not submit any photos actually, you should <strong>upload
-            some</strong>.
+    <div class="alert alert-info" role="alert">You did not submit any photos yet, you should
+        <strong><a href="#" data-toggle="modal" data-target="#uploadModal">upload some</a></strong>.
     </div>
 <?php endif; ?>
