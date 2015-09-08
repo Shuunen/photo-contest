@@ -87,6 +87,39 @@ $(document).ready(function () {
         });
     });
 
+    $('.countdown.voteOpened').countdown('2015/09/25')
+        .on('update.countdown', function (event) {
+            var format = '';
+            if (event.offset.weeks > 0) {
+                format += '%-w week%!w ';
+            }
+            if (event.offset.days > 0) {
+                format += '%-d day%!d ';
+            }
+            if (event.offset.hours > 0) {
+                format += '%-H hour%!H ';
+            }
+            if (event.offset.minutes > 0) {
+                format += '%-M minute%!M ';
+            }
+            if (event.offset.seconds > 0) {
+                format += '... and %-S second%!S !';
+            }
+            $(this).html(event.strftime(format));
+        }).on('finish.countdown', function () {
+            window.location.reload();
+        });
+
+    $('.countdown.submitOpened').countdown('2015/09/25')
+        .on('update.countdown', function (event) {
+            var totalHours = event.offset.totalDays * 24 + event.offset.hours;
+            var totalSeconds = totalHours * 3600 + event.offset.seconds;
+            var format = '%-D day%!D or ' + totalSeconds + ' seconds if you\'re a robot.';
+            $(this).html(event.strftime(format));
+        }).on('finish.countdown', function () {
+            window.location.reload();
+        });
+
     var userId = document.getElementsByName('userId')[0];
     if (userId) {
         userId = userId.value;

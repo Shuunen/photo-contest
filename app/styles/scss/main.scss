@@ -58,7 +58,7 @@ h1, h2 {
     height: 100%;
     img {
         height: 86vh;
-        margin:auto;
+        margin: auto;
     }
     .slick-slide {
         outline: none;
@@ -68,7 +68,7 @@ h1, h2 {
 .gallery-nav {
     $size: 150px;
     $spacing: 10px;
-    &.horizontal {        
+    &.horizontal {
         img {
             margin-right: $spacing;
             min-height: $size;
@@ -140,13 +140,13 @@ h2 .badge {
 }
 
 .modal.fullscreen {
-    padding:0 !important;
+    padding: 0 !important;
     .modal-dialog {
         padding: 20px;
         margin: 0;
         width: 100vw;
         height: 100vh;
-        .modal-content {  
+        .modal-content {
             height: 100%;
             background-color: #313437;
             .modal-body {
@@ -159,4 +159,12 @@ h2 .badge {
             }
         }
     }
+}
+
+.countdown-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    height: 50px;
+    line-height: 50px;
 }

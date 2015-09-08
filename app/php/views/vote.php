@@ -46,7 +46,7 @@ $photoPath = './photos/';
                                         <?php endforeach; ?>
                                     </div>
                                 <?php else : ?>
-                                    <div class="countdown"></div>
+                                    <div class="countdown-container">Votes will be opened in&nbsp;<div class="countdown voteOpened"></div></div>
                                 <?php endif; ?>
                             </div>
                         <?php endforeach; ?>
