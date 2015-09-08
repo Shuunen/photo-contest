@@ -5,7 +5,7 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
-@import url("https://fonts.googleapis.com/css?family=Lato:300,400,700");
+@import url("http://fonts.googleapis.com/css?family=Lato:300,400,700");
 html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
@@ -5797,8 +5797,6 @@ button.close {
   .hidden-print {
     display: none !important; } }
 .navbar {
-  -webkit-box-shadow: none;
-  box-shadow: none;
   border: none;
   font-size: 12px; }
   .navbar-default .badge {
@@ -5843,16 +5841,10 @@ body {
 
 .dropdown-menu {
   border: none;
-  margin: 0;
-  -webkit-box-shadow: none;
-  box-shadow: none; }
+  margin: 0; }
   .dropdown-menu > li > a {
     font-size: 12px;
     font-weight: 300; }
-
-.btn-group.open .dropdown-toggle {
-  -webkit-box-shadow: none;
-  box-shadow: none; }
 
 .dropdown-header {
   font-size: 12px; }
@@ -5932,16 +5924,6 @@ label,
 .has-success .input-group-addon {
   border: none; }
 
-.form-control:focus {
-  -webkit-box-shadow: none;
-  box-shadow: none; }
-
-.has-warning .form-control:focus,
-.has-error .form-control:focus,
-.has-success .form-control:focus {
-  -webkit-box-shadow: none;
-  box-shadow: none; }
-
 .nav .open > a,
 .nav .open > a:hover,
 .nav .open > a:focus {
@@ -5969,10 +5951,6 @@ label,
   opacity: 0.4; }
   .close:hover, .close:focus {
     opacity: 1; }
-
-.well {
-  -webkit-box-shadow: none;
-  box-shadow: none; }
 
 a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.active:focus {
   border: none; }
@@ -6063,13 +6041,15 @@ h1, h2 {
 .qq-gallery .qq-upload-button {
   width: 160px; }
 
-.navbar-default .navbar-text {
-  margin-left: 0;
-  color: darkgrey; }
-.navbar-default .badge {
-  margin-left: 4px;
-  font-weight: normal;
-  font-size: 14px; }
+.navbar-default {
+  background-color: #383838; }
+  .navbar-default .navbar-text {
+    margin-left: 0;
+    color: darkgrey; }
+  .navbar-default .badge {
+    margin-left: 4px;
+    font-weight: normal;
+    font-size: 14px; }
 
 h2 .badge {
   font-size: 20px;

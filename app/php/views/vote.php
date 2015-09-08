@@ -2,7 +2,7 @@
 
 $photos = $app->db->selectNot("photos", "userId", $app->currentUser['id']);
 $categories = $app->db->selectAll("category");
-$photoPath = './photos/';
+$photoPath = './app/photos/';
 
 $rates = $app->db->select("rates", "userId", $app->currentUser['id']);
 //var_dump($rates);
@@ -17,11 +17,9 @@ function getRateForPhotoAndCategory($rates, $photoId, $categoryId){
 
   return 0;
 }
-
-
 ?>
 <?php if (count($photos)) : ?>
-    <h2>My photos &nbsp;<span class="badge"><?php echo count($photos) ?></span></h2>
+    <h2>Contributions &nbsp;<span class="badge"><?php echo count($photos) ?></span></h2>
     <div class="gallery">
         <?php foreach ($photos as $photo) : ?>
             <div class="item">
