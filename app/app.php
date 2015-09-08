@@ -126,6 +126,18 @@ class App {
 
     }
 
+    function handleRate($request){
+
+      //if($this->db->select("rates"))
+      $this->db->selectMultiCond("rates", array("photoId"=>$request['photoId']), array("categoryId"=>$request['categoryId']), array("userId"=>$this->currentUser['id']));
+
+      $this->db->insert("rates", array("photoId" => $request['photoId'], "categoryId" => $request['categoryId'], "rate" =>$request['rate'], "userId" => $this->currentUser['id']), true);
+      $_SESSION['message'] = 'Rate ' . $request['photoId'] . ' for the category '. $request['categoryId'] . ' with '.$request['rate'];
+      $_SESSION['messageStatus'] = 'success';
+
+
+    }
+
     function handleRequest() {
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
@@ -141,8 +153,8 @@ class App {
                 $this->handleLogin($request);
             } else if ($type === 'addPhoto') {
                 $this->handleAddPhoto($request);
-            } else if ($type === 'vote') {
-                $this->handleVote($request);
+            } else if ($type === 'rate') {
+                $this->handleRate($request);
             } else if ($type === 'approval') {
                 $this->handleApproval($request);
             } else {

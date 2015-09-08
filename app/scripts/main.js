@@ -1,28 +1,38 @@
 $(document).ready(function () {
 
-      zoomwall.create(document.getElementById('gallery'));
+//      zoomwall.create(document.getElementById('gallery'), true);
 
 
-//    $('.gallery').slick({
-//        slidesToShow: 1,
-//        slidesToScroll: 1,
-//        // asNavFor: '.slider-for',
-//        dots: true,
-//        centerMode: true,
-//        // centerPadding: '100px',
-//        focusOnSelect: true,
-//        // variableWidth: true,
-//        // adaptiveHeight: true,
-//        speed: 500,
-//        fade: true,
-//        cssEase: 'linear'
-//    });
+    $('.gallery').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        // asNavFor: '.slider-for',
+        dots: true,
+        centerMode: true,
+        // centerPadding: '100px',
+        focusOnSelect: true,
+        // variableWidth: true,
+        // adaptiveHeight: true,
+        speed: 500,
+        fade: true,
+        cssEase: 'linear'
+    });
 
 
     $('input.rating').rating();
 
     $('input.rating').on('change', function (event) {
         console.info('Rating: ' + $(this).val());
+        console.log(event);
+        console.log($(event.currentTarget).parents(".rating-category").attr("data-catgerory-id"));
+        var category = $(event.currentTarget).parents(".rating-category")
+        $.ajax({
+            type: 'get',
+            data: 'type=rate&photoId=' + category.attr("data-photo-id") +'&categoryId=' + category.attr("data-catgerory-id") +'&rate=' + $(this).val() + '&ajax=true',
+            success: function (json) {
+                console.log(json);
+            }
+        });
     });
 
     $('form.login').submit(function (event) {
