@@ -98,7 +98,11 @@ class UploadHandler {
             return array('error' => "Server error. Uploads directory isn't writable");
         }
 
-        $type = $_SERVER['CONTENT_TYPE'];
+
+        if (isset($_SERVER['CONTENT_TYPE'])) {
+          $type = $_SERVER['CONTENT_TYPE'];
+        }
+
         if (isset($_SERVER['HTTP_CONTENT_TYPE'])) {
             $type = $_SERVER['HTTP_CONTENT_TYPE'];
         }
@@ -346,8 +350,8 @@ class UploadHandler {
      */
 
     protected function isWindows() {
-    	$isWin = (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
-    	return $isWin;
+      $isWin = (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
+      return $isWin;
     }
 
 }
