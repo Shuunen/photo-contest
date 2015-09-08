@@ -2,17 +2,13 @@
 // Bootswatch
 // -----------------------------------------------------
 
-$web-font-path: "https://fonts.googleapis.com/css?family=Lato:300,400,700" !default;
+@import url("https://fonts.googleapis.com/css?family=Lato:300,400,700" !default);
 
-@mixin web-font($path){
-  @import url("#{$path}");
-}
-@include web-font($web-font-path);
 
 // Navbar =====================================================================
 
 .navbar {
-  @include box-shadow(none);
+  //@include box-shadow(none);
   border: none;
   font-size: 12px;
 
@@ -90,7 +86,7 @@ body {
 
   border: none;
   margin: 0;
-  @include box-shadow(none);
+  //@include box-shadow(none);
 
   > li > a {
     font-size: 12px;
@@ -99,7 +95,7 @@ body {
 }
 
 .btn-group.open .dropdown-toggle {
-  @include box-shadow(none);
+  //@include box-shadow(none);
 }
 
 .dropdown-header {
@@ -216,14 +212,14 @@ label,
 }
 
 .form-control:focus {
-  @include box-shadow(none);
+  //@include box-shadow(none);
 }
 
 .has-warning,
 .has-error,
 .has-success {
   .form-control:focus {
-    @include box-shadow(none);
+    //@include box-shadow(none);
   }
 }
 
@@ -284,7 +280,7 @@ label,
 // Containers =================================================================
 
 .well {
-  @include box-shadow(none);
+  //@include box-shadow(none);
 }
 
 a.list-group-item {
