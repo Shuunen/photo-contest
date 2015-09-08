@@ -2,7 +2,7 @@
 
 $(document).ready(function () {
 
-    $('.gallery').slick({
+    $('.gallery-slider').slick({
         slidesToShow: 1,
         slidesToScroll: 1,
         // asNavFor: '.slider-for',
@@ -19,6 +19,7 @@ $(document).ready(function () {
         cssEase: 'linear'
     });
 
+/*
     $('.gallery-nav.horizontal').slick({
         slidesToShow: 3,
         slidesToScroll: 1,
@@ -40,6 +41,7 @@ $(document).ready(function () {
         vertical: true,
         verticalSwiping: true
     });
+    */
 
     $('input.rating').rating();
 

@@ -5,7 +5,6 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
-@import url("http://fonts.googleapis.com/css?family=Lato:300,400,700");
 html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
@@ -6009,13 +6008,19 @@ h1, h2 {
 
 .gallery {
   margin-top: 30px;
-  border-radius: 10px;
-  padding: 30px 20px;
-  background: rgba(0, 0, 0, 0.51); }
-  .gallery .slick-slide {
-    outline: none; }
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; }
   .gallery img {
-    height: 700px;
+    height: 200px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    cursor: pointer; }
+
+.gallery-slider {
+  margin-top: 20px; }
+  .gallery-slider img {
+    height: 500px;
     margin: auto; }
 
 .gallery-nav.horizontal img {
@@ -6048,7 +6053,7 @@ h1, h2 {
   border: none;
   background-color: transparent; }
 .qq-gallery .qq-upload-button {
-  width: 160px; }
+  width: 180px; }
 
 .navbar-default {
   background-color: #383838; }
@@ -6063,5 +6068,8 @@ h1, h2 {
 h2 .badge {
   font-size: 20px;
   padding: 3px 8px; }
+
+.alert-info {
+  background-color: rgba(91, 192, 222, 0.7); }
 
 /*# sourceMappingURL=main.css.map */

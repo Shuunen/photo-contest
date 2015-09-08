@@ -8,21 +8,36 @@ $rates = $app->db->select("rates", "userId", $app->currentUser['id']);
 //var_dump($rates);
 
 function getRateForPhotoAndCategory($rates, $photoId, $categoryId) {
-
     foreach ($rates as $rate) {
         if ((isset($rate['photoId']) && $rate['photoId'] === $photoId) && (isset($rate['categoryId']) && $rate['categoryId'] === $categoryId)) {
             return $rate['rate'];
         }
     }
-
     return 0;
 }
 ?>
+
 <?php if (count($photos)) : ?>
-    <h2>Contributions &nbsp;<span class="badge"><?php echo count($photos) ?></span></h2>
+    <h2>Contributions gallery &nbsp;<span class="badge"><?php echo count($photos) ?></span></h2>
+    <div class="gallery">
+        <?php foreach ($photos as $photo) : ?>
+            <img src="<?php echo $photoPath . $photo['userId'] . '/' . 'thumbs/' . $photo['file'] ?>">
+        <?php endforeach; ?>
+    </div>
+<?php else : ?>
     <div class="row">
-        <div class="col-md-10">
-            <div class="gallery">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="alert alert-info" role="alert">There is no contributions actually.</div>
+        </div>
+    </div>
+<?php endif; ?>
+
+<hr>
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <?php if (count($photos)) : ?>
+            <h2>Contributions slider &nbsp;<span class="badge"><?php echo count($photos) ?></span></h2>
+            <div class="gallery-slider">
                 <?php foreach ($photos as $photo) : ?>
                     <div class="item">
 
@@ -41,23 +56,8 @@ function getRateForPhotoAndCategory($rates, $photoId, $categoryId) {
                     </div>
                 <?php endforeach; ?>
             </div>
-        </div>
-        <div class="col-md-2">
-            <div class="gallery-nav vertical">
-                <?php foreach ($photos as $photo) : ?>
-                    <img src="<?php echo $photoPath . $photo['userId'] . '/' . 'thumbs/' . $photo['file'] ?>">
-                <?php endforeach; ?>
-            </div>
-        </div>
+        <?php else : ?>
+            <div class="alert alert-info" role="alert">There is no contributions actually.</div>
+        <?php endif; ?>
     </div>
-    <div class="gallery-nav horizontal">
-        <?php foreach ($photos as $photo) : ?>
-            <img src="<?php echo $photoPath . $photo['userId'] . '/' . 'thumbs/' . $photo['file'] ?>">
-        <?php endforeach; ?>
-    </div>
-
-<?php else : ?>
-    <div class="alert alert-info" role="alert">You did not submit any photos yet, you should
-        <strong><a href="#" data-toggle="modal" data-target="#uploadModal">upload some</a></strong>.
-    </div>
-<?php endif; ?>
+</div>
