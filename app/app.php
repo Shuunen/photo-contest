@@ -1,7 +1,7 @@
 <?php
 
-require "./app/database/json-db.php";
-include './app/php/ImageResize/ImageResize.php';
+require "./database/json-db.php";
+include './php/ImageResize/ImageResize.php';
 
 session_start();
 
@@ -9,7 +9,7 @@ class App {
 
     function __construct() {
 
-        $this->db = new JsonDB("./app/database/");
+        $this->db = new JsonDB("./database/");
         $this->isUser = false;
         $this->isAdmin = false;
         $this->isLogged = false;
@@ -113,12 +113,12 @@ class App {
 
             try {
                 // create thumb
-                if (!file_exists('./app/photos/' . $this->currentUser['id'] . '/thumbs')) {
-                    mkdir('./app/photos/' . $this->currentUser['id'] . '/thumbs', 0777, TRUE);
+                if (!file_exists('./photos/' . $this->currentUser['id'] . '/thumbs')) {
+                    mkdir('./photos/' . $this->currentUser['id'] . '/thumbs', 0777, TRUE);
                 }
-                $image = new \Eventviva\ImageResize('./app/photos/' . $this->currentUser['id'] . '/' . $request['photoUrl']);
+                $image = new \Eventviva\ImageResize('./photos/' . $this->currentUser['id'] . '/' . $request['photoUrl']);
                 $image->resizeToHeight(200);
-                $image->save('./app/photos/' . $this->currentUser['id'] . '/thumbs/' . $request['photoUrl']);
+                $image->save('./photos/' . $this->currentUser['id'] . '/thumbs/' . $request['photoUrl']);
                 //end create thumb
 
                 $this->db->insert("photos", array("id" => $this->getGUID(), "userId" => $this->currentUser['id'], "file" => $request['photoUrl']), true);
@@ -127,9 +127,10 @@ class App {
                 $_SESSION['messageStatus'] = 'success';
 
             } catch (Exception $e) {
+                var_dump($e);
+                exit();
                 $_SESSION['message'] = 'Fail to create thumbnail for Image ' . $request['photoUrl'];
                 $_SESSION['messageStatus'] = 'error';
-
             }
 
         } else {
