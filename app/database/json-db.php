@@ -112,20 +112,23 @@ class JsonTable {
   public function selectMultiCond($key, $val = 0) {
     $result = array();
 
-    for($i=1 ; $i< count($key); $i++){
-      var_dump($key[$i]);
-    }
+    $data = $this->fileData;
 
-    die;
-    if (is_array($key)) $result = $this->selectMultiCond($key[1], $key[2]);
-    else {
-      $data = $this->fileData;
-      foreach($data as $_key => $_val) {
-        if (isset($data[$_key][$key])) {
-          if ($data[$_key][$key] == $val) {
-            $result[] = $data[$_key];
+    foreach($data as $_key => $_val) {
+      $match = 0;
+
+      for($i=1 ; $i< count($key); $i++){
+
+        if (isset($data[$_key][$key[$i][0]])) {
+          if ($data[$_key][$key[$i][0]] == $key[$i][1]) {
+            $match += 0;
+          }else{
+            $match += 1;
           }
         }
+      }
+      if($match === 0){
+        $result[] = $data[$_key];
       }
     }
     return $result;

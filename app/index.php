@@ -3,6 +3,11 @@ require "./app.php";
 $app = new App();
 $viewsDir = __DIR__ . '/php/views/';
 
+function __autoload($class_name){
+    $class_name = str_replace("_", "/", $class_name);
+    require('./php/Lazer-Database/src/' . $class_name . '.php');
+}
+
 // $app->generateUsersIdAndName();
 // $db->createTable("photos");
 // $db->insert("photos", array("id" => getGUID(), "userId" => "romain-racamier_4D3435B4-F929-5AAE-A7B4-653FD7991950", "file" => "water-801925_1920.jpg"), true);
