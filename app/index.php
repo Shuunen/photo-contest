@@ -1,5 +1,5 @@
 <?php
-require "/app.php";
+require "./app.php";
 $app = new App();
 $viewsDir = __DIR__ . '/php/views/';
 

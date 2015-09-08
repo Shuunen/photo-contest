@@ -2,8 +2,7 @@
 
 $photos = $app->db->selectNot("photos", "userId", $app->currentUser['id']);
 $categories = $app->db->selectAll("category");
-$photoRootPath = './app/photos/';
-$photoPath = $photoRootPath . $app->currentUser['id'] . '/';
+$photoPath = './photos/';
 
 $rates = $app->db->select("rates", "userId", $app->currentUser['id']);
 //var_dump($rates);
@@ -27,7 +26,7 @@ function getRateForPhotoAndCategory($rates, $photoId, $categoryId){
         <?php foreach ($photos as $photo) : ?>
             <div class="item">
 
-                <img src="<?php echo $photoRootPath . $photo['userId'] . '/'. $photo['file'] ?>">
+                <img src="<?php echo $photoPath . $photo['userId'] . '/'. $photo['file'] ?>">
 
                 <div class="ratings">
                     <?php foreach ($categories as $id => $category) : ?>
@@ -44,7 +43,7 @@ function getRateForPhotoAndCategory($rates, $photoId, $categoryId){
     </div>
     <div class="gallery-nav">
         <?php foreach ($photos as $photo) : ?>
-            <img src="<?php echo $photoRootPath . $photo['userId'] . '/'. 'thumbs/' . $photo['file'] ?>">
+            <img src="<?php echo $photoPath . $photo['userId'] . '/'. 'thumbs/' . $photo['file'] ?>">
         <?php endforeach; ?>
     </div>
 <?php else : ?>
