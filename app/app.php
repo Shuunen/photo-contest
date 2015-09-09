@@ -136,7 +136,15 @@ class App {
                 $image->save('./photos/' . $this->currentUser->userid . '/thumbs/' . $request['photoUrl']);
                 //end create thumb
 
-                $this->storePhotoToDB($request);
+                try {
+                  $this->storePhotoToDB($request);
+                } catch (Exception $e) {
+                   //var_dump($e);
+
+                  $_SESSION['message'] = 'Fail to store photo ' . $request['photoUrl'] .' into the database. : '.$e->getMessage();
+                  $_SESSION['messageStatus'] = 'error';
+                  exit();
+                }
 
 
                 $_SESSION['message'] = 'Image ' . $request['photoUrl'] . ' added to db and thumbnail created';
