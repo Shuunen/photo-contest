@@ -54,6 +54,9 @@ function __autoload($class_name){
         <?php if($app->submitOpened): ?>
         <script type="text/javascript" src="./scripts/upload.js"></script>
         <?php endif; ?>
+        <?php if($app->isAdmin): ?>
+            <script type="text/javascript" src="./scripts/moderate.js"></script>
+        <?php endif; ?>
     </body>
 
 </html>

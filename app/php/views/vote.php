@@ -7,7 +7,7 @@ $photoPath = './photos/';
 ?>
 
 <?php if (count($photos)) : ?>
-    <h2>Contributions gallery &nbsp;<span class="badge"><?php echo count($photos) ?></span></h2>
+    <h2>Submitted photos &nbsp;<span class="badge"><?php echo count($photos) ?></span></h2>
     <div class="gallery">
         <?php foreach ($photos as $i => $photo) : ?>
             <img data-toggle="modal" data-target="#voteModal" data-index="<?php echo $i ?>" src="<?php echo $photoPath . $photo->userid . '/' . 'thumbs/' . $photo->filepath ?>">

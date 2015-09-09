@@ -30,7 +30,7 @@ $(document).ready(function () {
 
     $('.gallery img').click(function () {
         var index = $(this).data('index');
-        console.log('slickGoTo', index);
+        // console.log('slickGoTo', index);
         $('.gallery-slider').slick('slickGoTo', index);
     });
 
@@ -40,7 +40,7 @@ $(document).ready(function () {
         if (slide.width() === 0) {
             var width = (document.body.getBoundingClientRect().width - 100) + 'px';
             slide.width(width);
-            console.log('applying fix on slide', slide, 'width width', width);
+            // console.log('applying fix on slide', slide, 'width width', width);
         }
     });
 

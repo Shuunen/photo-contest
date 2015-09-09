@@ -7,16 +7,16 @@ $photoPath = './photos/';
         <?php foreach ($photos as $photo) : ?>
             <div class="item">
 
-                <img src="<?php echo $photoPath . $photo->userid . '/' . $photo->filepath ?>">
+                <img id="<?php echo $photo->id ?>" class="moderation-photo" src="<?php echo $photoPath . $photo->userid . '/' . $photo->filepath ?>">
 
                 <div class="moderation-controls">
-                    <button type="button" class="btn btn-success">
+                    <button data-action="approve" type="button" class="btn btn-success">
                         <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Approve
                     </button>
-                    <button type="button" class="btn btn-warning">
+                    <button data-action="censor" type="button" class="btn btn-warning">
                         <span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> Censor
                     </button>
-                    <button type="button" class="btn btn-danger">
+                    <button data-action="delete" type="button" class="btn btn-danger">
                         <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Delete
                     </button>
                 </div>

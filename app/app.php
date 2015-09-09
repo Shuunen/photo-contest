@@ -137,13 +137,13 @@ class App {
                 //end create thumb
 
                 try {
-                  $this->storePhotoToDB($request);
+                    $this->storePhotoToDB($request);
                 } catch (Exception $e) {
-                   //var_dump($e);
+                    //var_dump($e);
 
-                  $_SESSION['message'] = 'Fail to store photo ' . $request['photoUrl'] .' into the database. : '.$e->getMessage();
-                  $_SESSION['messageStatus'] = 'error';
-                  exit();
+                    $_SESSION['message'] = 'Fail to store photo ' . $request['photoUrl'] . ' into the database. : ' . $e->getMessage();
+                    $_SESSION['messageStatus'] = 'error';
+                    exit();
                 }
 
 
@@ -213,19 +213,38 @@ class App {
         $existingRate = Lazer::table('rates')->where('photoid', '=', $request['photoId'])->andWhere('userid', '=', $this->currentUser->userid)->andWhere('categoryid', '=', $request['categoryId'])->find();
 
         if ($existingRate->count() == 0) {
-            $rate = Lazer::table('rates');
 
+            $rate = Lazer::table('rates');
             $rate->photoid = $request['photoId'];
             $rate->userid = $this->currentUser->userid;
             $rate->categoryid = $request['categoryId'];
             $rate->rate = $request['rate'];
             $rate->save();
+
         } else {
 
             $existingRate->rate = $request['rate'];
             $existingRate->save();
         }
 
+    }
+
+    function handleModeration($request) {
+
+        $request['newStatus'] = $request['action'] === 'approve' ? 'approved' : 'censored';
+
+        $this->storeModerationToDB($request);
+
+        $_SESSION['messageStatus'] = 'success';
+    }
+
+    function storeModerationToDB($request) {
+
+        $photo = Lazer::table('photos')->where('id', '=', $request['photoId'])->find();
+        $photo->status = $request['newStatus'];
+        $photo->save();
+
+        $_SESSION['message'] = 'Photo ' . $request['photoId'] . ' <i>' . $photo->filepath . '</i> is now ' . $request['newStatus'];
     }
 
     function handleRequest() {
@@ -245,10 +264,12 @@ class App {
                 $this->handleLogout();
             } else if ($type === 'addPhoto') {
                 $this->handleAddPhoto($request);
+            } else if ($type === 'removePhoto') {
+                $this->handleRemovePhoto($request); // TODO
             } else if ($type === 'rate') {
                 $this->handleRate($request);
-            } else if ($type === 'approval') {
-                $this->handleApproval($request);
+            } else if ($type === 'moderation') {
+                $this->handleModeration($request);
             } else {
                 $_SESSION['message'] = 'These request is not allowed';
                 $_SESSION['messageStatus'] = 'error';
@@ -267,7 +288,7 @@ class App {
     }
 
     function getPhotosToVote() {
-        return $photos = Lazer::table('photos')->where('userid', '!=', $this->currentUser->userid)->findAll();
+        return $photos = Lazer::table('photos')->where('userid', '!=', $this->currentUser->userid)->where('status', '=', 'approved')->findAll();
     }
 
     function getPhotosToModerate() {
