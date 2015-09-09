@@ -2,5 +2,5 @@
 RewriteEngine on
 RewriteCond %{REQUEST_URI} !^/photo-contest/app/
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)$ /photo-contest/app/index.php [L,QSA]
+RewriteRule ^(.*)$ /photo-contest/app/$1 [L,QSA]
 </IfModule>

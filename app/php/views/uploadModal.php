@@ -8,6 +8,7 @@
             </div>
             <div class="modal-body">
                 <?php require 'upload.php'; ?>
+                <div class="countdown-container">Submit are opened for&nbsp;<div class="countdown submitOpened"></div></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

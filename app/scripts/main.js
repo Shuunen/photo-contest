@@ -19,49 +19,29 @@ $(document).ready(function () {
         cssEase: 'linear'
     });
 
-    $('.gallery img').click(function () {
-        var index = $(this).data('index');
-        $('.gallery-slider').slick('slickGoTo', index);
-    });
-
     /*
-     $('.gallery-nav.horizontal').slick({
-     slidesToShow: 3,
-     slidesToScroll: 1,
-     asNavFor: '.gallery',
-     arrows: false,
-     dots: false,
-     centerMode: true,
-     focusOnSelect: true
-     });
-
-     $('.gallery-nav.vertical').slick({
-     slidesToShow: 5,
-     slidesToScroll: 1,
-     asNavFor: '.gallery',
-     arrows: false,
-     dots: false,
-     centerMode: true,
-     focusOnSelect: true,
-     vertical: true,
-     verticalSwiping: true
+     setTimeout(function () {
+     $('.gallery-slider').parents('.modal-dialog').parent().addClass('modal fullscreen fade');
+     }, 200);
+     $('.gallery-slider').on('beforeChange', function (event, slick, currentSlide, nextSlide) {
+     console.log(nextSlide);
      });
      */
 
-    $('input.rating').rating();
+    $('.gallery img').click(function () {
+        var index = $(this).data('index');
+        console.log('slickGoTo', index);
+        $('.gallery-slider').slick('slickGoTo', index);
+    });
 
-    $('input.rating').on('change', function (event) {
-        console.info('Rating: ' + $(this).val());
-        console.log(event);
-        console.log($(event.currentTarget).parents(".rating-category").attr("data-catgerory-id"));
-        var category = $(event.currentTarget).parents(".rating-category")
-        $.ajax({
-            type: 'get',
-            data: 'type=rate&photoId=' + category.attr("data-photo-id") + '&categoryId=' + category.attr("data-catgerory-id") + '&rate=' + $(this).val() + '&ajax=true',
-            success: function (json) {
-                console.log(json);
-            }
-        });
+    /* Fix for first time opening slider in modal : if the modal is hidden, there is no room to calculate slider width */
+    $('[data-toggle="modal"]').click(function () {
+        var slide = $('.gallery-slider .slick-current');
+        if (slide.width() === 0) {
+            var width = (document.body.getBoundingClientRect().width - 100) + 'px';
+            slide.width(width);
+            console.log('applying fix on slide', slide, 'width width', width);
+        }
     });
 
     $('form.login').submit(function (event) {
@@ -87,53 +67,40 @@ $(document).ready(function () {
         });
     });
 
-    var userId = document.getElementsByName('userId')[0];
-    if (userId) {
-        userId = userId.value;
-        var bAllUploaded = false;
-        var bAllAdded = false;
-        var galleryUploader = new qq.FineUploader({
-            element: document.getElementById("fine-uploader-gallery"),
-            template: 'qq-template-gallery',
-            autoUpload: false,
-            request: {
-                endpoint: './app/php/fine-uploader/endpoint.php',
-                params: {
-                    userId: userId
-                }
-            },
-            thumbnails: {
-                placeholders: {
-                    waitingPath: './app/placeholders/waiting-generic.png',
-                    notAvailablePath: './app/placeholders/not_available-generic.png'
-                }
-            },
-            validation: {
-                allowedExtensions: ['jpeg', 'jpg', 'gif', 'png']
-            },
-            callbacks: {
-                onComplete: function (id, name, json) {
-                    console.log(json);
-                    $.ajax({
-                        type: 'get',
-                        data: 'type=addPhoto&photoUrl=' + json.uploadName + '&ajax=true',
-                        success: function (json) {
-                            console.log(json);
-                            if (bAllUploaded) {
-                                window.location.reload();
-                            }
-                        }
-                    });
-                },
-                onAllComplete: function () {
-                    bAllUploaded = true;
-                }
+    $('.reloadButton').click(function () {
+        window.location.reload();
+    });
+
+    $('.countdown.voteOpened').countdown('2015/09/25')
+        .on('update.countdown', function (event) {
+            var format = '';
+            if (event.offset.weeks > 0) {
+                format += '%-w week%!w ';
             }
+            if (event.offset.days > 0) {
+                format += '%-d day%!d ';
+            }
+            if (event.offset.hours > 0) {
+                format += '%-H hour%!H ';
+            }
+            if (event.offset.minutes > 0) {
+                format += '%-M minute%!M ';
+            }
+            if (event.offset.seconds > 0) {
+                format += '... and %-S second%!S !';
+            }
+            $(this).html(event.strftime(format));
+        }).on('finish.countdown', function () {
+            window.location.reload();
         });
-        qq(document.getElementById("uploadButton")).attach('click', function () {
-            galleryUploader.uploadStoredFiles();
+
+    $('.countdown.submitOpened').countdown('2015/09/25')
+        .on('update.countdown', function (event) {
+            var totalHours = event.offset.totalDays * 24 + event.offset.hours;
+            var totalSeconds = totalHours * 3600 + event.offset.seconds;
+            var format = '%-D day%!D or ' + totalSeconds + ' seconds if you\'re a robot.';
+            $(this).html(event.strftime(format));
+        }).on('finish.countdown', function () {
+            window.location.reload();
         });
-    }
-
-
 });

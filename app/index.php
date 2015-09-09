@@ -1,22 +1,19 @@
 <?php
 require "./app.php";
 $app = new App();
-$viewsDir = __DIR__ . '/php/views/';
-
 function __autoload($class_name){
     $class_name = str_replace("_", "/", $class_name);
     require('./php/Lazer-Database/src/' . $class_name . '.php');
 }
-
 // $app->generateUsersIdAndName();
 // $db->createTable("photos");
 // $db->insert("photos", array("id" => getGUID(), "userId" => "romain-racamier_4D3435B4-F929-5AAE-A7B4-653FD7991950", "file" => "water-801925_1920.jpg"), true);
 // $db->insert("photos", array("id" => getGUID(), "userId" => "romain-racamier_4D3435B4-F929-5AAE-A7B4-653FD7991950", "file" => "workstation-405768_1920.jpg"), true);
 // $db->insert("users", array("name" => "Michèl Albàn"), true);
-//$app->db->insert("category", array("id" => "travels", "label" => "Travels"), true);
-//$app->db->insert("category", array("id" => "most_creative", "label" => "Most creative"), true);
-//$app->db->insert("category", array("id" => "funniest", "label" => "Funiest"), true);
-//$app->db->insert("category", array("id" => "40", "label" => "40"), true);
+// $app->db->insert("category", array("id" => "travels", "label" => "Travels"), true);
+// $app->db->insert("category", array("id" => "most_creative", "label" => "Most creative"), true);
+// $app->db->insert("category", array("id" => "funniest", "label" => "Funiest"), true);
+// $app->db->insert("category", array("id" => "40", "label" => "40"), true);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,37 +31,29 @@ function __autoload($class_name){
         <link href="./bower_components/slick.js/slick/slick.css" rel="stylesheet">
         <link href="./bower_components/slick.js/slick/slick-theme.css" rel="stylesheet">
         <link href="./crappy_bower_component/fine-uploader/fine-uploader-gallery.min.css" rel="stylesheet">
-        <!--        <link href="../bower_components/fine-uploader/_build/fine-uploader-gallery.min.css" rel="stylesheet">-->
+        <!--<link href="../bower_components/fine-uploader/_build/fine-uploader-gallery.min.css" rel="stylesheet">-->
         <link href="./bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-        <link href="./app/styles/css/main.css" rel="stylesheet">
+        <link href="./styles/css/main.css" rel="stylesheet">
     </head>
 
     <body>
 
-        <?php if ($app->isLogged) require $viewsDir . 'nav.php' ?>
-
-        <div class="page-header">
-            <h1 id="type">UXD Photoshop Contest 2015</h1>
-        </div>
-
-        <?php require $viewsDir . 'messages.php' ?>
-
-        <?php
-        if (!$app->isLogged) {
-            require $viewsDir . 'login.php';
-        } else {
-            require $viewsDir . 'user.php';
-        }
-        ?>
+        <?php require '/php/views/main.php' ?>
 
         <script type="text/javascript" src="./bower_components/jquery/dist/jquery.min.js"></script>
         <script type="text/javascript" src="./bower_components/slick.js/slick/slick.min.js"></script>
         <script type="text/javascript" src="./crappy_bower_component/fine-uploader/fine-uploader.min.js"></script>
-        <!--        <script type="text/javascript" src="../bower_components/fine-uploader/_build/fine-uploader.min.js"></script>-->
+        <!--<script type="text/javascript" src="../bower_components/fine-uploader/_build/fine-uploader.min.js"></script>-->
         <script type="text/javascript" src="./bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="./bower_components/bootstrap-rating/bootstrap-rating.min.js"></script>
-        <script type="text/javascript" src="./app/scripts/main.js"></script>
-
+        <script type="text/javascript" src="./bower_components/jquery.countdown/dist/jquery.countdown.min.js"></script>
+        <script type="text/javascript" src="./scripts/main.js"></script>
+        <?php if($app->voteOpened): ?>
+        <script type="text/javascript" src="./scripts/ratings.js"></script>
+        <?php endif; ?>
+        <?php if($app->submitOpened): ?>
+        <script type="text/javascript" src="./scripts/upload.js"></script>
+        <?php endif; ?>
     </body>
 
 </html>

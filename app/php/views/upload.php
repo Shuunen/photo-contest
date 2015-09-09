@@ -1,6 +1,6 @@
 <!-- Fine Uploader DOM Element -->
 <div id="fine-uploader-gallery"></div>
-<input type="hidden" name="userId" value="<?php echo $_SESSION['user']['id'] ?>">
+<input type="hidden" name="userId" value="<?php echo $_SESSION['user']->userid ?>">
 
 <!-- Fine Uploader Gallery template -->
 <script type="text/template" id="qq-template-gallery">
