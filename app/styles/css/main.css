@@ -6122,4 +6122,22 @@ h2 .badge {
   .moderation-controls button {
     margin-right: 15px; }
 
+.delete-photo {
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: .3s opacity;
+  opacity: .5;
+  -webkit-filter: grayscale(100%); }
+  .delete-photo:hover {
+    opacity: 1;
+    -webkit-filter: grayscale(0%); }
+
+.status {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px 15px;
+  background-color: rgba(0, 0, 0, 0.4); }
+
 /*# sourceMappingURL=main.css.map */

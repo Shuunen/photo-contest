@@ -54,37 +54,12 @@ class App {
         return $uuid;
     }
 
-    function tokenize($str, $replace = array(), $delimiter = '-') {
-        if (!empty($replace)) {
-            $str = str_replace((array)$replace, ' ', $str);
-        }
-
-        $clean = strtr($str, '� áâãäçèéêëìíîïñòóôõöùúûüýÿÀ�?ÂÃÄÇÈÉÊËÌ�?Î�?ÑÒÓÔÕÖÙÚÛÜ�?', 'aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUY');
-        $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $str);
-        $clean = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $clean);
-        $clean = strtolower(trim($clean, '-'));
-        $clean = preg_replace("/[\/_|+ -]+/", $delimiter, $clean);
-
-        return $clean;
-    }
-
     function cleanInput($data) {
         $data = trim($data);
         $data = stripslashes($data);
         $data = htmlspecialchars($data);
         return $data;
     }
-
-//    function generateUsersIdAndName() {
-//        $users = $this->db->selectAll("users");
-//        foreach ($users as $user) {
-//            if (!isset($user['id'])) {
-//                $user['id'] = $this->getGUID();
-//                $user['name'] = ucwords(trim(preg_replace("/\W/", ' ', $user['email'])));
-//                $this->db->update('users', 'email', $user['email'], $user);
-//            }
-//        }
-//    }
 
     function handleLogin($request) {
 
@@ -235,6 +210,7 @@ class App {
 
         $this->storeModerationToDB($request);
 
+        $_SESSION['message'] = 'This photo is now ' . $request['newStatus'];
         $_SESSION['messageStatus'] = 'success';
     }
 
@@ -243,8 +219,26 @@ class App {
         $photo = Lazer::table('photos')->where('id', '=', $request['photoId'])->find();
         $photo->status = $request['newStatus'];
         $photo->save();
+    }
 
-        $_SESSION['message'] = 'Photo ' . $request['photoId'] . ' <i>' . $photo->filepath . '</i> is now ' . $request['newStatus'];
+    function handleRemovePhoto($request) {
+
+        $photo = $this->removePhotoFromDB($request);
+        $path = $photo->userid . '/' . $photo->filepath;
+        $thumbPath = $photo->userid . '/thumbs/' . $photo->filepath;
+        unlink('./photos/' . $path);
+        unlink('./photos/' . $thumbPath);
+
+        $_SESSION['message'] = 'Photo ' . $photo->filepath . ' has been deleted';
+        $_SESSION['messageStatus'] = 'success';
+    }
+
+    function removePhotoFromDB($request) {
+
+        $photo = Lazer::table('photos')->where('id', '=', $request['photoId'])->find();
+        $photo->delete();
+
+        return $photo;
     }
 
     function handleRequest() {

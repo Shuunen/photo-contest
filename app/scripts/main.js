@@ -103,4 +103,35 @@ $(document).ready(function () {
         }).on('finish.countdown', function () {
             window.location.reload();
         });
+
+    $('.delete-photo').click(function () {
+        var photoId = $(this).parent().find('img').attr('id');
+        if (!photoId) {
+            console.error('cannot delete photo without photoId');
+            return false;
+        }
+        $.ajax({
+            type: 'get',
+            data: 'type=removePhoto&photoId=' + photoId + '&ajax=true',
+            success: afterSlideAction
+        });
+
+    });
+
 });
+
+function afterSlideAction(jsonData) {
+    var ret = JSON.parse(jsonData);
+    if (ret.messageStatus === 'success') {
+        var slider = $('.slick-slider:visible');
+        if (slider.slick('getSlick').slideCount > 1) {
+            slider.slick('slickRemove', slider.slick('slickCurrentSlide'));
+            // console.info('moderation was saved, remove this slide');
+        } else {
+            // console.info('moderation was saved, was the last slide, reload page');
+            window.location.reload();
+        }
+    } else {
+        console.error('moderation fucked up');
+    }
+}

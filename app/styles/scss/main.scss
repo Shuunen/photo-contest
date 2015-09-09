@@ -39,7 +39,7 @@ h1, h2 {
 .gallery {
     margin-top: 30px;
     font-size: 0;
-    display: flex;    
+    display: flex;
     flex-wrap: wrap;
     justify-content: center;
     img {
@@ -47,7 +47,9 @@ h1, h2 {
         margin-right: 10px;
         margin-bottom: 10px;
         transition: .3s box-shadow;
-        &:hover {  box-shadow: 0px 0px 16px -2px white;}
+        &:hover {
+            box-shadow: 0px 0px 16px -2px white;
+        }
     }
     /* Light spot selector 
     &:hover img {
@@ -186,4 +188,25 @@ h2 .badge {
     button {
         margin-right: 15px;
     }
+}
+
+.delete-photo {
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: .3s opacity;
+    opacity: .5;
+    -webkit-filter: grayscale(100%);
+    &:hover {
+        opacity: 1;
+        -webkit-filter: grayscale(0%);
+    }
+}
+
+.status {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px 15px;
+    background-color: rgba(0, 0, 0, 0.4);
 }

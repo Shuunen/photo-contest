@@ -16,10 +16,11 @@ $photoPath = './photos/';
                     <button data-action="censor" type="button" class="btn btn-warning">
                         <span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> Censor
                     </button>
-                    <button data-action="delete" type="button" class="btn btn-danger">
-                        <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Delete
-                    </button>
                 </div>
+
+                <button type="button" title="Delete this photo" class="btn btn-danger delete-photo">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                </button>
 
             </div>
         <?php endforeach; ?>
