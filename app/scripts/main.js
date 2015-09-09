@@ -19,9 +19,29 @@ $(document).ready(function () {
         cssEase: 'linear'
     });
 
+    /*
+     setTimeout(function () {
+     $('.gallery-slider').parents('.modal-dialog').parent().addClass('modal fullscreen fade');
+     }, 200);
+     $('.gallery-slider').on('beforeChange', function (event, slick, currentSlide, nextSlide) {
+     console.log(nextSlide);
+     });
+     */
+
     $('.gallery img').click(function () {
         var index = $(this).data('index');
+        console.log('slickGoTo', index);
         $('.gallery-slider').slick('slickGoTo', index);
+    });
+
+    /* Fix for first time opening slider in modal : if the modal is hidden, there is no room to calculate slider width */
+    $('[data-toggle="modal"]').click(function () {
+        var slide = $('.gallery-slider .slick-current');
+        if (slide.width() === 0) {
+            var width = (document.body.getBoundingClientRect().width - 100) + 'px';
+            slide.width(width);
+            console.log('applying fix on slide', slide, 'width width', width);
+        }
     });
 
     $('form.login').submit(function (event) {
