@@ -26,15 +26,12 @@ function __autoload($class_name){
         <meta name="author" content="">
         <link rel="icon" href="./favicon.ico">
         <title>UXD Photoshop contest 2015</title>
-        <?php require '/php/styles.php' ?>
+        <?php require './php/styles.php' ?>
     </head>
 
     <body>
-
-        <?php require '/php/views/main.php' ?>
-        
-        <?php require '/php/scripts.php' ?>
-
+        <?php require './php/views/main.php' ?>
+        <?php require './php/scripts.php' ?>
     </body>
 
 </html>
