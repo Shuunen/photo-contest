@@ -18,7 +18,7 @@ gulp.task('styles', function () {
       onError: console.error.bind(console, 'Sass error:')
     }))
     .pipe($.postcss([
-      require('autoprefixer-core')({browsers: ['last 1 version']})
+      require('autoprefixer-core')({browsers: ['last 2 versions']})
     ]))
     .pipe($.sourcemaps.write())
     .pipe(gulp.dest('.tmp/styles/css'))
@@ -47,7 +47,7 @@ gulp.task('html', ['styles'], function () {
 });
 
 gulp.task('images', function () {
-  return gulp.src('app/photos/**/*')
+  return gulp.src('app/photos/backgrounds/**/*')
     .pipe($.cache($.imagemin({
       progressive: true,
       interlaced: true,
@@ -55,7 +55,17 @@ gulp.task('images', function () {
       // as hooks for embedding and styling
       svgoPlugins: [{cleanupIDs: false}]
     })))
-    .pipe(gulp.dest('dist/images'));
+    .pipe(gulp.dest('dist/photos/backgrounds'));
+});
+
+gulp.task('js', function() {
+  return gulp.src([
+      'app/scripts/*.js',
+    ])
+    .pipe(concat('app.js'))
+    .pipe( gulp.dest('dist/scripts/'))
+    .pipe(uglify('app.min.js'))
+    .pipe( gulp.dest('dist/scripts/'));
 });
 
 gulp.task('fonts', function () {
@@ -67,12 +77,21 @@ gulp.task('fonts', function () {
 });
 
 gulp.task('extras', function () {
-  return gulp.src([
+   gulp.src([
     'app/*.*',
     '!app/*.html'
   ], {
     dot: true
-  }).pipe(gulp.dest('dist'));
+  }).pipe(gulp.dest('dist'))
+
+  gulp.src(['app/php/**/*'])
+  .pipe(gulp.dest('dist/php'));
+
+  gulp.src(['app/placeholders/**/*'])
+  .pipe(gulp.dest('dist/placeholders'));
+
+  return gulp.src(['app/database/Lazer/*'])
+  .pipe(gulp.dest('dist/database/Lazer'));
 });
 
 gulp.task('clean', require('del').bind(null, ['.tmp', 'dist']));
