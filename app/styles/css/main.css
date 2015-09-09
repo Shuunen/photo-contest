@@ -6008,14 +6008,27 @@ h1, h2 {
 
 .gallery {
   margin-top: 30px;
+  font-size: 0;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center; }
+  justify-content: center;
+  /* Light spot selector 
+  &:hover img {
+      opacity: 0.8;
+      -webkit-filter: grayscale(100%);
+      &:hover {
+          opacity: 1;
+          -webkit-filter: grayscale(0%);
+      }
+  }
+  */ }
   .gallery img {
-    height: 200px;
-    margin-bottom: 10px;
+    cursor: pointer;
     margin-right: 10px;
-    cursor: pointer; }
+    margin-bottom: 10px;
+    transition: .3s box-shadow; }
+    .gallery img:hover {
+      box-shadow: 0px 0px 16px -2px white; }
 
 .gallery-slider {
   margin: 0;
