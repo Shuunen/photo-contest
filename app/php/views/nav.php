@@ -5,13 +5,22 @@
 
         <ul class="nav navbar-nav">
             <?php if ($app->isAdmin): ?>
-                <?php $newPhotos = $app->getPhotosToModerate(); ?>
-                <li><a href="#" data-toggle="modal" data-target="#moderatePhotosModal">Moderate photos <span class="badge"><?php echo count($newPhotos) ?></span></a></li>
+                <?php $photos = $app->getPhotosToModerate(); ?>
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#moderatePhotosModal">Moderate photos
+                        <?php if (count($photos)) : ?>
+                            <span class="badge"><?php echo count($photos) ?></span>
+                        <?php endif; ?>
+                    </a></li>
                 <li><a href="#">See results <span class="badge">14</span></a></li>
             <?php endif; ?>
-            <?php $userPhotos = $app->getUserPhotos(); ?>
-            <li><a href="#" data-toggle="modal" data-target="#myPhotosModal">My photos
-                    <span class="badge"><?php echo count($userPhotos) ?></span></a></li>
+            <?php $photos = $app->getUserPhotos(); ?>
+            <li>
+                <a href="#" data-toggle="modal" class="<?php echo count($photos) < 1 ? 'disabled' : '' ?>" data-target="#myPhotosModal">See my photos
+                    <?php if (count($photos)) : ?>
+                        <span class="badge"><?php echo count($photos) ?></span>
+                    <?php endif; ?>
+                </a></li>
             <?php if ($app->submitOpened) : ?>
                 <li><a href="#" data-toggle="modal" data-target="#uploadModal">Submit photos</a></li>
             <?php endif; ?>

@@ -7,7 +7,12 @@ $photoPath = './photos/';
 ?>
 
 <?php if (count($photos)) : ?>
-    <h2>Submitted photos &nbsp;<span class="badge"><?php echo count($photos) ?></span></h2>
+    <h2>Contributions &nbsp;<span class="badge"><?php echo count($photos) ?></span></h2>
+    <?php if ($app->voteOpened) : ?>
+        <h3>You can vote for each of them.</h3>
+    <?php else : ?>
+        <h3>You can see each of them, but votes are not opened yet.</h3>
+    <?php endif; ?>
     <div class="gallery">
         <?php foreach ($photos as $i => $photo) : ?>
             <img data-toggle="modal" data-target="#voteModal" data-index="<?php echo $i ?>" src="<?php echo $photoPath . $photo->userid . '/' . 'thumbs/' . $photo->filepath ?>">
@@ -46,7 +51,9 @@ $photoPath = './photos/';
                                         <?php endforeach; ?>
                                     </div>
                                 <?php else : ?>
-                                    <div class="countdown-container">Votes will be opened in&nbsp;<div class="countdown voteOpened"></div></div>
+                                    <div class="countdown-container">Votes will be opened in&nbsp;
+                                        <div class="countdown voteOpened"></div>
+                                    </div>
                                 <?php endif; ?>
                             </div>
                         <?php endforeach; ?>

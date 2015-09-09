@@ -224,21 +224,35 @@ class App {
     function handleRemovePhoto($request) {
 
         $photo = $this->removePhotoFromDB($request);
-        $path = $photo->userid . '/' . $photo->filepath;
-        $thumbPath = $photo->userid . '/thumbs/' . $photo->filepath;
-        unlink('./photos/' . $path);
-        unlink('./photos/' . $thumbPath);
 
-        $_SESSION['message'] = 'Photo ' . $photo->filepath . ' has been deleted';
+        if ($photo) {
+
+            $path = $photo->userid . '/' . $photo->filepath;
+            $thumbPath = $photo->userid . '/thumbs/' . $photo->filepath;
+            unlink('./photos/' . $path);
+            unlink('./photos/' . $thumbPath);
+            $_SESSION['message'] = 'Photo ' . $photo->filepath . ' has been deleted';
+
+        } else {
+
+            $_SESSION['message'] = 'Photo has already been deleted';
+        }
+
         $_SESSION['messageStatus'] = 'success';
     }
 
     function removePhotoFromDB($request) {
 
         $photo = Lazer::table('photos')->where('id', '=', $request['photoId'])->find();
-        $photo->delete();
 
-        return $photo;
+        if ($photo->count() === 1) {
+            $photo->delete();
+            return $photo;
+        } else {
+            return false;
+        }
+
+
     }
 
     function handleRequest() {

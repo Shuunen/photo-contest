@@ -14,7 +14,7 @@ $photoPath = './photos/';
                 </button>
 
                 <div class="status">
-                    <span class="glyphicon glyphicon-<?php echo $photo->status === 'approved' ? 'ok' : 'ban-circle' ?>" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-<?php echo($photo->status === 'approved' ? 'ok' : ($photo->status === 'censored' ? 'ban-circle' : 'hourglass')) ?>" aria-hidden="true"></span>
                     &nbsp;<?php echo ucwords($photo->status) ?>
                 </div>
             </div>
