@@ -49,6 +49,7 @@
     "wiredep": "^2.0.0"
   },
   "dependencies": {
+    "gulp-concat": "^2.6.0",
     "gulp-connect-php": "0.0.5",
     "http-proxy": "^1.11.1"
   }

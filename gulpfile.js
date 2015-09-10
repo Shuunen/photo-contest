@@ -21,7 +21,7 @@ gulp.task('styles', function () {
       require('autoprefixer-core')({browsers: ['last 2 versions']})
     ]))
     .pipe($.sourcemaps.write())
-    .pipe(gulp.dest('.tmp/styles/css'))
+    .pipe(gulp.dest('.tmp/styles/'))
     .pipe(reload({stream: true}));
 });
 
@@ -33,17 +33,17 @@ gulp.task('jshint', function () {
     .pipe($.if(!browserSync.active, $.jshint.reporter('fail')));
 });
 
-gulp.task('html', ['styles'], function () {
+gulp.task('html', ['js','styles'], function () {
   var assets = $.useref.assets({searchPath: ['.tmp', 'app', '.']});
 
-  return gulp.src('app/*.html')
+  return gulp.src('app/index.php')
     .pipe(assets)
     .pipe($.if('*.js', $.uglify()))
     .pipe($.if('*.css', $.csso()))
     .pipe(assets.restore())
     .pipe($.useref())
-    .pipe($.if('*.html', $.minifyHtml({conditionals: true, loose: true})))
-    .pipe(gulp.dest('dist'));
+    /*.pipe($.if('*.html', $.minifyHtml({conditionals: true, loose: true})))*/
+    .pipe(gulp.dest('dist/'));
 });
 
 gulp.task('images', function () {
@@ -62,9 +62,9 @@ gulp.task('js', function() {
   return gulp.src([
       'app/scripts/*.js',
     ])
-    .pipe(concat('app.js'))
+    /*.pipe(concat('app.js'))*/
     .pipe( gulp.dest('dist/scripts/'))
-    .pipe(uglify('app.min.js'))
+    .pipe($.uglify())
     .pipe( gulp.dest('dist/scripts/'));
 });
 
@@ -86,6 +86,12 @@ gulp.task('extras', function () {
 
   gulp.src(['app/php/**/*'])
   .pipe(gulp.dest('dist/php'));
+
+  gulp.src(['app/scripts/*'])
+  .pipe(gulp.dest('dist/scripts'));
+
+  gulp.src(['app/photos'])
+  .pipe(gulp.dest('dist/photos'));
 
   return gulp.src(['app/database/Lazer/*'])
   .pipe(gulp.dest('dist/database/Lazer'));
