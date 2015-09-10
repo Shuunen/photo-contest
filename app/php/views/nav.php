@@ -1,10 +1,6 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
 
-        <!--<div class="navbar-header">
-            <a class="navbar-brand" href="#">Photoshop contest 2015</a>
-        </div>-->
-
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -40,8 +36,6 @@
     </div>
     <!-- /.container-fluid -->
 </nav>
-
-<!--<h1 class="hipster">Photoshop contest 2015</h1>-->
 
 <?php
 if ($app->isAdmin) {
