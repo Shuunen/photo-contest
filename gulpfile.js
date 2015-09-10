@@ -93,6 +93,9 @@ gulp.task('extras', function () {
   gulp.src(['app/photos'])
   .pipe(gulp.dest('dist/photos'));
 
+  gulp.src(['bower_components/fine-uploader/_build/*.gif'])
+  .pipe(gulp.dest('dist/styles/'));
+
   return gulp.src(['app/database/Lazer/*'])
   .pipe(gulp.dest('dist/database/Lazer'));
 });
