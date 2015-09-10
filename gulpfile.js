@@ -47,7 +47,7 @@ gulp.task('html', ['styles'], function () {
 });
 
 gulp.task('images', function () {
-  return gulp.src('app/photos/backgrounds/**/*')
+  return gulp.src('app/images/**/*')
     .pipe($.cache($.imagemin({
       progressive: true,
       interlaced: true,
@@ -55,7 +55,7 @@ gulp.task('images', function () {
       // as hooks for embedding and styling
       svgoPlugins: [{cleanupIDs: false}]
     })))
-    .pipe(gulp.dest('dist/photos/backgrounds'));
+    .pipe(gulp.dest('dist/images'));
 });
 
 gulp.task('js', function() {
@@ -86,9 +86,6 @@ gulp.task('extras', function () {
 
   gulp.src(['app/php/**/*'])
   .pipe(gulp.dest('dist/php'));
-
-  gulp.src(['app/placeholders/**/*'])
-  .pipe(gulp.dest('dist/placeholders'));
 
   return gulp.src(['app/database/Lazer/*'])
   .pipe(gulp.dest('dist/database/Lazer'));

@@ -18,8 +18,8 @@ $(document).ready(function () {
             },
             thumbnails: {
                 placeholders: {
-                    waitingPath: './placeholders/waiting-generic.png',
-                    notAvailablePath: './placeholders/not_available-generic.png'
+                    waitingPath: './images/placeholders/waiting-generic.png',
+                    notAvailablePath: './images/placeholders/not_available-generic.png'
                 }
             },
             validation: {

@@ -8,3 +8,5 @@ nbproject
 .idea
 *.map
 app/database/Lazer/*.json
+photos/**
+photos/*.*
