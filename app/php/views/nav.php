@@ -14,7 +14,8 @@
                                 <?php if (count($photos)) : ?>
                                     <span class="badge"><?php echo count($photos) ?></span>
                                 <?php endif; ?>
-                            </a></li>
+                            </a>
+                        </li>
                         <li><a href="#">See results <span class="badge">14</span></a></li>
                     <?php endif; ?>
                     <?php $photos = $app->getUserPhotos(); ?>
