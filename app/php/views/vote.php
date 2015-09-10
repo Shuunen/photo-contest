@@ -1,9 +1,9 @@
 <?php
-
 $photos = $app->getPhotosToVote();
+// $photosArray = $photos->asArray();
+// $photoRandom = $photosArray[array_rand($photosArray)];
 $categories = $app->getCategories();
 $photoPath = './photos/';
-
 ?>
 
 <?php if (count($photos)) : ?>
