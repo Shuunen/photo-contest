@@ -1,7 +1,9 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
 
-        <p class="navbar-text">Available actions</p>
+        <p class="navbar-text">
+          <img src="./images/UXD_Std.png" height="50">
+        </p>
 
         <ul class="nav navbar-nav">
             <?php if ($app->isAdmin): ?>
