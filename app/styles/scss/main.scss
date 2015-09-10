@@ -95,11 +95,17 @@ h1, h2, h3 {
     margin: 0;
     height: 100%;
     img {
-        height: 82vh;
+        max-height: 82vh;
+        //max-width: 100vw;
         margin: auto;
+    }
+    .slick-list, .slick-track {
+        height: 100%;
     }
     .slick-slide {
         outline: none;
+        display: flex;
+        flex-direction: column;
     }
 }
 

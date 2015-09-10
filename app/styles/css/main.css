@@ -6065,10 +6065,14 @@ h1, h2, h3 {
   margin: 0;
   height: 100%; }
   .gallery-slider img {
-    height: 82vh;
+    max-height: 82vh;
     margin: auto; }
+  .gallery-slider .slick-list, .gallery-slider .slick-track {
+    height: 100%; }
   .gallery-slider .slick-slide {
-    outline: none; }
+    outline: none;
+    display: flex;
+    flex-direction: column; }
 
 .gallery-nav.horizontal img {
   margin-right: 10px;
