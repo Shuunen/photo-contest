@@ -1,12 +1,8 @@
 <?php
-
-require "./database/json-db.php";
-
 define('LAZER_DATA_PATH', realpath(dirname(__FILE__)) . '/database/Lazer/'); //Path to folder with tables
+use Lazer\Classes\Database as Lazer;
 
 date_default_timezone_set("Europe/Paris");
-
-use Lazer\Classes\Database as Lazer;
 
 include './php/ImageResize/ImageResize.php';
 
@@ -16,7 +12,6 @@ class App {
 
     function __construct() {
 
-        //$this->db = new JsonDB("./database/");
         $this->isUser = false;
         $this->isAdmin = false;
         $this->isLogged = false;
@@ -74,7 +69,6 @@ class App {
         $email = $this->cleanInput($request["email"]);
         $password = $this->cleanInput($request["password"]);
 
-        //$user = $this->db->select('users', 'email', $email);
         $user = Lazer::table('users')->where('email', '=', $email)->find();
 
         if (count($user) === 1) {
@@ -140,10 +134,6 @@ class App {
 
     function storePhotoToDB($request) {
 
-        //json-db
-//      $this->db->insert("photos", array("id" => $this->getGUID(), "userId" => $this->currentUser->userid, "file" => $request['photoUrl']), true);
-
-        //Lazer
         $photo = Lazer::table('photos');
 
         $photo->photoid = $this->getGUID();
@@ -181,10 +171,6 @@ class App {
 
     function storeRateToDB($request) {
 
-        //json-db
-        //$this->db->insert("rates", array("photoId" => $request['photoId'], "categoryId" => $request['categoryId'], "rate" =>$request['rate'], "userId" => $this->currentUser->userid), true);
-
-        //Lazer
         $existingRate = Lazer::table('rates')->where('photoid', '=', $request['photoId'])->andWhere('userid', '=', $this->currentUser->userid)->andWhere('categoryid', '=', $request['categoryId'])->find();
 
         if ($existingRate->count() == 0) {
