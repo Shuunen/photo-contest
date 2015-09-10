@@ -66,8 +66,8 @@ class App {
             return false;
         }
 
-        $email = $this->cleanInput($request["email"]);
-        $password = $this->cleanInput($request["password"]);
+        $email = $request["email"];
+        $password = $request["password"];
 
         $user = Lazer::table('users')->where('email', '=', $email)->find();
 
