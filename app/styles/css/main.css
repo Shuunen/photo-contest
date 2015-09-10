@@ -6043,7 +6043,7 @@ h1, h2, h3 {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  /* Light spot selector 
+  /* Light spot selector
   &:hover img {
       opacity: 0.8;
       -webkit-filter: grayscale(100%);

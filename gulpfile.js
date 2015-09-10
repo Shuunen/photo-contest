@@ -96,6 +96,15 @@ gulp.task('extras', function () {
   gulp.src(['bower_components/fine-uploader/_build/*.gif'])
   .pipe(gulp.dest('dist/styles/'));
 
+  gulp.src(['bower_components/slick.js/slick/*.gif'])
+  .pipe(gulp.dest('dist/styles/'));
+
+  gulp.src(['bower_components/bootstrap/fonts/*'])
+  .pipe(gulp.dest('dist/fonts/bootstrap/'));
+
+  gulp.src(['bower_components/slick.js/slick/fonts/*'])
+  .pipe(gulp.dest('dist/styles/fonts'));
+
   return gulp.src(['app/database/Lazer/*'])
   .pipe(gulp.dest('dist/database/Lazer'));
 });

@@ -66,8 +66,8 @@ class App {
             return false;
         }
 
-        $email = $this->cleanInput($request["email"]);
-        $password = $this->cleanInput($request["password"]);
+        $email = $request["email"];
+        $password = $request["password"];
 
         $user = Lazer::table('users')->where('email', '=', $email)->find();
 
@@ -305,6 +305,17 @@ class App {
 
     }
 
+    function randomPassword() {
+        $alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789&!#";
+        $pass = array(); //remember to declare $pass as an array
+        $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+        for ($i = 0; $i < 8; $i++) {
+            $n = rand(0, $alphaLength);
+            $pass[] = $alphabet[$n];
+        }
+        return implode($pass); //turn the array into a string
+    }
+
     function installDB() {
 
         //install users
@@ -312,6 +323,7 @@ class App {
             \Lazer\Classes\Helpers\Validate::table('users')->exists();
         } catch (\Lazer\Classes\LazerException $e) {
             //Database doesn't exist
+
 
             Lazer::create('users', array(
                 'userid' => 'string',
@@ -321,21 +333,23 @@ class App {
                 'role' => 'string',
             ));
 
-            $user = Lazer::table('users');
+            $users = json_decode(file_get_contents('../users.json'));
 
-            $user->userid = $this->getGUID();
-            $user->name = 'Romain Racamier';
-            $user->email = 'romain.racamier';
-            $user->pass = 'mypass';
-            $user->role = 'admin';
-            $user->save();
+            if($users!= null && count($users)>0){
 
-            $user->userid = $this->getGUID();
-            $user->name = 'Michel Alban';
-            $user->email = 'michel.alban';
-            $user->pass = 'albanPass';
-            $user->role = 'user';
-            $user->save();
+              $user = Lazer::table('users');
+
+              foreach($users as $jsonUser){
+
+
+                $user->userid = $this->getGUID();
+                $user->name = $jsonUser->name;
+                $user->email = $jsonUser->email;
+                $user->pass = $this->randomPassword();
+                $user->role = isset($jsonUser->role)? $jsonUser->role : 'user';
+                $user->save();
+              }
+            }
         }
 
         //install categories
