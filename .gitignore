@@ -1,5 +1,5 @@
 node_modules
-dist
+dist*
 .tmp
 .sass-cache
 bower_components
@@ -7,6 +7,6 @@ test/bower_components
 nbproject
 .idea
 *.map
-app/database/Lazer/*.json
-photos/**
-photos/*.*
+app/database/Lazer/*
+app/photos/**
+app/photos/*.*

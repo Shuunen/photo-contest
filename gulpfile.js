@@ -188,7 +188,10 @@ gulp.task('wiredep', function () {
 });
 
 gulp.task('build', [/*'jshint',*/ 'html', 'images', 'fonts', 'extras'], function () {
-  return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
+  return gulp.src('dist/**/*')
+    .pipe($.size({title: 'build', gzip: true}))
+    .pipe($.zip('dist.zip'))
+    .pipe(gulp.dest('.'));
 });
 
 gulp.task('default', ['clean'], function () {
