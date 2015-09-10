@@ -10,3 +10,4 @@ nbproject
 app/database/Lazer/*
 app/photos/**
 app/photos/*.*
+users.json
