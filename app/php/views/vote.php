@@ -22,7 +22,7 @@ $photoPath = './photos/';
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                <div class="alert alert-info" role="alert">There is no contributions actually.</div>
+                <div class="alert alert-info" role="alert">There are no contributions yet.</div>
             </div>
         </div>
     </div>

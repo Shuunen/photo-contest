@@ -1,3 +1,4 @@
+<div class="main">
 <?php
 
 if ($app->isLogged) {
@@ -20,3 +21,5 @@ if (!$app->isLogged) {
 
     require 'myPhotosModal.php';
 }
+?>
+</div>
