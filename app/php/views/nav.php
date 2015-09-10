@@ -5,10 +5,6 @@
             <a class="navbar-brand" href="#">Photoshop contest 2015</a>
         </div>-->
 
-        <p class="navbar-text">
-            <img src="./images/UXD_Std-light.png" height="50">
-        </p>
-
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
