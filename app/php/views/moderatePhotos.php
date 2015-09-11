@@ -11,15 +11,15 @@ $photoPath = './photos/';
 
                 <div class="moderation-controls">
                     <button data-action="approve" type="button" class="btn btn-success">
-                        <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Approve
+                        <span class="fa fa-check-circle" aria-hidden="true"></span> Approve
                     </button>
                     <button data-action="censor" type="button" class="btn btn-warning">
-                        <span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> Censor
+                        <span class="fa fa-minus-circle" aria-hidden="true"></span> Censor
                     </button>
                 </div>
 
                 <button type="button" title="Delete this photo" class="btn btn-danger delete-photo">
-                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    <span class="fa fa-trash" aria-hidden="true"></span>
                 </button>
 
             </div>
