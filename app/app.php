@@ -205,7 +205,7 @@ class App {
 
     function storeModerationToDB($request) {
 
-        $photo = Lazer::table('photos')->where('id', '=', $request['photoId'])->find();
+        $photo = Lazer::table('photos')->where('photoid', '=', $request['photoId'])->find();
         $photo->status = $request['newStatus'];
         $photo->save();
     }
@@ -232,7 +232,7 @@ class App {
 
     function removePhotoFromDB($request) {
 
-        $photo = Lazer::table('photos')->where('id', '=', $request['photoId'])->find();
+        $photo = Lazer::table('photos')->where('photoid', '=', $request['photoId'])->find();
 
         if ($photo->count() === 1) {
             $photo->delete();
@@ -285,7 +285,7 @@ class App {
     }
 
     function getPhotosToVote() {
-        return $photos = Lazer::table('photos')->where('userid', '!=', $this->currentUser->userid)->where('status', '=', 'approved')->findAll();
+        return $photos = Lazer::table('photos')->where('userid', '!=', $this->currentUser->userid)->andWhere('status', '=', 'approved')->andWhere('userid','!=','null')->findAll();
     }
 
     function getPhotosToModerate() {
@@ -299,7 +299,7 @@ class App {
 
     function getRateForPhotoAndCategory($photoId, $categoryId) {
 
-        $rate = Lazer::table('rates')->where('photoid', '=', $photoId)->where('categoryid', '=', $categoryId)->where('userid', '=', $this->currentUser->userid)->find();
+        $rate = Lazer::table('rates')->where('photoid', '=', $photoId)->andWhere('categoryid', '=', $categoryId)->andWhere('userid', '=', $this->currentUser->userid)->find();
         if ($rate->count() == 0) {
             return 0;
         } else {

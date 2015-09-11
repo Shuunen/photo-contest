@@ -7,7 +7,7 @@ $photoPath = './photos/';
         <?php foreach ($photos as $photo) : ?>
             <div class="item">
 
-                <img id="<?php echo $photo->id ?>" src="<?php echo $photoPath . $photo->userid . '/' . $photo->filepath ?>">
+                <img id="<?php echo $photo->photoid ?>" src="<?php echo $photoPath . $photo->userid . '/' . $photo->filepath ?>">
 
                 <button type="button" title="Delete this photo" class="btn btn-danger delete-photo">
                     <span class="fa fa-trash" aria-hidden="true"></span>

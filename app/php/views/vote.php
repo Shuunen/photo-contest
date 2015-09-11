@@ -15,7 +15,7 @@ $photoPath = './photos/';
     <?php endif; ?>
     <div class="gallery">
         <?php foreach ($photos as $i => $photo) : ?>
-            <img id="<?php echo $photo->id ?>" data-toggle="modal" data-target="#voteModal" data-index="<?php echo $i ?>" src="<?php echo $photoPath . $photo->userid . '/' . 'thumbs/' . $photo->filepath ?>">
+            <img id="<?php echo $photo->photoid ?>" data-toggle="modal" data-target="#voteModal" data-index="<?php echo $i ?>" src="<?php echo $photoPath . $photo->userid . '/' . 'thumbs/' . $photo->filepath ?>">
         <?php endforeach; ?>
     </div>
 <?php else : ?>
@@ -37,7 +37,7 @@ $photoPath = './photos/';
                         <?php foreach ($photos as $photo) : ?>
                             <div class="item">
 
-                                <img id="<?php echo $photo->id ?>" src="<?php echo $photoPath . $photo->userid . '/' . $photo->filepath ?>">
+                                <img id="<?php echo $photo->photoid ?>" src="<?php echo $photoPath . $photo->userid . '/' . $photo->filepath ?>">
 
                                 <?php if ($app->voteOpened) : ?>
                                     <div class="ratings">
