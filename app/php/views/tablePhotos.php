@@ -16,7 +16,7 @@ $photoPath = './photos/';
         <?php foreach ($photos as $photo) : ?>
             <tr>
                 <th scope="row"><?php echo $photo->id ?></th>
-                <td><?php echo $photo->userid ?></td>
+                <td><?php echo $app->getUserByUserid($photo->userid)->name ?></td>
                 <td><?php echo $photo->filepath ?></td>
                 <td><?php echo $photo->status ?></td>
                 <td>
