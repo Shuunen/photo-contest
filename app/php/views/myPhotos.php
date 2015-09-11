@@ -10,7 +10,7 @@ $photoPath = './photos/';
                 <img id="<?php echo $photo->photoid ?>" src="<?php echo $photoPath . $photo->userid . '/' . $photo->filepath ?>">
 
                 <button type="button" title="Delete this photo" class="btn btn-danger delete-photo">
-                    <span class="fa fa-trash" aria-hidden="true"></span>
+                    Delete this photo&nbsp;&nbsp;<span class="fa fa-trash" aria-hidden="true"></span>
                 </button>
 
                 <div class="status">

@@ -234,8 +234,8 @@ h2 .badge {
 
 .delete-photo {
     position: absolute;
-    right: 0;
-    top: 0;
+    bottom: 0;
+    left: 0;
     transition: .3s opacity;
     opacity: .5;
     -webkit-filter: grayscale(100%);

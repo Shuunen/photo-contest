@@ -19,7 +19,7 @@ $photoPath = './photos/';
                 </div>
 
                 <button type="button" title="Delete this photo" class="btn btn-danger delete-photo">
-                    <span class="fa fa-trash" aria-hidden="true"></span>
+                    Delete this photo&nbsp;&nbsp;<span class="fa fa-trash" aria-hidden="true"></span>
                 </button>
 
             </div>
