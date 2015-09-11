@@ -7,7 +7,7 @@ $photoPath = './photos/';
         <?php foreach ($photos as $photo) : ?>
             <div class="item">
 
-                <img id="<?php echo $photo->id ?>" class="moderation-photo" src="<?php echo $photoPath . $photo->userid . '/' . $photo->filepath ?>">
+                <img id="<?php echo $photo->photoid ?>" class="moderation-photo" src="<?php echo $photoPath . $photo->userid . '/' . $photo->filepath ?>">
 
                 <div class="moderation-controls">
                     <button data-action="approve" type="button" class="btn btn-success">
