@@ -102,9 +102,11 @@ class App {
                 }
                 $image = new \Eventviva\ImageResize('./photos/' . $this->currentUser->userid . '/' . $request['photoUrl']);
                 $image->resizeToHeight(1080);
-                $image->save('./photos/' . $this->currentUser->userid . '/' . $request['photoUrl'],null,90);
+                $image->quality_jpg = 90;
+                $image->save('./photos/' . $this->currentUser->userid . '/' . $request['photoUrl']);
 
                 $image->resizeToHeight(200);
+                $image->quality_jpg = 75;
                 $image->save('./photos/' . $this->currentUser->userid . '/thumbs/' . $request['photoUrl']);
                 //end create thumb
 
@@ -255,9 +257,9 @@ class App {
             }
 
             $_SESSION['messageStatus'] = 'error';
-            
+
             $type = $request['type'];
-                        
+
             if ($this->isLogged) {
                 if ($type === 'logout') {
                     $this->handleLogout();
@@ -285,7 +287,7 @@ class App {
     function getCategories() {
         return $cat = Lazer::table('categories')->findAll();
     }
-    
+
     function getAllPhotos() {
         return $photos = Lazer::table('photos')->findAll();
     }
@@ -301,7 +303,7 @@ class App {
     function getUserPhotos() {
         return $photos = Lazer::table('photos')->where('userid', '=', $this->currentUser->userid)->findAll();
     }
-    
+
     function getUserByUserid($userid) {
         return $user = Lazer::table('users')->where('userid', '=', $userid)->find();
     }
