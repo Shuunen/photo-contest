@@ -4,7 +4,7 @@
             <div class="modal-body">
                 <?php require 'myPhotos.php'; ?>
             </div>
-            <button type="button" class="btn btn-default reloadButton">Close</button>
+            <button type="button" class="btn btn-default">Close</button>
         </div>
     </div>
 </div>
