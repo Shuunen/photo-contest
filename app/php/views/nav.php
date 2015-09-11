@@ -1,10 +1,6 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
 
-        <!--<div class="navbar-header">
-            <a class="navbar-brand" href="#">Photoshop contest 2015</a>
-        </div>-->
-
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -18,7 +14,8 @@
                                 <?php if (count($photos)) : ?>
                                     <span class="badge"><?php echo count($photos) ?></span>
                                 <?php endif; ?>
-                            </a></li>
+                            </a>
+                        </li>
                         <li><a href="#">See results <span class="badge">14</span></a></li>
                     <?php endif; ?>
                     <?php $photos = $app->getUserPhotos(); ?>
@@ -40,8 +37,6 @@
     </div>
     <!-- /.container-fluid -->
 </nav>
-
-<!--<h1 class="hipster">Photoshop contest 2015</h1>-->
 
 <?php
 if ($app->isAdmin) {

@@ -5987,10 +5987,10 @@ a.list-group-item-danger.active:hover, a.list-group-item-danger.active:focus {
   border: none; }
 
 html {
-  border: 20px solid #323232;
   height: 100%; }
 
 body {
+  border: 20px solid #323232;
   background-image: url(../../images/LogoPhotoContest.png);
   background-repeat: no-repeat;
   background-position: 50%;
