@@ -90,7 +90,7 @@ gulp.task('extras', function () {
   gulp.src(['app/scripts/*'])
   .pipe(gulp.dest('dist/scripts'));
 
-  gulp.src(['app/photos'])
+  gulp.src(['app/photos/'])
   .pipe(gulp.dest('dist/photos'));
 
   gulp.src(['bower_components/fine-uploader/_build/*.gif'])

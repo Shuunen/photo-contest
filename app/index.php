@@ -23,16 +23,16 @@ $path = './';
         <title>Photo contest 2015</title>
 
         <!-- build:css styles/combined.css -->
-        <link href="<?php echo $path ?>bower_components/bootstrap-rating/bootstrap-rating.css" rel="stylesheet">
-        <link href="<?php echo $path ?>bower_components/animate-css/animate.min.css" rel="stylesheet">
-        <link href="<?php echo $path ?>bower_components/slick.js/slick/slick.css" rel="stylesheet">
-        <link href="<?php echo $path ?>bower_components/slick.js/slick/slick-theme.css" rel="stylesheet">
-        <link href="<?php echo $path ?>crappy_bower_component/fine-uploader/fine-uploader-gallery.min.css" rel="stylesheet">
-        <!-- <link href="<?php echo $path ?>bower_components/fine-uploader/_build/fine-uploader-gallery.min.css" rel="stylesheet">-->
-        <link href="<?php echo $path ?>bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <link href="../bower_components/bootstrap-rating/bootstrap-rating.css" rel="stylesheet">
+        <link href="../bower_components/animate-css/animate.min.css" rel="stylesheet">
+        <link href="../bower_components/slick.js/slick/slick.css" rel="stylesheet">
+        <link href="../bower_components/slick.js/slick/slick-theme.css" rel="stylesheet">
+<!--        <link href="../crappy_bower_component/fine-uploader/fine-uploader-gallery.min.css" rel="stylesheet">-->
+         <link href="../bower_components/fine-uploader/_build/fine-uploader-gallery.min.css" rel="stylesheet">
+        <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
         <!-- endbuild -->
-        <!-- build:css styles/main.css -->
-        <link href="<?php echo $path ?>styles/css/main.css" rel="stylesheet">
+        <!-- build:css styles/css/main.css -->
+        <link href="./styles/css/main.css" rel="stylesheet">
         <!-- endbuild -->
     </head>
 
@@ -41,24 +41,24 @@ $path = './';
         <?php require './php/views/main.php' ?>
 
         <!-- build:js scripts/combined.js -->
-        <script type="text/javascript" src="<?php echo $path ?>bower_components/jquery/dist/jquery.min.js"></script>
-        <script type="text/javascript" src="<?php echo $path ?>bower_components/slick.js/slick/slick.min.js"></script>
-        <script type="text/javascript" src="<?php echo $path ?>crappy_bower_component/fine-uploader/fine-uploader.min.js"></script>
-         <!-- <script type="text/javascript" src="<?php echo $path ?>bower_components/fine-uploader/_build/fine-uploader.min.js"></script>-->
-        <script type="text/javascript" src="<?php echo $path ?>bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="<?php echo $path ?>bower_components/bootstrap-rating/bootstrap-rating.min.js"></script>
-        <script type="text/javascript" src="<?php echo $path ?>bower_components/jquery.countdown/dist/jquery.countdown.min.js"></script>
+        <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="../bower_components/slick.js/slick/slick.min.js"></script>
+<!--        <script type="text/javascript" src="../crappy_bower_component/fine-uploader/fine-uploader.min.js"></script>-->
+          <script type="text/javascript" src="../bower_components/fine-uploader/_build/fine-uploader.min.js"></script>
+        <script type="text/javascript" src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="../bower_components/bootstrap-rating/bootstrap-rating.min.js"></script>
+        <script type="text/javascript" src="../bower_components/jquery.countdown/dist/jquery.countdown.min.js"></script>
         <!-- endbuild -->
 
-        <script type="text/javascript" src="<?php echo $path ?>scripts/main.js"></script>
+        <script type="text/javascript" src="./scripts/main.js"></script>
         <?php if ($app->voteOpened): ?>
-            <script type="text/javascript" src="<?php echo $path ?>scripts/ratings.js"></script>
+            <script type="text/javascript" src="./scripts/ratings.js"></script>
         <?php endif; ?>
         <?php if ($app->submitOpened): ?>
-            <script type="text/javascript" src="<?php echo $path ?>scripts/upload.js"></script>
+            <script type="text/javascript" src="./scripts/upload.js"></script>
         <?php endif; ?>
         <?php if ($app->isAdmin): ?>
-            <script type="text/javascript" src="<?php echo $path ?>scripts/moderate.js"></script>
+            <script type="text/javascript" src="./scripts/moderate.js"></script>
         <?php endif; ?>
     </body>
 
