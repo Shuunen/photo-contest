@@ -101,6 +101,9 @@ class App {
                     mkdir('./photos/' . $this->currentUser->userid . '/thumbs', 0777, TRUE);
                 }
                 $image = new \Eventviva\ImageResize('./photos/' . $this->currentUser->userid . '/' . $request['photoUrl']);
+                $image->resizeToHeight(1080);
+                $image->save('./photos/' . $this->currentUser->userid . '/' . $request['photoUrl'],null,90);
+
                 $image->resizeToHeight(200);
                 $image->save('./photos/' . $this->currentUser->userid . '/thumbs/' . $request['photoUrl']);
                 //end create thumb

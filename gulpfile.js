@@ -102,6 +102,9 @@ gulp.task('extras', function () {
   gulp.src(['bower_components/bootstrap/fonts/*'])
   .pipe(gulp.dest('dist/fonts/bootstrap/'));
 
+  gulp.src(['bower_components/font-awesome/fonts/*'])
+  .pipe(gulp.dest('dist/fonts/'));
+
   gulp.src(['bower_components/slick.js/slick/fonts/*'])
   .pipe(gulp.dest('dist/styles/fonts'));
 
