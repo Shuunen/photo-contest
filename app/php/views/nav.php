@@ -16,7 +16,7 @@
                                 <?php endif; ?>
                             </a>
                         </li>
-                        <li><a href="#">See results <span class="badge">14</span></a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#tablePhotosModal">Table photos</a></li>
                     <?php endif; ?>
                     <?php $photos = $app->getUserPhotos(); ?>
                     <li>
@@ -41,4 +41,5 @@
 <?php
 if ($app->isAdmin) {
     require 'moderatePhotosModal.php';
+    require 'tablePhotosModal.php';
 }

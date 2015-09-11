@@ -283,6 +283,10 @@ class App {
     function getCategories() {
         return $cat = Lazer::table('categories')->findAll();
     }
+    
+    function getAllPhotos() {
+        return $photos = Lazer::table('photos')->findAll();
+    }
 
     function getPhotosToVote() {
         return $photos = Lazer::table('photos')->where('userid', '!=', $this->currentUser->userid)->andWhere('status', '=', 'approved')->andWhere('userid','!=','null')->findAll();
@@ -295,7 +299,10 @@ class App {
     function getUserPhotos() {
         return $photos = Lazer::table('photos')->where('userid', '=', $this->currentUser->userid)->findAll();
     }
-
+    
+    function getUserByUserid($userid) {
+        return $user = Lazer::table('users')->where('userid', '=', $userid)->find();
+    }
 
     function getRateForPhotoAndCategory($photoId, $categoryId) {
 
