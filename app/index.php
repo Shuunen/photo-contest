@@ -60,6 +60,9 @@ $path = './';
         <?php if ($app->isAdmin): ?>
             <script type="text/javascript" src="./scripts/moderate.js"></script>
         <?php endif; ?>
+            
+        <?php require './php/views/analytics.php' ?>
+            
     </body>
 
 </html>
