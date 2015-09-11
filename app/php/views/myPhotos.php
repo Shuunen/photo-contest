@@ -21,9 +21,6 @@ $photoPath = './photos/';
         <?php endforeach; ?>
     </div>
 <?php else : ?>
-    <div class="alert alert-info" role="alert">You did not submit any photos
-        <?php if ($app->submitOpened) : ?>
-            yet, you should upload some
-        <?php endif; ?>.
+    <div class="alert alert-info" role="alert">You did not submit any photos<?php if ($app->submitOpened) : ?> yet, you should upload some<?php endif; ?>.
     </div>
 <?php endif; ?>
