@@ -1,0 +1,27 @@
+Satisfy Any
+
+# Requires mod_expires to be enabled.
+<IfModule mod_expires.c>
+ # Enable expirations.
+ ExpiresActive On
+
+ # Cache all files for 2 weeks after access (A).
+ ExpiresDefault A1209600
+   ExpiresByType image/jpg             "access plus 1 week"
+   ExpiresByType image/jpeg            "access plus 1 week"
+   ExpiresByType image/png             "access plus 1 week"
+   ExpiresByType image/gif             "access plus 1 week"
+   AddType image/x-icon .ico
+   ExpiresByType image/ico             "access plus 1 week"
+   ExpiresByType image/icon            "access plus 1 week"
+   ExpiresByType image/x-icon          "access plus 1 week"
+   ExpiresByType text/css              "access plus 1 week"
+ <FilesMatch \.php$>
+   # Do not allow PHP scripts to be cached unless they explicitly send cache
+   # headers themselves. Otherwise all scripts would have to overwrite the
+   # headers set by mod_expires if they want another caching behavior. This may
+   # fail if an error occurs early in the bootstrap process, and it may cause
+   # problems if a non-Drupal PHP file is installed in a subdirectory.
+   ExpiresActive Off
+ </FilesMatch>
+</IfModule>
