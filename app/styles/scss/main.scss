@@ -256,3 +256,9 @@ h2 .badge {
 .dropdown-toggle {
     font-size: 32px;
 }
+
+.table {
+    &.users {
+        img {height: 50px;}
+    }
+}
