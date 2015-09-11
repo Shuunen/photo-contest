@@ -254,22 +254,24 @@ class App {
                 return;
             }
 
+            $_SESSION['messageStatus'] = 'error';
+            
             $type = $request['type'];
-            if ($type === 'login') {
+                        
+            if ($this->isLogged) {
+                if ($type === 'logout') {
+                    $this->handleLogout();
+                } else if ($type === 'addPhoto') {
+                    $this->handleAddPhoto($request);
+                } else if ($type === 'removePhoto') {
+                    $this->handleRemovePhoto($request);
+                } else if ($type === 'rate') {
+                    $this->handleRate($request);
+                } else if ($this->isAdmin && $type === 'moderation') {
+                    $this->handleModeration($request);
+                }
+            } else if ($type === 'login') {
                 $this->handleLogin($request);
-            } else if ($type === 'logout') {
-                $this->handleLogout();
-            } else if ($type === 'addPhoto') {
-                $this->handleAddPhoto($request);
-            } else if ($type === 'removePhoto') {
-                $this->handleRemovePhoto($request); // TODO
-            } else if ($type === 'rate') {
-                $this->handleRate($request);
-            } else if ($type === 'moderation') {
-                $this->handleModeration($request);
-            } else {
-                $_SESSION['message'] = 'These request is not allowed';
-                $_SESSION['messageStatus'] = 'error';
             }
 
             if (isset($request['ajax'])) {
