@@ -1,3 +1,5 @@
+/* global afterSlideAction */
+
 $(document).ready(function () {
 
 

@@ -5,19 +5,21 @@ $photoPath = './photos/';
 <?php if (count($photos)) : ?>
     <div class="gallery-slider">
         <?php foreach ($photos as $photo) : ?>
-            <div class="item">
+            <?php if ($photo->photoid) : ?>
+                <div class="item">
 
-                <img id="<?php echo $photo->photoid ?>" src="<?php echo $photoPath . $photo->userid . '/' . $photo->filepath ?>">
+                    <img id="<?php echo $photo->photoid ?>" src="<?php echo $photoPath . $photo->userid . '/' . $photo->filepath ?>">
 
-                <button type="button" title="Delete this photo" class="btn btn-danger delete-photo">
-                    Delete this photo&nbsp;&nbsp;<span class="fa fa-trash" aria-hidden="true"></span>
-                </button>
+                    <button type="button" title="Delete this photo" class="btn btn-danger delete-photo">
+                        Delete this photo&nbsp;&nbsp;<span class="fa fa-trash" aria-hidden="true"></span>
+                    </button>
 
-                <div class="status">
-                    <span class="fa fa-<?php echo($photo->status === 'approved' ? 'check-circle' : ($photo->status === 'censored' ? 'ban' : 'hourglass-half')) ?>" aria-hidden="true"></span>
-                    &nbsp;<span><?php echo ucwords($photo->status) ?></span>
+                    <div class="status">
+                        <span class="fa fa-<?php echo($photo->status === 'approved' ? 'check-circle' : ($photo->status === 'censored' ? 'ban' : 'hourglass-half')) ?>" aria-hidden="true"></span>
+                        &nbsp;<span><?php echo ucwords($photo->status) ?></span>
+                    </div>
                 </div>
-            </div>
+            <?php endif; ?>
         <?php endforeach; ?>
     </div>
 <?php else : ?>

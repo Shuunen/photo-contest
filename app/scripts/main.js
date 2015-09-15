@@ -11,7 +11,7 @@ $(document).ready(function () {
         centerMode: true,
         // centerPadding: '100px',
         focusOnSelect: true,
-        lazyLoad: 'ondemand', // or progressive
+        // lazyLoad: 'ondemand', // or progressive
         // variableWidth: true,
         // adaptiveHeight: true,
         speed: 500,
@@ -19,19 +19,37 @@ $(document).ready(function () {
         cssEase: 'linear'
     });
 
-    /*
-     setTimeout(function () {
-     $('.gallery-slider').parents('.modal-dialog').parent().addClass('modal fullscreen fade');
-     }, 200);
-     $('.gallery-slider').on('beforeChange', function (event, slick, currentSlide, nextSlide) {
-     console.log(nextSlide);
-     });
-     */
-
     $('.gallery img').click(function () {
-        var index = $(this).data('index');
-        // console.log('slickGoTo', index);
-        $('.gallery-slider').slick('slickGoTo', index);
+        console.log('clicked on thumb, showing fullscreen image');
+        $(this).parent().find('.fullscreen-image').remove();
+        var container = document.createElement('div');
+        container.classList.add('fullscreen-image', 'mini');
+        /*el.style.backgroundImage = 'url("'+ $(this).data('thumb') + '")';
+         el.style.backgroundImage = 'url("./images/loader.gif")';*/
+        var image = document.createElement('img');
+        image.setAttribute('src', './images/loader.gif');
+        image.setAttribute('data-layzr', $(this).data('full'));
+        container.appendChild(image);
+        this.insertAdjacentElement('afterend', container);
+
+        var layzr = new Layzr({
+            container: '.fullscreen-image',
+            callback: function () {
+                console.log('fullscreen image loaded');
+                container.classList.remove('mini');
+                setTimeout(function () {
+                    smoothScroll(container);
+                }, 300);
+            }
+        });
+
+        $(container).click(function () {
+            var container = this;
+            $(container).addClass('closed');
+            setTimeout(function () {
+                $(container).remove();
+             }, 300);
+        });
     });
 
     /* Fix for first time opening slider in modal : if the modal is hidden, there is no room to calculate slider width */
@@ -91,8 +109,8 @@ $(document).ready(function () {
             }
             $(this).html(event.strftime(format));
         }).on('finish.countdown', function () {
-            window.location.reload();
-        });
+        window.location.reload();
+    });
 
     $('.countdown.submitOpened').countdown('2015/09/25')
         .on('update.countdown', function (event) {
@@ -101,8 +119,8 @@ $(document).ready(function () {
             var format = '%-D day%!D or ' + totalSeconds + ' seconds if you\'re a robot.';
             $(this).html(event.strftime(format));
         }).on('finish.countdown', function () {
-            window.location.reload();
-        });
+        window.location.reload();
+    });
 
     $('.delete-photo').click(function () {
         var photoId = $(this).parent().find('img').attr('id');
@@ -118,6 +136,12 @@ $(document).ready(function () {
 
     });
 
+    var layzr = new Layzr({
+        container: '.gallery',
+        selector: '[data-layzr]',
+        hiddenAttr: 'data-layzr-hidden'
+    });
+
 });
 
 function afterSlideAction(jsonData) {
@@ -126,9 +150,9 @@ function afterSlideAction(jsonData) {
         var slider = $('.slick-slider:visible');
         if (slider.slick('getSlick').slideCount > 1) {
             slider.slick('slickRemove', slider.slick('slickCurrentSlide'));
-            // console.info('moderation was saved, remove this slide');
+            console.info('moderation was saved, remove this slide');
         } else {
-            // console.info('moderation was saved, was the last slide, reload page');
+            console.info('moderation was saved, was the last slide, reload page');
             window.location.reload();
         }
     } else {

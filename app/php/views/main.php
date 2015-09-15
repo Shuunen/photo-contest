@@ -19,7 +19,6 @@ if (!$app->isLogged) {
         require 'uploadModal.php';
     }
 
-    require 'myPhotosModal.php';
 }
 ?>
 </div>
