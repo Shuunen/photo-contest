@@ -20,6 +20,8 @@ if (!$app->isLogged) {
     }
 
     require 'myPhotosModal.php';
+
+    require 'gallery.php';
 }
 ?>
 </div>

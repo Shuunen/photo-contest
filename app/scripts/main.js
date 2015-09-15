@@ -30,8 +30,18 @@ $(document).ready(function () {
 
     $('.gallery img').click(function () {
         var index = $(this).data('index');
-        // console.log('slickGoTo', index);
+        //console.log('slickGoTo', index);
         $('.gallery-slider').slick('slickGoTo', index);
+        $.ajax({
+            type: 'get',
+            data: 'type=template&template=fullPhoto&photoId='+$(this).attr('id'),
+            success: function (data) {
+              $('.fullPhoto').html(data);
+              $('.fullPhoto .item img').click(function(){
+                $('.fullPhoto').html('');
+              })
+            }
+        });
     });
 
     /* Fix for first time opening slider in modal : if the modal is hidden, there is no room to calculate slider width */

@@ -246,6 +246,12 @@ class App {
 
     }
 
+    function handleTemplate($request){
+        if($request['template'] === 'fullPhoto'){
+            $this->getFullPhotoHtmlcontent($request['photoId']);
+        }
+    }
+
     function handleRequest() {
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
@@ -271,6 +277,8 @@ class App {
                     $this->handleRate($request);
                 } else if ($this->isAdmin && $type === 'moderation') {
                     $this->handleModeration($request);
+                } else if ($this->isAdmin && $type === 'template') {
+                    $this->handleTemplate($request);
                 }
             } else if ($type === 'login') {
                 $this->handleLogin($request);
@@ -306,6 +314,15 @@ class App {
 
     function getUserByUserid($userid) {
         return $user = Lazer::table('users')->where('userid', '=', $userid)->find();
+    }
+
+    function getFullPhotoHtmlcontent($photoId){
+        $photo = Lazer::table('photos')->where('photoid', '=', $photoId)->find();
+        $app = $this;
+        if(count($photo) === 1){
+          require('./php/views/fullPhoto.php');
+        }
+        die();
     }
 
     function getRateForPhotoAndCategory($photoId, $categoryId) {
