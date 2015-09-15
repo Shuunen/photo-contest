@@ -13,11 +13,27 @@ $photoPath = './photos/';
     <?php else : ?>
         <h3>You can see each of them, but votes are not opened yet.</h3>
     <?php endif; ?>
+    <div class="gallery-filters">
+      <button class="btn btn-primary all">all</button>
+      <button class="btn btn-primary user">User</button>
+      <button class="btn btn-primary censored">Censored</button>
+      <button class="btn btn-primary vote">Vote</button>
+    </div>
     <div class="gallery">
         <?php foreach ($photos as $i => $photo) : ?>
-            <?php if($app->currentUser->role === 'admin' || $app->currentUser->userid != $photo->userid ) :?>
-                <img id="<?php echo $photo->photoid ?>" data-toggle="modal" data-target="#voteModal" data-index="<?php echo $i ?>" src="<?php echo $photoPath . $photo->userid . '/' . 'thumbs/' . $photo->filepath ?>">
-            <?php endif;?>
+            <?php
+              $class = "";
+              if($app->isAdmin && $photo->status === 'censored'){
+                $class = "censored";
+              }
+              if($app->currentUser->userid != $photo->userid){
+                $class = "vote";
+              }else{
+                $class = "user";
+              }
+            ;?>
+                <img class="<?php print $class;?>" id="<?php echo $photo->photoid ?>" data-toggle="modal" data-target="#voteModal" data-index="<?php echo $i ?>" src="<?php echo $photoPath . $photo->userid . '/' . 'thumbs/' . $photo->filepath ?>">
+
         <?php endforeach; ?>
     </div>
     <div class="fullPhoto">

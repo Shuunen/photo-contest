@@ -13,13 +13,13 @@ if (!$app->isLogged) {
 
 } else {
 
-    require 'vote.php';
+    //require 'vote.php';
 
     if ($app->submitOpened) {
         require 'uploadModal.php';
     }
 
-    require 'myPhotosModal.php';
+    //require 'myPhotosModal.php';
 
     require 'gallery.php';
 }

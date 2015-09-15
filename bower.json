@@ -8,6 +8,7 @@
     "bootstrap-sass": "~3.3.5",
     "fineuploader-dist": "~5.3.1",
     "font-awesome": "~4.4.0",
+    "isotope": "~2.2.2",
     "jquery": "~2.1.1",
     "jquery.countdown": "~2.1.0",
     "normalize.css": "~3.0.3",

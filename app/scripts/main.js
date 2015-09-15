@@ -1,7 +1,7 @@
 /* global qq */
 
 $(document).ready(function () {
-
+/*
     $('.gallery-slider').slick({
         slidesToShow: 1,
         slidesToScroll: 1,
@@ -17,7 +17,7 @@ $(document).ready(function () {
         speed: 500,
         fade: true,
         cssEase: 'linear'
-    });
+    });*/
 
     /*
      setTimeout(function () {
@@ -28,15 +28,43 @@ $(document).ready(function () {
      });
      */
 
+    $('.gallery').isotope({
+      // options...
+      itemSelector: 'img',
+      masonry: {
+        columnWidth: 200
+      }
+    });
+
+    $('.gallery-filters .all').click(function(){
+      $('.gallery').isotope({ filter: '*' });
+    });
+
+    $('.gallery-filters .vote').click(function(){
+      $('.gallery').isotope({ filter: '.vote' });
+    });
+
+    $('.gallery-filters .user').click(function(){
+      $('.gallery').isotope({ filter: '.user' });
+    });
+
+    $('.gallery-filters .censored').click(function(){
+      $('.gallery').isotope({ filter: '.censored' });
+    });
+
     $('.gallery img').click(function () {
-        var index = $(this).data('index');
+        //var index = $(this).data('index');
         //console.log('slickGoTo', index);
-        $('.gallery-slider').slick('slickGoTo', index);
+       // $('.gallery-slider').slick('slickGoTo', index);
         $.ajax({
             type: 'get',
             data: 'type=template&template=fullPhoto&photoId='+$(this).attr('id'),
             success: function (data) {
+              //console.log(data);
               $('.fullPhoto').html(data);
+              initFullPhoto();
+              initRating();
+              initModeration();
               $('.fullPhoto .item img').click(function(){
                 $('.fullPhoto').html('');
               })
@@ -80,7 +108,9 @@ $(document).ready(function () {
     $('.reloadButton').click(function () {
         window.location.reload();
     });
+  });
 
+  function initFullPhoto(){
     $('.countdown.voteOpened').countdown('2015/09/25')
         .on('update.countdown', function (event) {
             var format = '';
@@ -114,6 +144,7 @@ $(document).ready(function () {
             window.location.reload();
         });
 
+
     $('.delete-photo').click(function () {
         var photoId = $(this).parent().find('img').attr('id');
         if (!photoId) {
@@ -127,20 +158,21 @@ $(document).ready(function () {
         });
 
     });
+  }
 
-});
+
 
 function afterSlideAction(jsonData) {
     var ret = JSON.parse(jsonData);
     if (ret.messageStatus === 'success') {
         var slider = $('.slick-slider:visible');
-        if (slider.slick('getSlick').slideCount > 1) {
-            slider.slick('slickRemove', slider.slick('slickCurrentSlide'));
+      //  if (slider.slick('getSlick').slideCount > 1) {
+       //     slider.slick('slickRemove', slider.slick('slickCurrentSlide'));
             // console.info('moderation was saved, remove this slide');
-        } else {
+        //} else {
             // console.info('moderation was saved, was the last slide, reload page');
             window.location.reload();
-        }
+       // }
     } else {
         console.error('moderation fucked up');
     }

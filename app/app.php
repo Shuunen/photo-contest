@@ -16,12 +16,15 @@ class App {
         $this->isAdmin = false;
         $this->isLogged = false;
         $this->currentUser = null;
+        $this->startVoteDate = '2015-09-25';
+        $this->endVoteDate = '2015-10-05';
 
         // vote are opened after September 25 & until October 25
-        $this->voteOpened = new DateTime('2015-09-25') < new DateTime("now") && new DateTime("now") <= new DateTime('2015-10-25');
+        $this->voteOpened = new DateTime($this->startVoteDate) < new DateTime("now") && new DateTime("now") <= new DateTime($this->endVoteDate);
+        $this->voteEnded = new DateTime("now") > new DateTime($this->endVoteDate);
 
         // submit are opened until September 25
-        $this->submitOpened = new DateTime("now") <= new DateTime('2015-09-25');
+        $this->submitOpened = new DateTime("now") <= new DateTime($this->startVoteDate);
 
         if (isset($_SESSION['user'])) {
             $this->currentUser = $_SESSION['user'];
@@ -207,9 +210,11 @@ class App {
 
     function storeModerationToDB($request) {
 
-        $photo = Lazer::table('photos')->where('photoid', '=', $request['photoId'])->find();
+      $photo = Lazer::table('photos')->where('photoid', '=', $request['photoId'])->find();
+      if(count($photo) === 1 && $request['photoId'] != "undefined") {
         $photo->status = $request['newStatus'];
         $photo->save();
+      }
     }
 
     function handleRemovePhoto($request) {
@@ -277,7 +282,7 @@ class App {
                     $this->handleRate($request);
                 } else if ($this->isAdmin && $type === 'moderation') {
                     $this->handleModeration($request);
-                } else if ($this->isAdmin && $type === 'template') {
+                } else if ($type === 'template') {
                     $this->handleTemplate($request);
                 }
             } else if ($type === 'login') {

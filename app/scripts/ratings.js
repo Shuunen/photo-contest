@@ -1,5 +1,5 @@
-$(document).ready(function () {
-
+//$(document).ready(function () {
+function initRating(){
     $('input.rating').rating()
         .on('change', function (event) {
             var category = $(event.currentTarget).parents(".rating-category");
@@ -11,4 +11,5 @@ $(document).ready(function () {
                 }
             });
         });
-});
+}
+//});

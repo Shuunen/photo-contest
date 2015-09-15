@@ -270,11 +270,28 @@ h2 .badge {
   right: 0;
   bottom: 0;
   text-align: center;
+  background-color: rgba(0,0,0,0.75);
 
   .moderation-controls{
+    position: absolute;
     bottom:20px;
     left:0;
     right:0;
+  }
+
+  .ratings,
+  .countdown-container{
     position: absolute;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+    background-color: rgba(0,0,0,0.75);
+  }
+  .ratings{
+    margin:0;
+    padding: 20px 0;
+    .category{
+      font-size:18px;
+    }
   }
 }
