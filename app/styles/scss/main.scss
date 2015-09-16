@@ -187,6 +187,7 @@ h2 .badge {
     flex-wrap: wrap;
     justify-content: center;
     margin: 20px 0;
+    height: 40px;
     button {
         margin-right: 15px;
     }
@@ -259,28 +260,14 @@ h2 .badge {
     z-index: 10;
     text-align: center;
     background-color: rgba(0,0,0,0.75);
-    //transition: opacity .2s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
-    .moderation-controls{
-        position: absolute;
-        bottom:20px;
-        left:0;
-        right:0;
-    }
-
-    .ratings,
-    .countdown-container{
-        position: absolute;
-        bottom: 0px;
-        left: 0;
-        right: 0;
-        background-color: rgba(0,0,0,0.75);
-    }
-    .ratings{
-        margin:0;
-        padding: 20px 0;
-        .category{
-            font-size:18px;
-        }
+    & > img {
+        flex: 1;
+        object-fit: contain;
+        margin-top: 20px;
+        max-height: calc(100vh - 100px);
     }
 }
