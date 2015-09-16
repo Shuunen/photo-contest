@@ -264,10 +264,16 @@ h2 .badge {
     flex-direction: column;
     justify-content: space-between;
 
-    & > img {
-        flex: 1;
-        object-fit: contain;
-        margin-top: 20px;
-        max-height: calc(100vh - 100px);
+    .photo-container{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: calc(100vh - 100px);;
+      margin-top: 20px;
+      & > img {
+          flex: 1;
+          object-fit: contain;
+          max-height: calc(100vh - 100px);
+      }
     }
 }

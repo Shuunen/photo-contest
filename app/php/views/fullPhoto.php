@@ -3,7 +3,9 @@
   $photoPath = './photos/';
 ?>
 <div class="item">
-  <img id="<?php echo $photo->photoid ?>" src="<?php echo $photoPath . $photo->userid . '/' . $photo->filepath ?>">
+  <div class="photo-container">
+    <img id="<?php echo $photo->photoid ?>" src="<?php echo $photoPath . $photo->userid . '/' . $photo->filepath ?>">
+  </div>
 
 
   <?php if($app->currentUser->role === 'admin'):?>
