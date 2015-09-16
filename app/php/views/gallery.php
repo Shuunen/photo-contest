@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 $photos = $app->getAllPhotos();
 // $photosArray = $photos->asArray();
 // $photoRandom = $photosArray[array_rand($photosArray)];
@@ -7,25 +7,17 @@ $photoPath = './photos/';
 ?>
 
 <?php if (count($photos)) : ?>
-    <div class="gallery-filters">
-        <button class="btn btn-primary all">all</button>
-        <button class="btn btn-primary user">User</button>
-        <button class="btn btn-primary censored">Censored</button>
-        <button class="btn btn-primary vote">Vote</button>
-    </div>
     <div class="gallery grid">
         <div class="grid-sizer"></div>
         <?php foreach ($photos as $i => $photo) : ?>
             <?php if ($photo->photoid) : ?>
                 <?php
-                $class = "";
-                if ($app->isAdmin && $photo->status === 'censored') {
-                    $class = "censored";
+                $class = $photo->status;
+                if ($app->currentUser->userid != $photo->userid && $photo->status === 'approved') {
+                    $class .= " vote";
                 }
-                if ($app->currentUser->userid != $photo->userid) {
-                    $class = "vote";
-                } else {
-                    $class = "user";
+                if ($app->currentUser->userid === $photo->userid) {
+                    $class .= " my-photos";
                 }
                 ?>
                 <div class="grid-item <?php print $class; ?>">
@@ -33,7 +25,9 @@ $photoPath = './photos/';
                     $photoThumb = $photoPath . $photo->userid . '/' . 'thumbs/' . $photo->filepath;
                     $photoFull = $photoPath . $photo->userid . '/' . $photo->filepath;
                     ?>
-                    <img id="<?php echo $photo->photoid ?>" data-layzr="<?php echo $photoThumb ?>" data-thumb="<?php echo $photoThumb ?>" data-full="<?php echo $photoFull ?>">
+                    <?php if ($app->isAdmin || $app->isUser && $photo->status === 'approved' || $app->isUser && $photo->userid === $app->currentUser->userid) : ?>
+                        <img id="<?php echo $photo->photoid ?>" data-layzr="<?php echo $photoThumb ?>" data-thumb="<?php echo $photoThumb ?>" data-full="<?php echo $photoFull ?>">
+                    <?php endif; ?>
                 </div>
             <?php endif; ?>
         <?php endforeach; ?>

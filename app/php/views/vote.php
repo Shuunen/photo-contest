@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 $photos = $app->getAllPhotos();
 // $photosArray = $photos->asArray();
 // $photoRandom = $photosArray[array_rand($photosArray)];

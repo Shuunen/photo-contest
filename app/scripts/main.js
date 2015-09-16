@@ -57,30 +57,11 @@ $(document).ready(function () {
     });
 
 
-    $('.gallery-filters .all').click(function () {
-        $('.gallery').isotope({
-            filter: '*'
+    $('.grid-filter').click(function () {
+        $('.grid').isotope({
+            filter: $(this).data('filter')
         });
     });
-
-    $('.gallery-filters .vote').click(function () {
-        $('.gallery').isotope({
-            filter: '.vote'
-        });
-    });
-
-    $('.gallery-filters .user').click(function () {
-        $('.gallery').isotope({
-            filter: '.user'
-        });
-    });
-
-    $('.gallery-filters .censored').click(function () {
-        $('.gallery').isotope({
-            filter: '.censored'
-        });
-    });
-
 
     /* Fix for first time opening slider in modal : if the modal is hidden, there is no room to calculate slider width */
     $('[data-toggle="modal"]').click(function () {

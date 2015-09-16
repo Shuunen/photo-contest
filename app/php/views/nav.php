@@ -6,15 +6,23 @@
         </div>
 
         <ul class="nav navbar-nav navbar-right">
-            <?php if ($app->isAdmin): ?>
-                <?php $photos = $app->getPhotosToModerate(); ?>
+
+            <li><a href="#" class="grid-filter btn btn-info" data-filter="*">All photos</a></li>
+            <li><a href="#" class="grid-filter btn btn-info" data-filter=".my-photos">My photos</a></li>
+            <?php if ($app->isAdmin) : ?>
+                <?php $photosToModerate = $app->getPhotosToModerate(); ?>
                 <li>
-                    <a href="#" data-toggle="modal" data-target="#moderatePhotosModal">Moderate photos
-                        <?php if (count($photos)) : ?>
-                            <span class="badge"><?php echo count($photos) ?></span>
+                    <a href="#" class="grid-filter btn btn-info" data-filter=".submitted">To moderate
+                        <?php if (count($photosToModerate)) : ?>
+                            <span class="badge"><?php echo count($photosToModerate) ?></span>
                         <?php endif; ?>
                     </a>
                 </li>
+            <?php endif; ?>
+            <li><a href="#" class="grid-filter btn btn-info" data-filter=".vote">Vote</a></li>
+
+
+            <?php if ($app->isAdmin): ?>
                 <!--<li><a href="#" data-toggle="modal" data-target="#tablePhotosModal">Table photos</a></li>-->
             <?php endif; ?>
             <?php if ($app->submitOpened) : ?>
@@ -24,9 +32,3 @@
         </ul>
     </div><!-- /.container-fluid -->
 </nav>
-
-<?php
-if ($app->isAdmin) {
-    require 'moderatePhotosModal.php';
-    // require 'tablePhotosModal.php';
-}

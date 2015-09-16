@@ -1325,11 +1325,11 @@ a.bg-success:focus {
   background-color: #316a31; }
 
 .bg-info {
-  background-color: #5bc0de; }
+  background-color: #357C91; }
 
 a.bg-info:hover,
 a.bg-info:focus {
-  background-color: #31b0d5; }
+  background-color: #275c6c; }
 
 .bg-warning {
   background-color: #ca953d; }
@@ -2301,11 +2301,11 @@ table th[class*="col-"] {
 .table > tfoot > tr > th.info,
 .table > tfoot > tr.info > td,
 .table > tfoot > tr.info > th {
-  background-color: #5bc0de; }
+  background-color: #357C91; }
 
 .table-hover > tbody > tr > td.info:hover,
 .table-hover > tbody > tr > th.info:hover, .table-hover > tbody > tr.info:hover > td, .table-hover > tbody > tr:hover > .info, .table-hover > tbody > tr.info:hover > th {
-  background-color: #46b8da; }
+  background-color: #2e6c7e; }
 
 .table > thead > tr > td.warning,
 .table > thead > tr > th.warning, .table > thead > tr.warning > td, .table > thead > tr.warning > th,
@@ -2998,31 +2998,31 @@ a.btn.disabled, fieldset[disabled] a.btn {
 
 .btn-info {
   color: #fff;
-  background-color: #5bc0de;
+  background-color: #357C91;
   border-color: transparent; }
   .btn-info:focus, .btn-info.focus {
     color: #fff;
-    background-color: #31b0d5;
+    background-color: #275c6c;
     border-color: transparent; }
   .btn-info:hover {
     color: #fff;
-    background-color: #31b0d5;
+    background-color: #275c6c;
     border-color: transparent; }
   .btn-info:active, .btn-info.active, .open > .btn-info.dropdown-toggle {
     color: #fff;
-    background-color: #31b0d5;
+    background-color: #275c6c;
     border-color: transparent; }
     .btn-info:active:hover, .btn-info:active:focus, .btn-info:active.focus, .btn-info.active:hover, .btn-info.active:focus, .btn-info.active.focus, .open > .btn-info.dropdown-toggle:hover, .open > .btn-info.dropdown-toggle:focus, .open > .btn-info.dropdown-toggle.focus {
       color: #fff;
-      background-color: #269abc;
+      background-color: #1e4652;
       border-color: transparent; }
   .btn-info:active, .btn-info.active, .open > .btn-info.dropdown-toggle {
     background-image: none; }
   .btn-info.disabled, .btn-info.disabled:hover, .btn-info.disabled:focus, .btn-info.disabled.focus, .btn-info.disabled:active, .btn-info.disabled.active, .btn-info[disabled], .btn-info[disabled]:hover, .btn-info[disabled]:focus, .btn-info[disabled].focus, .btn-info[disabled]:active, .btn-info[disabled].active, fieldset[disabled] .btn-info, fieldset[disabled] .btn-info:hover, fieldset[disabled] .btn-info:focus, fieldset[disabled] .btn-info.focus, fieldset[disabled] .btn-info:active, fieldset[disabled] .btn-info.active {
-    background-color: #5bc0de;
+    background-color: #357C91;
     border-color: transparent; }
   .btn-info .badge {
-    color: #5bc0de;
+    color: #357C91;
     background-color: #fff; }
 
 .btn-warning {
@@ -4236,9 +4236,9 @@ a.label:hover, a.label:focus {
     background-color: #316a31; }
 
 .label-info {
-  background-color: #5bc0de; }
+  background-color: #357C91; }
   .label-info[href]:hover, .label-info[href]:focus {
-    background-color: #31b0d5; }
+    background-color: #275c6c; }
 
 .label-warning {
   background-color: #ca953d; }
@@ -4379,7 +4379,7 @@ a.thumbnail.active {
     color: #d2d2d2; }
 
 .alert-info {
-  background-color: #5bc0de;
+  background-color: #357C91;
   border-color: transparent;
   color: #EBEBEB; }
   .alert-info hr {
@@ -4460,7 +4460,7 @@ a.thumbnail.active {
     background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent); }
 
 .progress-bar-info {
-  background-color: #5bc0de; }
+  background-color: #357C91; }
   .progress-striped .progress-bar-info {
     background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
     background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
@@ -4611,7 +4611,7 @@ button.list-group-item-success {
 
 .list-group-item-info {
   color: #EBEBEB;
-  background-color: #5bc0de; }
+  background-color: #357C91; }
 
 a.list-group-item-info,
 button.list-group-item-info {
@@ -4623,7 +4623,7 @@ button.list-group-item-info {
   button.list-group-item-info:hover,
   button.list-group-item-info:focus {
     color: #EBEBEB;
-    background-color: #46b8da; }
+    background-color: #2e6c7e; }
   a.list-group-item-info.active, a.list-group-item-info.active:hover, a.list-group-item-info.active:focus,
   button.list-group-item-info.active,
   button.list-group-item-info.active:hover,
@@ -4943,12 +4943,12 @@ button.list-group-item-danger {
   border-color: transparent; }
   .panel-info > .panel-heading {
     color: #EBEBEB;
-    background-color: #5bc0de;
+    background-color: #357C91;
     border-color: transparent; }
     .panel-info > .panel-heading + .panel-collapse > .panel-body {
       border-top-color: transparent; }
     .panel-info > .panel-heading .badge {
-      color: #5bc0de;
+      color: #357C91;
       background-color: #EBEBEB; }
   .panel-info > .panel-footer + .panel-collapse > .panel-body {
     border-bottom-color: transparent; }
@@ -5833,7 +5833,7 @@ body {
 
 .text-info,
 .text-info:hover {
-  color: #5bc0de; }
+  color: #357C91; }
 
 .page-header {
   border-bottom-color: #4E5D6C; }
@@ -6016,7 +6016,13 @@ h3 {
 h1, h2, h3 {
   text-align: center; }
 
+.grid-filters {
+  margin-left: 10px;
+  margin-top: 10px; }
+
 .grid {
+  margin-left: 10px;
+  margin-top: 10px;
   /* Light spot selector
   &:hover img {
       opacity: 0.8;
@@ -6092,7 +6098,11 @@ h1, h2, h3 {
 .navbar-default {
   background-color: #383838;
   border-bottom: 1px solid #222;
-  /*background-color: transparent;*/ }
+  margin-bottom: 0; }
+  .navbar-default .navbar-brand {
+    line-height: 23px; }
+  .navbar-default .navbar-nav > li > a {
+    height: 42px; }
   .navbar-default .navbar-text {
     margin-left: 0;
     color: darkgrey; }

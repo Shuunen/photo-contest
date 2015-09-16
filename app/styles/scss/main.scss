@@ -41,7 +41,14 @@ h1, h2, h3 {
     text-align: center;
 }
 
+.grid-filters {
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
 .grid {
+    margin-left: 10px;
+    margin-top: 10px;
     & > .grid-item {
         cursor: pointer;
         width:200px;
@@ -144,7 +151,9 @@ h1, h2, h3 {
 .navbar-default {
     background-color: #383838;
     border-bottom: 1px solid #222;
-    /*background-color: transparent;*/
+    margin-bottom: 0;
+    .navbar-brand { line-height: 23px; }
+    .navbar-nav > li > a { height: 42px; }
     .navbar-text {
         margin-left: 0;
         color: darkgrey;
