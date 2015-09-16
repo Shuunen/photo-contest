@@ -6016,12 +6016,7 @@ h3 {
 h1, h2, h3 {
   text-align: center; }
 
-.gallery {
-  margin-top: 30px;
-  font-size: 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+.grid {
   /* Light spot selector
   &:hover img {
       opacity: 0.8;
@@ -6032,15 +6027,20 @@ h1, h2, h3 {
       }
   }
   */ }
-  .gallery > img {
+  .grid > .grid-item {
     cursor: pointer;
-    margin-right: 10px;
+    width: 200px;
+    height: 200px;
+    text-align: center;
+    border: 1px solid black;
     margin-bottom: 10px;
-    -webkit-transform: scale(1);
-    transition: .2s transform; }
-    .gallery > img:hover {
-      -webkit-transform: scale(1.05);
-      z-index: 100; }
+    transition: border .2s; }
+    .grid > .grid-item:hover {
+      border: 1px solid lightgray; }
+    .grid > .grid-item > img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover; }
 
 .gallery-slider {
   margin: 0;
@@ -6108,24 +6108,6 @@ h2 .badge {
 .alert-info {
   background-color: rgba(91, 192, 222, 0.7); }
 
-.modal.fullscreen {
-  padding: 0 !important; }
-  .modal.fullscreen .modal-dialog {
-    padding: 20px;
-    margin: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden; }
-    .modal.fullscreen .modal-dialog .modal-content {
-      height: 100%;
-      background-color: #313437; }
-      .modal.fullscreen .modal-dialog .modal-content .modal-body {
-        height: 100%; }
-        .modal.fullscreen .modal-dialog .modal-content .modal-body + button {
-          position: absolute;
-          bottom: 20px;
-          right: 20px; }
-
 .countdown-container {
   display: flex;
   flex-wrap: wrap;
@@ -6173,11 +6155,14 @@ h2 .badge {
   background-repeat: no-repeat;
   background-color: rgba(0, 0, 0, 0.7);
   text-align: center;
-  margin-bottom: 10px;
   cursor: pointer;
   opacity: 1;
+  z-index: 10;
   -webkit-transform: scale(1);
-  transition: transform .2s, opacity .2s; }
+  transition: transform .2s, opacity .2s;
+  position: fixed;
+  top: 0;
+  left: 0; }
   .fullscreen-image.mini {
     height: 100px;
     -webkit-transform: scale(0); }
@@ -6189,5 +6174,32 @@ h2 .badge {
     margin-top: 20px;
     width: 100%;
     object-fit: contain; }
+
+.fullPhoto .item {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.75); }
+  .fullPhoto .item .moderation-controls {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0; }
+  .fullPhoto .item .ratings,
+  .fullPhoto .item .countdown-container {
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.75); }
+  .fullPhoto .item .ratings {
+    margin: 0;
+    padding: 20px 0; }
+    .fullPhoto .item .ratings .category {
+      font-size: 18px; }
 
 /*# sourceMappingURL=main.css.map */

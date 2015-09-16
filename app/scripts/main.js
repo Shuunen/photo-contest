@@ -2,55 +2,85 @@
 
 $(document).ready(function () {
 
-    $('.gallery-slider').slick({
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        // asNavFor: '.slider-for',
-        // arrows: false,
-        dots: false,
-        centerMode: true,
-        // centerPadding: '100px',
-        focusOnSelect: true,
-        // lazyLoad: 'ondemand', // or progressive
-        // variableWidth: true,
-        // adaptiveHeight: true,
-        speed: 500,
-        fade: true,
-        cssEase: 'linear'
-    });
-
     $('.gallery img').click(function () {
-        console.log('clicked on thumb, showing fullscreen image');
-        $(this).parent().find('.fullscreen-image').remove();
-        var container = document.createElement('div');
-        container.classList.add('fullscreen-image', 'mini');
-        /*el.style.backgroundImage = 'url("'+ $(this).data('thumb') + '")';
-         el.style.backgroundImage = 'url("./images/loader.gif")';*/
-        var image = document.createElement('img');
-        image.setAttribute('src', './images/loader.gif');
-        image.setAttribute('data-layzr', $(this).data('full'));
-        container.appendChild(image);
-        this.insertAdjacentElement('afterend', container);
 
-        var layzr = new Layzr({
-            container: '.fullscreen-image',
-            callback: function () {
-                console.log('fullscreen image loaded');
-                container.classList.remove('mini');
-                setTimeout(function () {
-                    smoothScroll(container);
-                }, 300);
+        console.log('clicked on thumb, showing fullscreen image');
+        /*
+         $(this).parent().find('.fullscreen-image').remove();
+
+         var container = document.createElement('div');
+         container.classList.add('fullscreen-image', 'mini');
+
+         var image = document.createElement('img');
+         image.setAttribute('src', './images/loader.gif');
+         image.setAttribute('data-layzr', $(this).data('full'));
+         container.appendChild(image);
+
+         this.insertAdjacentElement('afterend', container);
+         */
+
+        $.ajax({
+            type: 'get',
+            data: 'type=template&template=fullPhoto&photoId=' + $(this).attr('id'),
+            success: function (data) {
+                //console.log(data);
+                $('.fullPhoto').html(data);
+                initFullPhoto();
+                initRating();
+                initModeration();
+                $('.fullPhoto .item img').click(function () {
+                    $('.fullPhoto').html('');
+                });
             }
         });
+        /*
+         var layzr = new Layzr({
+         container: '.fullscreen-image',
+         callback: function () {
+         console.log('fullscreen image loaded');
+         container.classList.remove('mini');
+         setTimeout(function () {
+         smoothScroll(container);
+         }, 300);
+         }
+         });
 
-        $(container).click(function () {
-            var container = this;
-            $(container).addClass('closed');
-            setTimeout(function () {
-                $(container).remove();
-             }, 300);
+
+         $(container).click(function () {
+         var container = this;
+         $(container).addClass('closed');
+         setTimeout(function () {
+         $(container).remove();
+         }, 300);
+         });
+         */
+    });
+
+
+    $('.gallery-filters .all').click(function () {
+        $('.gallery').isotope({
+            filter: '*'
         });
     });
+
+    $('.gallery-filters .vote').click(function () {
+        $('.gallery').isotope({
+            filter: '.vote'
+        });
+    });
+
+    $('.gallery-filters .user').click(function () {
+        $('.gallery').isotope({
+            filter: '.user'
+        });
+    });
+
+    $('.gallery-filters .censored').click(function () {
+        $('.gallery').isotope({
+            filter: '.censored'
+        });
+    });
+
 
     /* Fix for first time opening slider in modal : if the modal is hidden, there is no room to calculate slider width */
     $('[data-toggle="modal"]').click(function () {
@@ -88,6 +118,33 @@ $(document).ready(function () {
     $('.reloadButton').click(function () {
         window.location.reload();
     });
+
+    var nbPhotos = $('.gallery [data-layzr]').size();
+    var i = 0;
+    var layzr = new Layzr({
+        container: '.gallery',
+        selector: '[data-layzr]',
+        hiddenAttr: 'data-layzr-hidden',
+        callback: function () {
+            if (++i === nbPhotos) {
+                console.log('all images loaded');
+                setTimeout(function () {
+                    $('.gallery').isotope({
+                        itemSelector: '.grid-item',
+                        // percentPosition: true,
+                        masonry: {
+                            gutter: 10,
+                            columnWidth: 200
+                        }
+                    });
+                }, 100);
+            }
+        }
+    });
+
+});
+
+function initFullPhoto() {
 
     $('.countdown.voteOpened').countdown('2015/09/25')
         .on('update.countdown', function (event) {
@@ -133,29 +190,11 @@ $(document).ready(function () {
             data: 'type=removePhoto&photoId=' + photoId + '&ajax=true',
             success: afterSlideAction
         });
-
     });
 
-    var layzr = new Layzr({
-        container: '.gallery',
-        selector: '[data-layzr]',
-        hiddenAttr: 'data-layzr-hidden'
-    });
-
-});
+}
 
 function afterSlideAction(jsonData) {
     var ret = JSON.parse(jsonData);
-    if (ret.messageStatus === 'success') {
-        var slider = $('.slick-slider:visible');
-        if (slider.slick('getSlick').slideCount > 1) {
-            slider.slick('slickRemove', slider.slick('slickCurrentSlide'));
-            console.info('moderation was saved, remove this slide');
-        } else {
-            console.info('moderation was saved, was the last slide, reload page');
-            window.location.reload();
-        }
-    } else {
-        console.error('moderation fucked up');
-    }
+    console.log('after slide ret', ret);
 }

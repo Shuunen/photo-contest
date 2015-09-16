@@ -1,5 +1,5 @@
-<?php
-$photos = $app->getPhotosToVote();
+﻿<?php
+$photos = $app->getAllPhotos();
 // $photosArray = $photos->asArray();
 // $photoRandom = $photosArray[array_rand($photosArray)];
 $categories = $app->getCategories();
@@ -7,6 +7,12 @@ $photoPath = './photos/';
 ?>
 
 <?php if (count($photos)) : ?>
+    <div class="gallery-filters">
+        <button class="btn btn-primary all">all</button>
+        <button class="btn btn-primary user">User</button>
+        <button class="btn btn-primary censored">Censored</button>
+        <button class="btn btn-primary vote">Vote</button>
+    </div>
     <div class="gallery">
         <?php foreach ($photos as $i => $photo) : ?>
             <?php if ($photo->photoid) : ?>

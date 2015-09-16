@@ -47,6 +47,10 @@ function __autoload($class_name) {
         <script type="text/javascript" src="../bower_components/jquery.countdown/dist/jquery.countdown.min.js"></script>
         <script type="text/javascript" src="../bower_components/layzr.js/dist/layzr.min.js"></script>
         <script type="text/javascript" src="../bower_components/smoothScroll/smoothscroll.min.js"></script>
+        <script type="text/javascript" src="../bower_components/isotope/dist/isotope.pkgd.min.js"></script>
+        <!-- endbuild -->
+
+        <!-- build:js scripts/app.js -->
         <script type="text/javascript" src="./scripts/main.js"></script>
         <script type="text/javascript" src="./scripts/ratings.js"></script>
         <script type="text/javascript" src="./scripts/upload.js"></script>
