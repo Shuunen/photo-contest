@@ -257,6 +257,40 @@ class App {
         }
     }
 
+    function handleCreateUser($request){
+      if(!isset($request['name']) || $request['name'] === ""){
+        $_SESSION['message'] = 'No name set';
+        $_SESSION['messageStatus'] = 'error';
+      }
+
+      if(!isset($request['email']) || $request['email'] === ""){
+        $_SESSION['message'] = 'no email set';
+        $_SESSION['messageStatus'] = 'error';
+      }
+
+      if(isset($request['name']) && $request['name'] != "" && isset($request['email']) && $request['email'] != ""){
+          $existingUser = Lazer::table('users')->where('email', '=', $request['email'])->find();
+        if(count($existingUser) == 0){
+
+          $user = Lazer::table('users');
+
+          $user->userid = $this->getGUID();
+          $user->name = $request['name'];
+          $user->email = $request['email'];
+          $user->pass = $this->randomPassword();
+          $user->role = isset($request['role'])? $request['role'] : 'user';
+          $user->save();
+
+          $_SESSION['message'] = 'New user '.$user->name.' with the email '.$user->email.' and the password : '.$user->pass . ' has been created.';
+          $_SESSION['messageStatus'] = 'success';
+        }else{
+          $_SESSION['message'] = 'User '.$request['name'].' with the email '.$request['email'].' already exists';
+          $_SESSION['messageStatus'] = 'error';
+        }
+      }
+
+    }
+
     function handleRequest() {
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
@@ -284,6 +318,8 @@ class App {
                     $this->handleModeration($request);
                 } else if ($type === 'template') {
                     $this->handleTemplate($request);
+                } else if($type === 'createUser'){
+                    $this->handleCreateUser($request);
                 }
             } else if ($type === 'login') {
                 $this->handleLogin($request);
