@@ -8,19 +8,19 @@
         <ul class="nav navbar-nav navbar-right">
 
             <li><a href="#" class="grid-filter btn btn-info" data-filter="*">All photos</a></li>
-            <li><a href="#" class="grid-filter btn btn-info" data-filter=".my-photos">My photos</a></li>
+            <li><a href="#my-photos" class="grid-filter btn btn-info" data-filter=".my-photos">My photos</a></li>
             <?php if ($app->isAdmin) : ?>
                 <?php $photosToModerate = $app->getPhotosToModerate(); ?>
                 <li>
-                    <a href="#" class="grid-filter btn btn-info" data-filter=".submitted">To moderate
+                    <a href="#submitted" class="grid-filter btn btn-info" data-filter=".submitted">To moderate
                         <?php if (count($photosToModerate)) : ?>
                             <span class="badge"><?php echo count($photosToModerate) ?></span>
                         <?php endif; ?>
                     </a>
                 </li>
+                <li><a href="#censored" class="grid-filter btn btn-info" data-filter=".censored">Censored</a></li>
             <?php endif; ?>
-            <li><a href="#" class="grid-filter btn btn-info" data-filter=".vote">Vote</a></li>
-
+            <li><a href="#vote" class="grid-filter btn btn-info" data-filter=".vote">Vote</a></li>
 
             <?php if ($app->isAdmin): ?>
                 <!--<li><a href="#" data-toggle="modal" data-target="#tablePhotosModal">Table photos</a></li>-->

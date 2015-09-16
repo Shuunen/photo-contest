@@ -1,4 +1,4 @@
-/* global afterSlideAction */
+/* global afterModeration */
 
 function initModeration() {
     $('.moderation-controls button').mousedown(function (event) {
@@ -9,7 +9,7 @@ function initModeration() {
         $.ajax({
             type: 'get',
             data: 'type=moderation&photoId=' + photoId + '&action=' + action + '&ajax=true',
-            success: afterSlideAction
+            success: afterModeration
         });
     });
 }

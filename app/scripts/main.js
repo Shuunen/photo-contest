@@ -86,6 +86,17 @@ $(document).ready(function () {
         });
     });
 
+
+    $('.countdown.submitOpened').countdown(voteOpenDate)
+        .on('update.countdown', function (event) {
+            var totalHours = event.offset.totalDays * 24 + event.offset.hours;
+            var totalSeconds = totalHours * 3600 + event.offset.seconds;
+            var format = '%-D day%!D or ' + totalSeconds + ' seconds if you\'re a robot.';
+            $(this).html(event.strftime(format));
+        }).on('finish.countdown', function () {
+        window.location.reload();
+    });
+
     $('#logoutLink').click(function () {
         $.ajax({
             type: 'get',
@@ -118,6 +129,13 @@ $(document).ready(function () {
                             columnWidth: 200
                         }
                     });
+                    var categoryHash = window.location.hash;
+                    if(categoryHash!=""){
+                      $('.grid').isotope({
+                          filter: '.'+categoryHash.substr(1)
+                      });
+                    }
+
                 }, 100);
             }
         }
@@ -125,9 +143,11 @@ $(document).ready(function () {
 
 });
 
+var voteOpenDate = '2015/09/25';
+
 function initFullPhoto() {
 
-    $('.countdown.voteOpened').countdown('2015/09/25')
+    $('.countdown.voteOpened').countdown(voteOpenDate)
         .on('update.countdown', function (event) {
             var format = '';
             if (event.offset.weeks > 0) {
@@ -150,16 +170,6 @@ function initFullPhoto() {
         window.location.reload();
     });
 
-    $('.countdown.submitOpened').countdown('2015/09/25')
-        .on('update.countdown', function (event) {
-            var totalHours = event.offset.totalDays * 24 + event.offset.hours;
-            var totalSeconds = totalHours * 3600 + event.offset.seconds;
-            var format = '%-D day%!D or ' + totalSeconds + ' seconds if you\'re a robot.';
-            $(this).html(event.strftime(format));
-        }).on('finish.countdown', function () {
-        window.location.reload();
-    });
-
     $('.delete-photo').click(function () {
         var photoId = $(this).parent().find('img').attr('id');
         if (!photoId) {
@@ -169,13 +179,14 @@ function initFullPhoto() {
         $.ajax({
             type: 'get',
             data: 'type=removePhoto&photoId=' + photoId + '&ajax=true',
-            success: afterSlideAction
+            success: afterModeration
         });
     });
 
 }
 
-function afterSlideAction(jsonData) {
+function afterModeration(jsonData) {
     var ret = JSON.parse(jsonData);
     console.log('after slide ret', ret);
+    window.location.reload();
 }

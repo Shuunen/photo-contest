@@ -8,11 +8,11 @@
 
   <?php if($app->currentUser->role === 'admin'):?>
     <div class="moderation-controls">
-        <button data-action="approve" type="button" class="btn btn-success">
-            <span class="fa fa-check-circle" aria-hidden="true"></span> Approve
+        <button data-action="approve" type="button" class="btn btn-success" <?php print $photo->status=== "approved"? "disabled":""; ?>>
+            <span class="fa fa-check-circle" aria-hidden="true"></span> Approve<?php print $photo->status=== "approved"? "d":""; ?>
         </button>
-        <button data-action="censor" type="button" class="btn btn-warning">
-            <span class="fa fa-minus-circle" aria-hidden="true"></span> Censor
+        <button data-action="censor" type="button" class="btn btn-warning" <?php print $photo->status=== "censored"? "disabled":""; ?>>
+            <span class="fa fa-minus-circle" aria-hidden="true"></span> Censor<?php print $photo->status=== "censored"? "ed":""; ?>
         </button>
     </div>
 

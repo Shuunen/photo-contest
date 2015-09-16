@@ -12,23 +12,24 @@ $photoPath = './photos/';
         <?php foreach ($photos as $i => $photo) : ?>
             <?php if ($photo->photoid) : ?>
                 <?php
-                $class = $photo->status;
-                if ($app->currentUser->userid != $photo->userid && $photo->status === 'approved') {
-                    $class .= " vote";
-                }
-                if ($app->currentUser->userid === $photo->userid) {
-                    $class .= " my-photos";
-                }
+                  $class = $photo->status;
+                  if ($app->currentUser->userid != $photo->userid && $photo->status === 'approved') {
+                      $class .= " vote";
+                  }
+                  if ($app->currentUser->userid === $photo->userid) {
+                      $class .= " my-photos";
+                  }
                 ?>
-                <div class="grid-item <?php print $class; ?>">
-                    <?php
-                    $photoThumb = $photoPath . $photo->userid . '/' . 'thumbs/' . $photo->filepath;
-                    $photoFull = $photoPath . $photo->userid . '/' . $photo->filepath;
-                    ?>
-                    <?php if ($app->isAdmin || $app->isUser && $photo->status === 'approved' || $app->isUser && $photo->userid === $app->currentUser->userid) : ?>
+
+                <?php if ($app->isAdmin || $app->isUser && $photo->status === 'approved' || $app->isUser && $photo->userid === $app->currentUser->userid) : ?>
+                  <div class="grid-item <?php print $class; ?>">
+                      <?php
+                      $photoThumb = $photoPath . $photo->userid . '/' . 'thumbs/' . $photo->filepath;
+                      $photoFull = $photoPath . $photo->userid . '/' . $photo->filepath;
+                      ?>
                         <img id="<?php echo $photo->photoid ?>" data-layzr="<?php echo $photoThumb ?>" data-thumb="<?php echo $photoThumb ?>" data-full="<?php echo $photoFull ?>">
-                    <?php endif; ?>
-                </div>
+                  </div>
+                <?php endif; ?>
             <?php endif; ?>
         <?php endforeach; ?>
     </div>
