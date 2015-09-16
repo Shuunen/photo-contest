@@ -19,6 +19,10 @@ if (!$app->isLogged) {
         require 'uploadModal.php';
     }
 
+    if ($app->isAdmin) {
+        require 'addUserModal.php';
+    }
+
 }
 ?>
 </div>

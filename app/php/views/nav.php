@@ -24,6 +24,7 @@
 
             <?php if ($app->isAdmin): ?>
                 <!--<li><a href="#" data-toggle="modal" data-target="#tablePhotosModal">Table photos</a></li>-->
+                <li><a href="#" data-toggle="modal" data-target="#addUserModal">Add User</a></li>
             <?php endif; ?>
             <?php if ($app->submitOpened) : ?>
                 <li><a href="#" data-toggle="modal" data-target="#uploadModal">Submit photos</a></li>

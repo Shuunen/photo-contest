@@ -86,6 +86,23 @@ $(document).ready(function () {
         });
     });
 
+    $('form.add-user-form').submit(function (event) {
+          event.preventDefault();
+          var data = $(this).serialize();
+          data += '&ajax=true';
+          $.ajax({
+              type: 'get',
+              data: data,
+              success: function (data) {
+                  $('form.add-user-form .message').removeClass('alert-danger','alert-success');
+                  data = JSON.parse(data);
+                  console.log(data);
+                  console.log(data.message);
+                  console.log(data.messageStatus);
+                  $('form.add-user-form .message').text(data.message).addClass('alert').addClass(data.messageStatus === 'success'?'alert-success':'alert-danger');
+              }
+          });
+      });
 
     $('.countdown.submitOpened').countdown(voteOpenDate)
         .on('update.countdown', function (event) {
