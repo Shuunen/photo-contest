@@ -145,8 +145,7 @@ $(document).ready(function () {
                         itemSelector: '.grid-item',
                         // percentPosition: true,
                         masonry: {
-                            gutter: 10,
-                            columnWidth: 200
+                            gutter: 5
                         }
                     });
                     var categoryHash = window.location.hash;

@@ -5987,12 +5987,26 @@ a.list-group-item-danger.active:hover, a.list-group-item-danger.active:focus {
   border: none; }
 
 body {
-  background-repeat: no-repeat;
-  background-position: 50%;
-  background-size: 40%;
-  z-index: 0;
+  background: linear-gradient(230deg, #444, #333, #111);
+  background-size: 300% 300%;
+  -webkit-animation: MoveBG 30s ease infinite;
+  animation: MoveBG 30s ease infinite;
   font-size: 16px; }
 
+@-webkit-keyframes MoveBG {
+  0% {
+    background-position: 0% 84%; }
+  50% {
+    background-position: 100% 16%; }
+  100% {
+    background-position: 0% 84%; } }
+@keyframes MoveBG {
+  0% {
+    background-position: 0% 84%; }
+  50% {
+    background-position: 100% 16%; }
+  100% {
+    background-position: 0% 84%; } }
 .modal-backdrop {
   z-index: 0; }
 
@@ -6022,7 +6036,7 @@ h1, h2, h3 {
 
 .grid {
   margin-left: 10px;
-  margin-top: 10px;
+  margin-top: 5px;
   /* Light spot selector
   &:hover img {
       opacity: 0.8;
@@ -6035,18 +6049,27 @@ h1, h2, h3 {
   */ }
   .grid > .grid-item {
     cursor: pointer;
-    width: 200px;
+    width: calc(20% - 10px);
+    min-width: 150px;
     height: 200px;
     text-align: center;
     border: 1px solid black;
     margin-bottom: 10px;
-    transition: border .2s; }
+    transition: border 1s;
+    overflow: hidden; }
+    .grid > .grid-item:nth-child(2n) {
+      height: 180px; }
+    .grid > .grid-item:nth-child(3n) {
+      height: 160px; }
     .grid > .grid-item:hover {
       border: 1px solid lightgray; }
+      .grid > .grid-item:hover > img {
+        width: 110%; }
     .grid > .grid-item > img {
       height: 100%;
       width: 100%;
-      object-fit: cover; }
+      object-fit: cover;
+      transition: width 1s; }
 
 .gallery-slider {
   margin: 0;
