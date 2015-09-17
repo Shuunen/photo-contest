@@ -1,1 +1,18 @@
-[{"id":1,"userid":"ACE03122-DB01-A899-C513-39C1809817DB","name":"Romain Racamier","email":"romain.racamier","pass":"mypass","role":"admin"},{"id":2,"userid":"2DC60B8B-68B6-35B6-E330-4F7C897B5803","name":"Michel Alban","email":"michel.alban","pass":"albanPass","role":"user"},{"id":3,"userid":"9813A060-4C62-3713-D65F-47AA4EF96940","name":"Ma bite","email":"ma.bite@zboub.coma","pass":"BEUHPcdS","role":"user"},{"id":4,"userid":"128FE239-A253-F1F1-B7D8-703ECD36776D","name":"azazda","email":"ohoih@oihoh.cc","pass":"AqCOlp5p","role":"user"}]
+[
+  {
+    "id": 1,
+    "userid": "aaa-bbb-ccc",
+    "name": "John Doe",
+    "email": "john.doe",
+    "pass": "johnpass",
+    "role": "admin"
+  },
+  {
+    "id": 2,
+    "userid": "ddd-eee-fff",
+    "name": "Michel Alban",
+    "email": "michel.alban",
+    "pass": "michelpass",
+    "role": "user"
+  }
+]
