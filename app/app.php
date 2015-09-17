@@ -40,6 +40,17 @@ class App {
 
         $this->installDB();
 
+//        $results = $this->getResults();
+//
+//        foreach($results as $cat => $photos){
+//          print $cat."<br>";
+//          foreach($photos as $photoId => $rate){
+//            $photoInfo = Lazer::table('photos')->where('photoid', '=', $photoId)->find();
+//            print '<img src="'.'./photos/' . $photoInfo->userid . '/' . 'thumbs/' . $photoInfo->filepath.'">'." : ".$rate."<br>";
+//          }
+//          print "<br><br>";
+//        }
+
         $this->handleRequest();
     }
 
@@ -171,6 +182,30 @@ class App {
 
         $_SESSION['message'] = 'Rate ' . $request['photoId'] . ' for the category ' . $request['categoryId'] . ' with ' . $request['rate'];
         $_SESSION['messageStatus'] = 'success';
+    }
+
+    function getResults(){
+
+      $categories = $this->getCategories();
+      $photos = $photos = Lazer::table('photos')->where('status', '=', 'approved')->findAll();
+      $rates = [];
+      foreach($categories as $category){
+        $rates[$category->categoryid] = [];
+        foreach($photos as $photo){
+          $photoRates = Lazer::table('rates')->where('photoid', '=', $photo->photoid)->andWhere('categoryid', '=', $category->categoryid)->findAll();
+          $rates[$category->categoryid][$photo->photoid] = 0;
+          if(count($photoRates) >0){
+            foreach($photoRates as $photoRate){
+              $rates[$category->categoryid][$photo->photoid] = $photoRate->rate;
+            }
+            $rates[$category->categoryid][$photo->photoid]=$rates[$category->categoryid][$photo->photoid]/count($photoRates);
+          }
+        }
+        arsort($rates[$category->categoryid]);
+      }
+
+      return $rates;
+
     }
 
     function storeRateToDB($request) {
