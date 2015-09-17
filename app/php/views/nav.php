@@ -12,13 +12,13 @@
             <?php if ($app->isAdmin) : ?>
                 <?php $photosToModerate = $app->getPhotosToModerate(); ?>
                 <li>
-                    <a href="#submitted" class="grid-filter btn btn-info" data-filter=".submitted">To moderate
+                    <a href="#submitted" class="grid-filter btn btn-info" data-filter="[data-photostatus='submitted']">To moderate
                         <?php if (count($photosToModerate)) : ?>
-                            <span class="badge"><?php echo count($photosToModerate) ?></span>
+                            <span class="badge nbPhotosToModerate"><?php echo count($photosToModerate) ?></span>
                         <?php endif; ?>
                     </a>
                 </li>
-                <li><a href="#censored" class="grid-filter btn btn-info" data-filter=".censored">Censored</a></li>
+                <li><a href="#censored" class="grid-filter btn btn-info" data-filter="[data-photostatus='censored']">Censored</a></li>
             <?php endif; ?>
             <li><a href="#vote" class="grid-filter btn btn-info" data-filter=".vote">Vote</a></li>
 

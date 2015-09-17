@@ -6136,8 +6136,8 @@ h2 .badge {
 
 .delete-photo {
   position: absolute;
-  bottom: 0;
-  left: 0;
+  bottom: 20px;
+  left: 20px;
   transition: .3s opacity;
   opacity: .5;
   -webkit-filter: grayscale(100%); }
@@ -6198,10 +6198,19 @@ h2 .badge {
   display: flex;
   flex-direction: column;
   justify-content: space-between; }
-  .fullPhoto .item > img {
-    flex: 1;
-    object-fit: contain;
-    margin-top: 20px;
-    max-height: calc(100vh - 100px); }
+  .fullPhoto .item .photo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 100px);
+    margin-top: 20px; }
+    .fullPhoto .item .photo-container > img {
+      flex: 1;
+      object-fit: contain;
+      max-height: calc(100vh - 100px); }
+
+.status-box {
+  display: flex;
+  align-items: center; }
 
 /*# sourceMappingURL=main.css.map */
