@@ -53,22 +53,18 @@ h1, h2, h3 {
     text-align: center;
 }
 
-.grid-filters {
-    margin-left: 10px;
-    margin-top: 10px;
-}
-
 .grid {
-    margin-left: 10px;
+    margin-left: 5px;
     margin-top: 5px;
     & > .grid-item {
         cursor: pointer;
         width: calc(20% - 10px);
         min-width: 150px;
+        max-width: 250px;
         height: 200px;
         text-align: center;
         border: 1px solid black;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
         transition: border 1s;
         overflow: hidden;
         &:nth-child(2n) {
@@ -87,6 +83,7 @@ h1, h2, h3 {
             height: 100%;
             width: 100%;
             object-fit: cover;
+            object-position: 50% 20%;
             transition: width 1s;
         }
     }
