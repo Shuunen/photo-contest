@@ -192,17 +192,19 @@ class App {
 
       $categories = $this->getCategories();
       $photos = $photos = Lazer::table('photos')->where('status', '=', 'approved')->findAll();
+      $nbUsers = $photos = Lazer::table('users')->findAll()->count();
       $rates = [];
       foreach($categories as $category){
         $rates[$category->categoryid] = [];
         foreach($photos as $photo){
           $photoRates = Lazer::table('rates')->where('photoid', '=', $photo->photoid)->andWhere('categoryid', '=', $category->categoryid)->findAll();
           $rates[$category->categoryid][$photo->photoid] = 0;
-          if(count($photoRates) >0){
+          if(count($photoRates) > 0){
             foreach($photoRates as $photoRate){
-              $rates[$category->categoryid][$photo->photoid] = $photoRate->rate;
+              $rates[$category->categoryid][$photo->photoid] += $photoRate->rate;
             }
-            $rates[$category->categoryid][$photo->photoid]=$rates[$category->categoryid][$photo->photoid]/count($photoRates);
+            $rates[$category->categoryid][$photo->photoid] += ($nbUsers - count($photoRates)) * 2.5;
+            $rates[$category->categoryid][$photo->photoid] = $rates[$category->categoryid][$photo->photoid]/$nbUsers;
           }
         }
         arsort($rates[$category->categoryid]);
