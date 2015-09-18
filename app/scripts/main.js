@@ -21,7 +21,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'get',
-            data: 'type=template&template=fullPhoto&photoId=' + $(this).attr('id'),
+            data: 'type=template&template=fullPhoto&photoId=' + $(this).data('photoid'),
             success: function (data) {
                 //console.log(data);
                 $('.fullPhoto').html(data);
@@ -58,8 +58,11 @@ $(document).ready(function () {
 
 
     $('.grid-filter').click(function () {
+        $('.grid-filter').removeClass('active');
+        $(this).addClass('active');
+        var filter = $(this).data('filter');
         $('.grid').isotope({
-            filter: $(this).data('filter')
+            filter: filter
         });
     });
 
@@ -87,22 +90,22 @@ $(document).ready(function () {
     });
 
     $('form.add-user-form').submit(function (event) {
-          event.preventDefault();
-          var data = $(this).serialize();
-          data += '&ajax=true';
-          $.ajax({
-              type: 'get',
-              data: data,
-              success: function (data) {
-                  $('form.add-user-form .message').removeClass('alert-danger','alert-success');
-                  data = JSON.parse(data);
-                  console.log(data);
-                  console.log(data.message);
-                  console.log(data.messageStatus);
-                  $('form.add-user-form .message').text(data.message).addClass('alert').addClass(data.messageStatus === 'success'?'alert-success':'alert-danger');
-              }
-          });
-      });
+        event.preventDefault();
+        var data = $(this).serialize();
+        data += '&ajax=true';
+        $.ajax({
+            type: 'get',
+            data: data,
+            success: function (data) {
+                $('form.add-user-form .message').removeClass('alert-danger', 'alert-success');
+                data = JSON.parse(data);
+                console.log(data);
+                console.log(data.message);
+                console.log(data.messageStatus);
+                $('form.add-user-form .message').text(data.message).addClass('alert').addClass(data.messageStatus === 'success' ? 'alert-success' : 'alert-danger');
+            }
+        });
+    });
 
     $('.countdown.submitOpened').countdown(voteOpenDate)
         .on('update.countdown', function (event) {
@@ -142,15 +145,16 @@ $(document).ready(function () {
                         itemSelector: '.grid-item',
                         // percentPosition: true,
                         masonry: {
-                            gutter: 10,
-                            columnWidth: 200
+                            gutter: 5
                         }
                     });
                     var categoryHash = window.location.hash;
-                    if(categoryHash!=""){
-                      $('.grid').isotope({
-                          filter: '.'+categoryHash.substr(1)
-                      });
+                    if (categoryHash !== "") {
+                        var a = $('.grid-filter[href="' + categoryHash + '"]');
+                        a.addClass('active');
+                        $('.grid').isotope({
+                            filter: a.data('filter')
+                        });
                     }
 
                 }, 100);
@@ -188,7 +192,7 @@ function initFullPhoto() {
     });
 
     $('.delete-photo').click(function () {
-        var photoId = $(this).parent().find('img').attr('id');
+        var photoId = $(this).parent().find('img').data('photoid');
         if (!photoId) {
             console.error('cannot delete photo without photoId');
             return false;
@@ -204,6 +208,31 @@ function initFullPhoto() {
 
 function afterModeration(jsonData) {
     var ret = JSON.parse(jsonData);
-    console.log('after slide ret', ret);
-    window.location.reload();
+    console.log('afterModeration return from B/E', ret);
+    var photoid = ret.data.photoid;
+    var photostatus = ret.data.photostatus;
+    var item = $('img[data-photoid="' + photoid + '"]').parent('.grid-item');
+    if (photostatus === 'deleted') {
+        item.remove();
+    } else {
+        item.attr('data-photostatus', photostatus);
+    }
+    $('.grid-filter.active').click();
+    $('.fullPhoto').empty();
+    if (typeof ret.data.nbPhotosToModerate !== 'undefined') {
+        if (ret.data.nbPhotosToModerate === 0) {
+            $('.nbPhotosToModerate').remove();
+            if (window.location.hash === '#submitted') {
+                $('.grid-filter[data-filter="*"]').click();
+            }
+        } else {
+            $('.nbPhotosToModerate').text(ret.data.nbPhotosToModerate);
+        }
+    }
+
+    if (ret.message && ret.messageStatus) {
+        $.smkAlert({
+            text: ret.message, type: ret.messageStatus, time: 5
+        });
+    }
 }

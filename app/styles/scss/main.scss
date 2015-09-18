@@ -5,11 +5,24 @@
 body {
     // background-image: url(../../images/LogoPhotoContest.png);
     // border: 20px solid #323232;
-    background-repeat: no-repeat;
-    background-position: 50%;
-    background-size: 40%;
-    z-index: 0;
+    background: linear-gradient(230deg, #444, #333, #111);
+    background-size: 300% 300%;
+    -webkit-animation: MoveBG 30s ease infinite;
+    animation: MoveBG 30s ease infinite;
     font-size: 16px;
+    min-height: 100vh;
+}
+
+@-webkit-keyframes MoveBG {
+    0%{background-position:0% 84%}
+    50%{background-position:100% 16%}
+    100%{background-position:0% 84%}
+}
+
+@keyframes MoveBG {
+    0%{background-position:0% 84%}
+    50%{background-position:100% 16%}
+    100%{background-position:0% 84%}
 }
 
 .modal-backdrop {
@@ -41,29 +54,31 @@ h1, h2, h3 {
     text-align: center;
 }
 
-.grid-filters {
-    margin-left: 10px;
-    margin-top: 10px;
-}
-
 .grid {
-    margin-left: 10px;
-    margin-top: 10px;
+    margin-left: 5px;
+    margin-top: 5px;
     & > .grid-item {
         cursor: pointer;
-        width:200px;
+        width: calc(20% - 10px);
+        min-width: 150px;
+        max-width: 250px;
         height: 200px;
         text-align: center;
-        border:1px solid black;
-        margin-bottom:10px;
-        transition: border .2s;
+        border: 1px solid black;
+        background: black;
+        margin-bottom: 5px;
+        transition: border .5s;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
         &:hover {
-            border:1px solid lightgray;
+            border: 1px solid lightgray;
+            & > img {
+                transform: scale(1.1);
+            }
         }
         & > img {
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
+            transition: transform 0.5s;
         }
     }
     /* Light spot selector
@@ -152,8 +167,12 @@ h1, h2, h3 {
     background-color: #383838;
     border-bottom: 1px solid #222;
     margin-bottom: 0;
-    .navbar-brand { line-height: 23px; }
-    .navbar-nav > li > a { height: 42px; }
+    .navbar-brand {
+        line-height: 23px;
+    }
+    .navbar-nav > li > a {
+        height: 42px;
+    }
     .navbar-text {
         margin-left: 0;
         color: darkgrey;
@@ -179,7 +198,6 @@ h2 .badge {
     flex-wrap: wrap;
     justify-content: center;
     height: 50px;
-    line-height: 50px;
 }
 
 .moderation-controls {
@@ -195,8 +213,8 @@ h2 .badge {
 
 .delete-photo {
     position: absolute;
-    bottom: 0;
-    left: 0;
+    bottom: 20px;
+    left: 20px;
     transition: .3s opacity;
     opacity: .5;
     -webkit-filter: grayscale(100%);
@@ -220,10 +238,11 @@ h2 .badge {
 
 .table {
     &.users {
-        img {height: 50px;}
+        img {
+            height: 50px;
+        }
     }
 }
-
 
 .fullscreen-image {
     width: 100%;
@@ -233,7 +252,7 @@ h2 .badge {
     background-repeat: no-repeat;
     background-color: rgba(0, 0, 0, 0.7);
     text-align: center;
-    cursor:pointer;
+    cursor: pointer;
     opacity: 1;
     z-index: 10;
     -webkit-transform: scale(1);
@@ -241,17 +260,23 @@ h2 .badge {
     position: fixed;
     top: 0;
     left: 0;
-    &.mini {height: 100px;-webkit-transform: scale(0);}
-    &.closed {-webkit-transform: scale(0); opacity: 0;}
+    &.mini {
+        height: 100px;
+        -webkit-transform: scale(0);
+    }
+    &.closed {
+        -webkit-transform: scale(0);
+        opacity: 0;
+    }
     & > img {
         height: calc(100% - 40px);
         margin-top: 20px;
-        width:100%;
+        width: 100%;
         object-fit: contain;
     }
 }
 
-.fullPhoto .item{
+.fullPhoto .item {
     position: fixed;
     top: 0;
     left: 0;
@@ -259,21 +284,24 @@ h2 .badge {
     bottom: 0;
     z-index: 10;
     text-align: center;
-    background-color: rgba(0,0,0,0.75);
+    background-color: rgba(0, 0, 0, 0.75);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 
-    .photo-container{
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: calc(100vh - 100px);;
-      margin-top: 20px;
-      & > img {
-          flex: 1;
-          object-fit: contain;
-          max-height: calc(100vh - 100px);
-      }
+    .photo-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: calc(100vh - 100px);;
+        margin-top: 20px;
+        & > img {
+            max-height: 100%;
+        }
     }
+}
+
+.status-box {
+    display: flex;
+    align-items: center;
 }

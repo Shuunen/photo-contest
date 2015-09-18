@@ -1,18 +1,18 @@
 [
   {
     "id": 1,
-    "userid": "ACE03122-DB01-A899-C513-39C1809817DB",
-    "name": "Romain Racamier",
-    "email": "romain.racamier",
-    "pass": "mypass",
+    "userid": "aaa-bbb-ccc",
+    "name": "John Doe",
+    "email": "john.doe",
+    "pass": "johnpass",
     "role": "admin"
   },
   {
     "id": 2,
-    "userid": "2DC60B8B-68B6-35B6-E330-4F7C897B5803",
+    "userid": "ddd-eee-fff",
     "name": "Michel Alban",
     "email": "michel.alban",
-    "pass": "albanPass",
+    "pass": "michelpass",
     "role": "user"
   }
 ]

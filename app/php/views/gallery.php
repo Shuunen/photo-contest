@@ -12,7 +12,7 @@ $photoPath = './photos/';
         <?php foreach ($photos as $i => $photo) : ?>
             <?php if ($photo->photoid) : ?>
                 <?php
-                  $class = $photo->status;
+                  $class = '';
                   if ($app->currentUser->userid != $photo->userid && $photo->status === 'approved') {
                       $class .= " vote";
                   }
@@ -22,12 +22,12 @@ $photoPath = './photos/';
                 ?>
 
                 <?php if ($app->isAdmin || $app->isUser && $photo->status === 'approved' || $app->isUser && $photo->userid === $app->currentUser->userid) : ?>
-                  <div class="grid-item <?php print $class; ?>">
+                  <div class="grid-item <?php print $class; ?>" data-photostatus="<?php echo $photo->status ?>">
                       <?php
                       $photoThumb = $photoPath . $photo->userid . '/' . 'thumbs/' . $photo->filepath;
                       $photoFull = $photoPath . $photo->userid . '/' . $photo->filepath;
                       ?>
-                        <img id="<?php echo $photo->photoid ?>" data-layzr="<?php echo $photoThumb ?>" data-thumb="<?php echo $photoThumb ?>" data-full="<?php echo $photoFull ?>">
+                        <img data-photoid="<?php echo $photo->photoid ?>" data-layzr="<?php echo $photoThumb ?>" data-thumb="<?php echo $photoThumb ?>" data-full="<?php echo $photoFull ?>">
                   </div>
                 <?php endif; ?>
             <?php endif; ?>

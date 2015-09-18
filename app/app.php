@@ -1,5 +1,7 @@
 <?php
+
 define('LAZER_DATA_PATH', realpath(dirname(__FILE__)) . '/database/Lazer/'); //Path to folder with tables
+
 use Lazer\Classes\Database as Lazer;
 
 date_default_timezone_set("Europe/Paris");
@@ -56,10 +58,10 @@ class App {
         $charid = strtoupper(md5(uniqid(rand(), true)));
         $hyphen = chr(45); // "-"
         $uuid = substr($charid, 0, 8) . $hyphen
-            . substr($charid, 8, 4) . $hyphen
-            . substr($charid, 12, 4) . $hyphen
-            . substr($charid, 16, 4) . $hyphen
-            . substr($charid, 20, 12);
+                . substr($charid, 8, 4) . $hyphen
+                . substr($charid, 12, 4) . $hyphen
+                . substr($charid, 16, 4) . $hyphen
+                . substr($charid, 20, 12);
         return $uuid;
     }
 
@@ -137,14 +139,12 @@ class App {
 
                 $_SESSION['message'] = 'Image ' . $request['photoUrl'] . ' added to db and thumbnail created';
                 $_SESSION['messageStatus'] = 'success';
-
             } catch (Exception $e) {
                 // var_dump($e);
                 // exit();
                 $_SESSION['message'] = 'Fail to create thumbnail for Image ' . $request['photoUrl'];
                 $_SESSION['messageStatus'] = 'error';
             }
-
         } else {
             $_SESSION['message'] = 'No photoUrl given';
             $_SESSION['messageStatus'] = 'error';
@@ -160,16 +160,13 @@ class App {
         $photo->filepath = $request['photoUrl'];
         $photo->status = 'submitted';
         $photo->save();
-
     }
 
     function handleLogout() {
 
         if (ini_get("session.use_cookies")) {
             $params = session_get_cookie_params();
-            setcookie(session_name(), '', time() - 42000,
-                $params["path"], $params["domain"],
-                $params["secure"], $params["httponly"]
+            setcookie(session_name(), '', time() - 42000, $params["path"], $params["domain"], $params["secure"], $params["httponly"]
             );
         }
 
@@ -185,7 +182,6 @@ class App {
 
         $_SESSION['message'] = 'Rate ' . $request['photoId'] . ' for the category ' . $request['categoryId'] . ' with ' . $request['rate'];
         $_SESSION['messageStatus'] = 'success';
-
     }
 
     function getResults(){
@@ -226,52 +222,64 @@ class App {
             $rate->categoryid = $request['categoryId'];
             $rate->rate = $request['rate'];
             $rate->save();
-
         } else {
 
             $existingRate->rate = $request['rate'];
             $existingRate->save();
         }
-
     }
 
     function handleModeration($request) {
 
         $request['newStatus'] = $request['action'] === 'approve' ? 'approved' : 'censored';
 
-        $this->storeModerationToDB($request);
+        $photo = $this->storeModerationToDB($request);
 
-        $_SESSION['message'] = 'This photo is now ' . $request['newStatus'];
-        $_SESSION['messageStatus'] = 'success';
+        if ($photo) {
+            $_SESSION['message'] = 'This photo is now ' . $photo->status;
+            $_SESSION['messageStatus'] = 'success';
+            $nbPhotosToModerate = $this->getPhotosToModerate()->count();
+            return array('photoid' => $photo->photoid, 'photostatus' => $photo->status, 'nbPhotosToModerate' => $nbPhotosToModerate);
+        } else {
+            $_SESSION['message'] = 'This photo has not been moderated';
+            $_SESSION['messageStatus'] = 'danger';
+        }
     }
 
     function storeModerationToDB($request) {
 
-      $photo = Lazer::table('photos')->where('photoid', '=', $request['photoId'])->find();
-      if(count($photo) === 1 && $request['photoId'] != "undefined") {
-        $photo->status = $request['newStatus'];
-        $photo->save();
-      }
+        $photo = Lazer::table('photos')->where('photoid', '=', $request['photoId'])->find();
+        if (count($photo) === 1 && $request['photoId'] != "undefined") {
+            $photo->status = $request['newStatus'];
+            $photo->save();
+            return $photo;
+        } else {
+            return false;
+        }
     }
 
     function handleRemovePhoto($request) {
 
         $photo = $this->removePhotoFromDB($request);
 
-        if ($photo) {
+        $_SESSION['messageStatus'] = 'success';
 
+        if ($photo) {
             $path = $photo->userid . '/' . $photo->filepath;
             $thumbPath = $photo->userid . '/thumbs/' . $photo->filepath;
             unlink('./photos/' . $path);
             unlink('./photos/' . $thumbPath);
             $_SESSION['message'] = 'Photo ' . $photo->filepath . ' has been deleted';
 
+            $return = array('photoid' => $photo->photoid, 'photostatus' => 'deleted');
+            if ($this->isAdmin) {
+                $nbPhotosToModerate = $this->getPhotosToModerate()->count();
+                $return['nbPhotosToModerate'] = $nbPhotosToModerate;
+            }
+            return $return;
         } else {
-
             $_SESSION['message'] = 'Photo has already been deleted';
         }
-
-        $_SESSION['messageStatus'] = 'success';
     }
 
     function removePhotoFromDB($request) {
@@ -284,48 +292,45 @@ class App {
         } else {
             return false;
         }
-
-
     }
 
-    function handleTemplate($request){
-        if($request['template'] === 'fullPhoto'){
+    function handleTemplate($request) {
+        if ($request['template'] === 'fullPhoto') {
             $this->getFullPhotoHtmlcontent($request['photoId']);
         }
     }
 
-    function handleCreateUser($request){
-      if(!isset($request['name']) || $request['name'] === ""){
-        $_SESSION['message'] = 'No name set';
-        $_SESSION['messageStatus'] = 'error';
-      }
-
-      if(!isset($request['email']) || $request['email'] === ""){
-        $_SESSION['message'] = 'no email set';
-        $_SESSION['messageStatus'] = 'error';
-      }
-
-      if(isset($request['name']) && $request['name'] != "" && isset($request['email']) && $request['email'] != ""){
-          $existingUser = Lazer::table('users')->where('email', '=', $request['email'])->find();
-        if(count($existingUser) == 0){
-
-          $user = Lazer::table('users');
-
-          $user->userid = $this->getGUID();
-          $user->name = $request['name'];
-          $user->email = $request['email'];
-          $user->pass = $this->randomPassword();
-          $user->role = isset($request['role'])? $request['role'] : 'user';
-          $user->save();
-
-          $_SESSION['message'] = 'New user '.$user->name.' with the email '.$user->email.' and the password : '.$user->pass . ' has been created.';
-          $_SESSION['messageStatus'] = 'success';
-        }else{
-          $_SESSION['message'] = 'User '.$request['name'].' with the email '.$request['email'].' already exists';
-          $_SESSION['messageStatus'] = 'error';
+    function handleCreateUser($request) {
+        if (!isset($request['name']) || $request['name'] === "") {
+            $_SESSION['message'] = 'No name set';
+            $_SESSION['messageStatus'] = 'error';
         }
-      }
 
+        if (!isset($request['email']) || $request['email'] === "") {
+            $_SESSION['message'] = 'no email set';
+            $_SESSION['messageStatus'] = 'error';
+        }
+
+        if (isset($request['name']) && $request['name'] != "" && isset($request['email']) && $request['email'] != "") {
+            $existingUser = Lazer::table('users')->where('email', '=', $request['email'])->find();
+            if (count($existingUser) == 0) {
+
+                $user = Lazer::table('users');
+
+                $user->userid = $this->getGUID();
+                $user->name = $request['name'];
+                $user->email = $request['email'];
+                $user->pass = $this->randomPassword();
+                $user->role = isset($request['role']) ? $request['role'] : 'user';
+                $user->save();
+
+                $_SESSION['message'] = 'New user ' . $user->name . ' with the email ' . $user->email . ' and the password : ' . $user->pass . ' has been created.';
+                $_SESSION['messageStatus'] = 'success';
+            } else {
+                $_SESSION['message'] = 'User ' . $request['name'] . ' with the email ' . $request['email'] . ' already exists';
+                $_SESSION['messageStatus'] = 'error';
+            }
+        }
     }
 
     function handleRequest() {
@@ -340,23 +345,25 @@ class App {
 
             $_SESSION['messageStatus'] = 'error';
 
+            $data = null;
+
             $type = $request['type'];
 
             if ($this->isLogged) {
                 if ($type === 'logout') {
-                    $this->handleLogout();
+                    $data = $this->handleLogout();
                 } else if ($type === 'addPhoto') {
-                    $this->handleAddPhoto($request);
+                    $data = $this->handleAddPhoto($request);
                 } else if ($type === 'removePhoto') {
-                    $this->handleRemovePhoto($request);
+                    $data = $this->handleRemovePhoto($request);
                 } else if ($type === 'rate') {
-                    $this->handleRate($request);
+                    $data = $this->handleRate($request);
                 } else if ($this->isAdmin && $type === 'moderation') {
-                    $this->handleModeration($request);
+                    $data = $this->handleModeration($request);
                 } else if ($type === 'template') {
-                    $this->handleTemplate($request);
-                } else if($type === 'createUser'){
-                    $this->handleCreateUser($request);
+                    $data = $this->handleTemplate($request);
+                } else if ($type === 'createUser') {
+                    $data = $this->handleCreateUser($request);
                 }
             } else if ($type === 'login') {
                 $this->handleLogin($request);
@@ -364,7 +371,9 @@ class App {
 
             if (isset($request['ajax'])) {
                 // if ajax, print json and exit
-                echo json_encode(array('message' => $_SESSION['message'], 'messageStatus' => $_SESSION['messageStatus']), JSON_FORCE_OBJECT);
+                echo json_encode(array('message' => $_SESSION['message'], 'messageStatus' => $_SESSION['messageStatus'], 'data' => $data), JSON_FORCE_OBJECT);
+                $_SESSION['message'] = '';
+                $_SESSION['messageStatus'] = '';
                 die();
             }
         }
@@ -379,7 +388,7 @@ class App {
     }
 
     function getPhotosToVote() {
-        return $photos = Lazer::table('photos')->where('userid', '!=', $this->currentUser->userid)->andWhere('status', '=', 'approved')->andWhere('userid','!=','null')->findAll();
+        return $photos = Lazer::table('photos')->where('userid', '!=', $this->currentUser->userid)->andWhere('status', '=', 'approved')->andWhere('userid', '!=', 'null')->findAll();
     }
 
     function getPhotosToModerate() {
@@ -394,11 +403,11 @@ class App {
         return $user = Lazer::table('users')->where('userid', '=', $userid)->find();
     }
 
-    function getFullPhotoHtmlcontent($photoId){
+    function getFullPhotoHtmlcontent($photoId) {
         $photo = Lazer::table('photos')->where('photoid', '=', $photoId)->find();
         $app = $this;
-        if(count($photo) === 1){
-          require('./php/views/fullPhoto.php');
+        if (count($photo) === 1) {
+            require('./php/views/fullPhoto.php');
         }
         die();
     }
@@ -411,7 +420,6 @@ class App {
         } else {
             return $rate->rate;
         }
-
     }
 
     function randomPassword() {
@@ -444,20 +452,20 @@ class App {
 
             $users = json_decode(file_get_contents('../users.json'));
 
-            if($users!= null && count($users)>0){
+            if ($users != null && count($users) > 0) {
 
-              $user = Lazer::table('users');
+                $user = Lazer::table('users');
 
-              foreach($users as $jsonUser){
+                foreach ($users as $jsonUser) {
 
 
-                $user->userid = $this->getGUID();
-                $user->name = $jsonUser->name;
-                $user->email = $jsonUser->email;
-                $user->pass = $this->randomPassword();
-                $user->role = isset($jsonUser->role)? $jsonUser->role : 'user';
-                $user->save();
-              }
+                    $user->userid = $this->getGUID();
+                    $user->name = $jsonUser->name;
+                    $user->email = $jsonUser->email;
+                    $user->pass = $this->randomPassword();
+                    $user->role = isset($jsonUser->role) ? $jsonUser->role : 'user';
+                    $user->save();
+                }
             }
         }
 
@@ -489,7 +497,6 @@ class App {
             $category->categoryid = "40";
             $category->label = '40';
             $category->save();
-
         }
 
         //install photos
@@ -504,8 +511,6 @@ class App {
                 'filepath' => 'string',
                 'status' => 'string'
             ));
-
-
         }
 
         //install rates
@@ -520,10 +525,7 @@ class App {
                 'categoryid' => 'string',
                 'rate' => 'string',
             ));
-
-
         }
-
     }
 
 }
