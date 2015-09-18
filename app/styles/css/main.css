@@ -6052,23 +6052,18 @@ h1, h2, h3 {
     height: 200px;
     text-align: center;
     border: 1px solid black;
+    background: black;
     margin-bottom: 5px;
-    transition: border 1s;
-    overflow: hidden; }
-    .grid > .grid-item:nth-child(2n) {
-      height: 180px; }
-    .grid > .grid-item:nth-child(3n) {
-      height: 160px; }
+    transition: border .5s;
+    overflow: hidden;
+    display: flex;
+    justify-content: center; }
     .grid > .grid-item:hover {
       border: 1px solid lightgray; }
       .grid > .grid-item:hover > img {
-        width: 110%; }
+        transform: scale(1.1); }
     .grid > .grid-item > img {
-      height: 100%;
-      width: 100%;
-      object-fit: cover;
-      object-position: 50% 20%;
-      transition: width 1s; }
+      transition: transform 0.5s; }
 
 .gallery-slider {
   margin: 0;
@@ -6226,9 +6221,7 @@ h2 .badge {
     height: calc(100vh - 100px);
     margin-top: 20px; }
     .fullPhoto .item .photo-container > img {
-      flex: 1;
-      object-fit: contain;
-      max-height: calc(100vh - 100px); }
+      max-height: 100%; }
 
 .status-box {
   display: flex;

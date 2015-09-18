@@ -65,27 +65,20 @@ h1, h2, h3 {
         height: 200px;
         text-align: center;
         border: 1px solid black;
+        background: black;
         margin-bottom: 5px;
-        transition: border 1s;
+        transition: border .5s;
         overflow: hidden;
-        &:nth-child(2n) {
-            height: 180px;
-        }
-        &:nth-child(3n) {
-            height: 160px;
-        }
+        display: flex;
+        justify-content: center;
         &:hover {
             border: 1px solid lightgray;
             & > img {
-                width: 110%;
+                transform: scale(1.1);
             }
         }
         & > img {
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
-            object-position: 50% 20%;
-            transition: width 1s;
+            transition: transform 0.5s;
         }
     }
     /* Light spot selector
@@ -303,9 +296,7 @@ h2 .badge {
         height: calc(100vh - 100px);;
         margin-top: 20px;
         & > img {
-            flex: 1;
-            object-fit: contain;
-            max-height: calc(100vh - 100px);
+            max-height: 100%;
         }
     }
 }
