@@ -19,7 +19,7 @@ function __autoload($class_name) {
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="Photo contest 2015">
         <meta name="author" content="UXD">
-        <link rel="shortcut icon" type="image/png" href="favicon.png" />
+        <link rel="shortcut icon" href="favicon.gif" />
 
         <title>Photo contest 2015</title>
 
