@@ -40,17 +40,6 @@ class App {
 
         $this->installDB();
 
-//        $results = $this->getResults();
-//
-//        foreach($results as $cat => $photos){
-//          print $cat."<br>";
-//          foreach($photos as $photoId => $rate){
-//            $photoInfo = Lazer::table('photos')->where('photoid', '=', $photoId)->find();
-//            print '<img src="'.'./photos/' . $photoInfo->userid . '/' . 'thumbs/' . $photoInfo->filepath.'">'." : ".$rate."<br>";
-//          }
-//          print "<br><br>";
-//        }
-
         $this->handleRequest();
     }
 
@@ -188,25 +177,33 @@ class App {
 
       $categories = $this->getCategories();
       $photos = $photos = Lazer::table('photos')->where('status', '=', 'approved')->findAll();
-      $nbUsers = $photos = Lazer::table('users')->findAll()->count();
+
       $rates = [];
       foreach($categories as $category){
-        $rates[$category->categoryid] = [];
-        foreach($photos as $photo){
-          $photoRates = Lazer::table('rates')->where('photoid', '=', $photo->photoid)->andWhere('categoryid', '=', $category->categoryid)->findAll();
-          $rates[$category->categoryid][$photo->photoid] = 0;
-          if(count($photoRates) > 0){
-            foreach($photoRates as $photoRate){
-              $rates[$category->categoryid][$photo->photoid] += $photoRate->rate;
-            }
-            $rates[$category->categoryid][$photo->photoid] += ($nbUsers - count($photoRates)) * 2.5;
-            $rates[$category->categoryid][$photo->photoid] = $rates[$category->categoryid][$photo->photoid]/$nbUsers;
-          }
-        }
-        arsort($rates[$category->categoryid]);
+        $rates[$category->categoryid] = getResultsByCategory($category->categoryid);
       }
 
       return $rates;
+
+    }
+
+    function getResultsByCategory(categoryId){
+      $nbUsers = $photos = Lazer::table('users')->findAll()->count();
+      $results = [];
+      foreach($photos as $photo){
+        $photoRates = Lazer::table('rates')->where('photoid', '=', $photo->photoid)->andWhere('categoryid', '=', categoryId)->findAll();
+        $results[$photo->photoid] = 0;
+        if(count($photoRates) > 0){
+          foreach($photoRates as $photoRate){
+            $results[$photo->photoid] += $photoRate->rate;
+          }
+          $results[$photo->photoid] += ($nbUsers - count($photoRates)) * 2.5;
+          $results[$photo->photoid] = $results[$photo->photoid]/$nbUsers;
+        }
+      }
+      arsort($results);
+
+      return results;
 
     }
 
