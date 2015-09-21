@@ -5,6 +5,7 @@ $(document).ready(function () {
     $('.gallery img').click(function () {
 
         console.log('clicked on thumb, showing fullscreen image');
+        
         /*
          $(this).parent().find('.fullscreen-image').remove();
 
@@ -18,6 +19,8 @@ $(document).ready(function () {
 
          this.insertAdjacentElement('afterend', container);
          */
+
+        $('.fullPhoto').html('<div class="item"><img src="./images/loader.gif"></div>');
 
         $.ajax({
             type: 'get',

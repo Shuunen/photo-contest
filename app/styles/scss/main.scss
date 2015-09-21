@@ -4,8 +4,6 @@
 @import "bokeh";
 
 body {
-    // background-image: url(../../images/patterns/crissxcross-light.png);
-    // border: 20px solid #323232;
     background-image: -webkit-linear-gradient(right bottom, #0A0707 0%, #110C0D 50%, #0C090A 100%);
     background-image: linear-gradient(right bottom, #0A0707 0%, #110C0D 50%, #0C090A 100%);
     font-size: 16px;
@@ -25,7 +23,6 @@ body {
     margin: 40px auto;
 }
 
-.dropdown-menu > li > a,
 .navbar {
     font-size: 15px;
 }
@@ -89,7 +86,8 @@ body {
         line-height: 23px;
     }
     .navbar-nav > li > a {
-        height: 42px;
+        height: 42px;        
+        transition: all 0.3s ease-out;
     }
     .navbar-text {
         margin-left: 0;
@@ -164,7 +162,8 @@ body {
     background-color: rgba(0, 0, 0, 0.75);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
 
     .photo-container {
         display: flex;
