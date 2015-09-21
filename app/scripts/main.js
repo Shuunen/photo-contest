@@ -169,8 +169,6 @@ $(document).ready(function () {
 
 });
 
-var voteOpenDate = '2015/09/25';
-
 function initFullPhoto() {
 
     $('.countdown.voteOpened').countdown(voteOpenDate)

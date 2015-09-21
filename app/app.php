@@ -18,15 +18,19 @@ class App {
         $this->isAdmin = false;
         $this->isLogged = false;
         $this->currentUser = null;
-        $this->startVoteDate = '2015-09-25';
-        $this->endVoteDate = '2015-10-05';
+        $this->startVoteDate = new DateTime('2015-09-26', new DateTimeZone('Pacific/Niue'));
+        $now = new DateTime('now');
+        $this->startVoteDate->setTimezone($now->getTimezone());
+
+        $this->endVoteDate = new DateTime('2015-10-05', new DateTimeZone('Pacific/Niue'));
+        $this->endVoteDate->setTimezone($now->getTimezone());
 
         // vote are opened after September 25 & until October 25
-        $this->voteOpened = new DateTime($this->startVoteDate) < new DateTime("now") && new DateTime("now") <= new DateTime($this->endVoteDate);
-        $this->voteEnded = new DateTime("now") > new DateTime($this->endVoteDate);
+        $this->voteOpened = $this->startVoteDate < $now && $now <= $this->endVoteDate;
+        $this->voteEnded = $now > $this->endVoteDate;
 
         // submit are opened until September 25
-        $this->submitOpened = new DateTime("now") <= new DateTime($this->startVoteDate);
+        $this->submitOpened = $now <= $this->startVoteDate;
 
         if (isset($_SESSION['user'])) {
             $this->currentUser = $_SESSION['user'];
