@@ -24,4 +24,7 @@
     }        
     ?>
 </div>
-<?php require 'bokeh.php' ?>
+<?php
+if(!$app->isMobile) {
+    require 'bokeh.php';
+}
