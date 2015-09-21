@@ -94,6 +94,24 @@ class App {
             $_SESSION['messageStatus'] = 'error';
         }
     }
+    
+    function regenThumbnails() {
+        $photos = $this->getAllPhotos();
+
+        foreach ($photos as $photo) {
+            if ($photo->userid) {
+                $fullPath = './photos/' . $photo->userid . '/' . $photo->filepath;
+                $thumbPath = './photos/' . $photo->userid . '/thumbs/' . $photo->filepath;
+                $image = new \Eventviva\ImageResize($fullPath);
+                $image->crop(250, 175);
+                $image->quality_jpg = 75;
+                $image->save($thumbPath);
+            }
+        }
+        
+        $_SESSION['message'] = 'Thumbs have been regen.';
+        $_SESSION['messageStatus'] = 'success';        
+    }
 
     function handleAddPhoto($request) {
 
@@ -187,11 +205,11 @@ class App {
 
     }
 
-    function getResultsByCategory(categoryId){
+    function getResultsByCategory($categoryId){
       $nbUsers = $photos = Lazer::table('users')->findAll()->count();
       $results = [];
       foreach($photos as $photo){
-        $photoRates = Lazer::table('rates')->where('photoid', '=', $photo->photoid)->andWhere('categoryid', '=', categoryId)->findAll();
+        $photoRates = Lazer::table('rates')->where('photoid', '=', $photo->photoid)->andWhere('categoryid', '=', $categoryId)->findAll();
         $results[$photo->photoid] = 0;
         if(count($photoRates) > 0){
           foreach($photoRates as $photoRate){
@@ -359,8 +377,10 @@ class App {
                     $data = $this->handleModeration($request);
                 } else if ($type === 'template') {
                     $data = $this->handleTemplate($request);
-                } else if ($type === 'createUser') {
+                } else if ($this->isAdmin && $type === 'createUser') {
                     $data = $this->handleCreateUser($request);
+                } else if ($this->isAdmin && $type === 'regenThumbnails'){
+                    $data = $this->regenThumbnails();
                 }
             } else if ($type === 'login') {
                 $this->handleLogin($request);
