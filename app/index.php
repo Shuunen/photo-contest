@@ -20,7 +20,7 @@ function __autoload($class_name) {
         <meta name="description" content="Photo contest 2015">
         <meta name="author" content="UXD">
         <link rel="shortcut icon" type="image/png" href="favicon.png" />
-        
+
         <title>Photo contest 2015</title>
 
         <!-- build:css styles/styles.css -->
@@ -35,7 +35,9 @@ function __autoload($class_name) {
     <body>
 
         <?php require './php/views/main.php' ?>
-
+        <script>
+          var voteOpenDate = "<?php print $app->startVoteDate->format('Y-m-d H:i:s');?>";
+        </script>
         <!-- build:js scripts/scripts.js -->
         <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
         <script type="text/javascript" src="../bower_components/fineuploader-dist/dist/fine-uploader.min.js"></script>
