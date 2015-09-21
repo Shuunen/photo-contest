@@ -40,16 +40,19 @@ body {
         background: black;
         margin-bottom: 5px;
         overflow: hidden;
-        &:hover {
-            border: 1px solid lightgray;
-            & > img {
-                transform: scale(1.1);
-            }
-        }
+    }
+}
+
+.desktop .grid > .grid-item {
+    &:hover {
+        border: 1px solid lightgray;
         & > img {
-            transition: all 0.6s ease;
-            transform: scale(1);
+            transform: scale(1.1);
         }
+    }
+    & > img {
+        transition: all 0.6s ease;
+        transform: scale(1);
     }
 }
 
@@ -89,7 +92,6 @@ body {
     }
     .navbar-nav > li > a {
         height: 42px;
-        transition: all 0.3s ease-out;
     }
     .navbar-text {
         margin-left: 0;
@@ -100,6 +102,10 @@ body {
         font-weight: normal;
         font-size: 14px;
     }
+}
+
+.desktop .navbar-default .navbar-nav > li > a {
+    transition: all 0.3s ease-out;
 }
 
 .alert-info {
@@ -128,6 +134,9 @@ body {
     position: absolute;
     bottom: 20px;
     left: 20px;
+}
+
+.desktop .delete-photo {
     transition: .3s opacity;
     opacity: .5;
     -webkit-filter: grayscale(100%);
