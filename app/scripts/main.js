@@ -142,10 +142,15 @@ $(document).ready(function () {
                 console.log('all images loaded');
                 setTimeout(function () {
                     $('.gallery').isotope({
+                        // layoutMode: 'fitRows',
+                        // layoutMode: 'vertical',
+                        layoutMode: 'masonry',
                         itemSelector: '.grid-item',
                         // percentPosition: true,
                         masonry: {
-                            gutter: 5
+                            gutter: 5,
+                            columnWidth: 250,
+                            isFitWidth: true
                         }
                     });
                     var categoryHash = window.location.hash;
