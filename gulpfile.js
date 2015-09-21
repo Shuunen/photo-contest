@@ -60,7 +60,7 @@ gulp.task('images', function () {
 
 gulp.task('js', function() {
   return gulp.src([
-      'app/scripts/*.js',
+      'app/scripts/*.js'
     ])
     /*.pipe(concat('app.js'))*/
     .pipe( gulp.dest('dist/scripts/'))
@@ -82,31 +82,19 @@ gulp.task('extras', function () {
     '!app/*.html'
   ], {
     dot: true
-  }).pipe(gulp.dest('dist'))
+  }).pipe(gulp.dest('dist'));
 
   gulp.src(['app/php/**/*'])
   .pipe(gulp.dest('dist/php'));
-
-  gulp.src(['app/scripts/*'])
-  .pipe(gulp.dest('dist/scripts'));
-
+  
   gulp.src(['app/photos/'])
   .pipe(gulp.dest('dist/photos'));
 
   gulp.src(['bower_components/fine-uploader/_build/*.gif'])
   .pipe(gulp.dest('dist/styles/'));
 
-  gulp.src(['bower_components/slick.js/slick/*.gif'])
-  .pipe(gulp.dest('dist/styles/'));
-
-  gulp.src(['bower_components/bootstrap/fonts/*'])
-  .pipe(gulp.dest('dist/fonts/bootstrap/'));
-
   gulp.src(['bower_components/font-awesome/fonts/*'])
   .pipe(gulp.dest('dist/fonts/'));
-
-  gulp.src(['bower_components/slick.js/slick/fonts/*'])
-  .pipe(gulp.dest('dist/styles/fonts'));
 
   return gulp.src(['app/database/Lazer/*'])
   .pipe(gulp.dest('dist/database/Lazer'));
