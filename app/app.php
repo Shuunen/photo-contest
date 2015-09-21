@@ -141,7 +141,7 @@ class App {
                 $image->quality_jpg = 90;
                 $image->save($fullPathOut, IMAGETYPE_JPEG);
 
-                $image->resizeToHeight(200);
+                $image->crop(250, 175);
                 $image->quality_jpg = 75;
                 $image->save($thumbPathOut, IMAGETYPE_JPEG);
                 //end create thumb
