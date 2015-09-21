@@ -1,6 +1,6 @@
 @import "variables";
-@import "../../../bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
-@import "bootswatch";
+@import "bootstrap";
+//@import "bootswatch";
 @import "bokeh";
 
 body {
@@ -82,12 +82,12 @@ body {
 .navbar-default {
     background-color: transparent;
     margin: 0;
-    padding: 5px;
+    padding: 5px 15px;
     .navbar-brand {
         line-height: 23px;
     }
     .navbar-nav > li > a {
-        height: 42px;        
+        height: 42px;
         transition: all 0.3s ease-out;
     }
     .navbar-text {
@@ -173,8 +173,8 @@ body {
         height: calc(100vh - 100px);;
         margin-top: 20px;
         & > img {
-            max-height: 100%;       
-            cursor:default;
+            max-height: 100%;
+            cursor: default;
         }
     }
 }
@@ -186,24 +186,32 @@ body {
 
 .slide-control.btn {
     position: absolute;
-    top:49%;
+    top: 49%;
     background-color: transparent;
-    &.prev {left: 0;}
-    &.next {right: 0;}
-    i {pointer-events: none;}
+    &.prev {
+        left: 0;
+    }
+    &.next {
+        right: 0;
+    }
+    i {
+        pointer-events: none;
+    }
 }
 
 .close-fullscreen-photo {
-    cursor:pointer;   
+    cursor: pointer;
     &.btn {
         position: absolute;
-        top:20px;
-        right:20px;        
+        top: 20px;
+        right: 20px;
         background-color: transparent;
-        i {pointer-events: none;}
+        i {
+            pointer-events: none;
+        }
     }
 }
 
 .btn:focus, .btn.focus, .btn:active:focus, .btn:active.focus, .btn.active:focus, .btn.active.focus {
-    outline:none;
+    outline: none;
 }
