@@ -127,14 +127,23 @@ class App {
                 if (!file_exists('./photos/' . $this->currentUser->userid . '/thumbs')) {
                     mkdir('./photos/' . $this->currentUser->userid . '/thumbs', 0777, TRUE);
                 }
-                $image = new \Eventviva\ImageResize('./photos/' . $this->currentUser->userid . '/' . $request['photoUrl']);
+
+                $fullPathIn = './photos/' . $this->currentUser->userid . '/' . $request['photoUrl'];
+                $thumbPathIn = './photos/' . $this->currentUser->userid . '/thumbs/' . $request['photoUrl'];
+
+                // remove png extensions
+                $request['photoUrl'] = str_replace('.png', '.jpg', $request['photoUrl']);
+                $fullPathOut = str_replace('.png', '.jpg', $fullPathIn);
+                $thumbPathOut = str_replace('.png', '.jpg', $thumbPathIn);
+
+                $image = new \Eventviva\ImageResize($fullPathIn);
                 $image->resizeToHeight(1080);
                 $image->quality_jpg = 90;
-                $image->save('./photos/' . $this->currentUser->userid . '/' . $request['photoUrl']);
+                $image->save($fullPathOut, IMAGETYPE_JPEG);
 
                 $image->resizeToHeight(200);
                 $image->quality_jpg = 75;
-                $image->save('./photos/' . $this->currentUser->userid . '/thumbs/' . $request['photoUrl']);
+                $image->save($thumbPathOut, IMAGETYPE_JPEG);
                 //end create thumb
 
                 try {
