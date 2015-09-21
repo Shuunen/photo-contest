@@ -98,7 +98,7 @@ class App {
             $_SESSION['messageStatus'] = 'error';
         }
     }
-    
+
     function regenThumbnails() {
         $photos = $this->getAllPhotos();
 
@@ -112,9 +112,9 @@ class App {
                 $image->save($thumbPath);
             }
         }
-        
+
         $_SESSION['message'] = 'Thumbs have been regen.';
-        $_SESSION['messageStatus'] = 'success';        
+        $_SESSION['messageStatus'] = 'success';
     }
 
     function handleAddPhoto($request) {
@@ -204,38 +204,36 @@ class App {
         $_SESSION['messageStatus'] = 'success';
     }
 
-    function getResults(){
+    function getResults() {
 
-      $categories = $this->getCategories();
-      $photos = $photos = Lazer::table('photos')->where('status', '=', 'approved')->findAll();
+        $categories = $this->getCategories();
+        $photos = $photos = Lazer::table('photos')->where('status', '=', 'approved')->findAll();
 
-      $rates = [];
-      foreach($categories as $category){
-        $rates[$category->categoryid] = getResultsByCategory($category->categoryid);
-      }
+        $rates = [];
+        foreach ($categories as $category) {
+            $rates[$category->categoryid] = getResultsByCategory($category->categoryid);
+        }
 
-      return $rates;
-
+        return $rates;
     }
 
-    function getResultsByCategory($categoryId){
-      $nbUsers = $photos = Lazer::table('users')->findAll()->count();
-      $results = [];
-      foreach($photos as $photo){
-        $photoRates = Lazer::table('rates')->where('photoid', '=', $photo->photoid)->andWhere('categoryid', '=', $categoryId)->findAll();
-        $results[$photo->photoid] = 0;
-        if(count($photoRates) > 0){
-          foreach($photoRates as $photoRate){
-            $results[$photo->photoid] += $photoRate->rate;
-          }
-          $results[$photo->photoid] += ($nbUsers - count($photoRates)) * 2.5;
-          $results[$photo->photoid] = $results[$photo->photoid]/$nbUsers;
+    function getResultsByCategory($categoryId) {
+        $nbUsers = $photos = Lazer::table('users')->findAll()->count();
+        $results = [];
+        foreach ($photos as $photo) {
+            $photoRates = Lazer::table('rates')->where('photoid', '=', $photo->photoid)->andWhere('categoryid', '=', $categoryId)->findAll();
+            $results[$photo->photoid] = 0;
+            if (count($photoRates) > 0) {
+                foreach ($photoRates as $photoRate) {
+                    $results[$photo->photoid] += $photoRate->rate;
+                }
+                $results[$photo->photoid] += ($nbUsers - count($photoRates)) * 2.5;
+                $results[$photo->photoid] = $results[$photo->photoid] / $nbUsers;
+            }
         }
-      }
-      arsort($results);
+        arsort($results);
 
-      return results;
-
+        return results;
     }
 
     function storeRateToDB($request) {
@@ -377,26 +375,46 @@ class App {
 
             $type = $request['type'];
 
-            if ($this->isLogged) {
+
+            if (!$this->isLogged) {
+                /*
+                 * Anonymous user
+                 */
+                if ($type === 'login') {
+                    $this->handleLogin($request);
+                } else {
+                    $_SESSION['message'] = 'This method is not handled or for logged in users only.';
+                }
+            } else if ($this->isLogged) {
+                /*
+                 * Logged user or admin
+                 */
                 if ($type === 'logout') {
                     $data = $this->handleLogout();
                 } else if ($type === 'addPhoto') {
                     $data = $this->handleAddPhoto($request);
                 } else if ($type === 'removePhoto') {
                     $data = $this->handleRemovePhoto($request);
-                } else if ($type === 'rate') {
+                } else if ($this->voteOpened && $type === 'rate') {
                     $data = $this->handleRate($request);
-                } else if ($this->isAdmin && $type === 'moderation') {
-                    $data = $this->handleModeration($request);
                 } else if ($type === 'template') {
                     $data = $this->handleTemplate($request);
-                } else if ($this->isAdmin && $type === 'createUser') {
-                    $data = $this->handleCreateUser($request);
-                } else if ($this->isAdmin && $type === 'regenThumbnails'){
-                    $data = $this->regenThumbnails();
+                } else if ($this->isAdmin) {
+                    /*
+                     * Logged admin
+                     */
+                    if ($type === 'moderation') {
+                        $data = $this->handleModeration($request);
+                    } else if ($type === 'createUser') {
+                        $data = $this->handleCreateUser($request);
+                    } else if ($type === 'regenThumbnails') {
+                        $data = $this->regenThumbnails();
+                    } else {
+                        $_SESSION['message'] = 'This method is not handled.';
+                    }
+                } else {
+                    $_SESSION['message'] = 'This method is not handled or for admin only.';
                 }
-            } else if ($type === 'login') {
-                $this->handleLogin($request);
             }
 
             if (isset($request['ajax'])) {

@@ -46,7 +46,8 @@ body {
             }
         }
         & > img {
-            transition: all 0.5s ease-out;
+            transition: all 0.6s ease;
+            transform: scale(1);
         }
     }
 }
@@ -172,7 +173,8 @@ body {
         height: calc(100vh - 100px);;
         margin-top: 20px;
         & > img {
-            max-height: 100%;
+            max-height: 100%;       
+            cursor:default;
         }
     }
 }
@@ -180,4 +182,28 @@ body {
 .status-box {
     display: flex;
     align-items: center;
+}
+
+.slide-control.btn {
+    position: absolute;
+    top:49%;
+    background-color: transparent;
+    &.prev {left: 0;}
+    &.next {right: 0;}
+    i {pointer-events: none;}
+}
+
+.close-fullscreen-photo {
+    cursor:pointer;   
+    &.btn {
+        position: absolute;
+        top:20px;
+        right:20px;        
+        background-color: transparent;
+        i {pointer-events: none;}
+    }
+}
+
+.btn:focus, .btn.focus, .btn:active:focus, .btn:active.focus, .btn.active:focus, .btn.active.focus {
+    outline:none;
 }

@@ -27,7 +27,7 @@ $photoPath = './photos/';
                       $photoThumb = $photoPath . $photo->userid . '/' . 'thumbs/' . $photo->filepath;
                       $photoFull = $photoPath . $photo->userid . '/' . $photo->filepath;
                       ?>
-                        <img data-photoid="<?php echo $photo->photoid ?>" data-layzr="<?php echo $photoThumb ?>" data-thumb="<?php echo $photoThumb ?>" data-full="<?php echo $photoFull ?>">
+                        <img class="grid-item-thumb" event-emitter data-photoid="<?php echo $photo->photoid ?>" data-layzr="<?php echo $photoThumb ?>" data-thumb="<?php echo $photoThumb ?>" data-full="<?php echo $photoFull ?>">
                   </div>
                 <?php endif; ?>
             <?php endif; ?>

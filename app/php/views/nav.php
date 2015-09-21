@@ -7,29 +7,29 @@
 
         <ul class="nav navbar-nav navbar-right">
 
-            <li><a href="#" class="grid-filter btn btn-info" data-filter="*">All photos</a></li>
-            <li><a href="#my-photos" class="grid-filter btn btn-info" data-filter=".my-photos">My photos</a></li>
+            <li><a href="#" class="grid-filter btn btn-info" event-emitter data-filter="*">All photos</a></li>
+            <li><a href="#my-photos" class="grid-filter btn btn-info" event-emitter data-filter=".my-photos">My photos</a></li>
             <?php if ($app->isAdmin) : ?>
                 <?php $photosToModerate = $app->getPhotosToModerate(); ?>
                 <li>
-                    <a href="#submitted" class="grid-filter btn btn-info" data-filter="[data-photostatus='submitted']">To moderate
+                    <a href="#submitted" class="grid-filter btn btn-info" event-emitter data-filter="[data-photostatus='submitted']">To moderate
                         <?php if (count($photosToModerate)) : ?>
                             <span class="badge nbPhotosToModerate"><?php echo count($photosToModerate) ?></span>
                         <?php endif; ?>
                     </a>
                 </li>
-                <li><a href="#censored" class="grid-filter btn btn-info" data-filter="[data-photostatus='censored']">Censored</a></li>
+                <li><a href="#censored" class="grid-filter btn btn-info" event-emitter data-filter="[data-photostatus='censored']">Censored</a></li>
             <?php endif; ?>
-            <li><a href="#vote" class="grid-filter btn btn-info" data-filter=".vote">Vote</a></li>
+            <li><a href="#vote" class="grid-filter btn btn-info" event-emitter data-filter=".vote">Vote</a></li>
 
             <?php if ($app->isAdmin): ?>
                 <!--<li><a href="#" data-toggle="modal" data-target="#tablePhotosModal">Table photos</a></li>-->
-                <li><a href="#" data-toggle="modal" data-target="#addUserModal">Add User</a></li>
+                <li><a href="#" data-toggle="modal" event-emitter data-target="#addUserModal">Add User</a></li>
             <?php endif; ?>
             <?php if ($app->submitOpened) : ?>
-                <li><a href="#" data-toggle="modal" data-target="#uploadModal">Submit photos</a></li>
+                <li><a href="#" data-toggle="modal" event-emitter data-target="#uploadModal">Submit photos</a></li>
             <?php endif; ?>
-            <li><a href="#" id="logoutLink">Logout</a></li>
+            <li><a href="#" event-emitter class="logout-link">Logout</a></li>
         </ul>
     </div><!-- /.container-fluid -->
 </nav>
