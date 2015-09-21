@@ -19,6 +19,14 @@ function handleEvents() {
 
         var el = event.target;
 
+        if (el.getAttribute('event-emitter') === null) {
+            return; // TODO : why does jQuery doesn't filter already ?
+        }
+
+        if (el.className !== event.currentTarget.className) {
+            return;
+        }
+
         // console.log('clicked on', el);
 
         if (el.classList.contains('grid-filter')) {
@@ -26,7 +34,6 @@ function handleEvents() {
         } else if (el.classList.contains('grid-item-thumb')) {
             clickedOnGridItemThumb(el);
         } else if (el.classList.contains('delete-photo')) {
-            event.stopPropagation(); // TODO : weird :s
             clickedOnDeletePhoto(el);
         } else if (el.classList.contains('close-fullscreen-photo')) {
             clickedOnCloseFullscreenPhoto();
@@ -177,8 +184,8 @@ function clickedOnUploadModal(el) {
                 var format = '%-D day%!D or ' + totalSeconds + ' seconds if you\'re a robot.';
                 $(this).html(event.strftime(format));
             }).on('finish.countdown', function () {
-            window.location.reload();
-        });
+                window.location.reload();
+            });
     }
 }
 
