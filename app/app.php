@@ -457,7 +457,7 @@ class App {
         if (count($photo) === 1) {
             require('./php/views/fullscreenPhoto.php');
         }
-        die();
+        die('No photo found with this id.');
     }
 
     function getRateForPhotoAndCategory($photoId, $categoryId) {
