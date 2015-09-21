@@ -4,7 +4,7 @@ $colorCollection: (#D00010, #FEC641, #63C13B, #FE0016, #5C6C94, #6B0D05, #7D0006
 // $colorCollection: (#FCF1BD);
 
 /* Config */
-$lights: 150; // match lights in mark up
+$lights: 100; // match lights in mark up
 $textColor: #FFFFFF;
 $totalAnimation: 5;
 $lightSize: 75;
@@ -37,7 +37,7 @@ $blurLevel: 2;
 }
 
 @for $i from 1 through $lights{
-    $lightWidth: $lightSize + random(25);
+    $lightWidth: $lightSize + random(75);
     $lightHeight: $lightWidth;
     $lightVertical: random(100);
     $lightHorizontal: random(100);
