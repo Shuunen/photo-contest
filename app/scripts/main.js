@@ -344,17 +344,20 @@ function afterModeration(jsonData) {
     if (typeof ret.data.nbPhotosToModerate !== 'undefined') {
         if (ret.data.nbPhotosToModerate === 0) {
             $('.nbPhotosToModerate').remove();
-            $('.fullscreen-photo').empty();
-            if (window.location.hash === '#submitted') {
-                $('.grid-filter[data-filter="*"]').click();
-            }
             if (photostatus !== 'deleted') {
                 ret.message = 'All photos have been approved !';
             }
         } else {
-            nextPrevFullscreenPhoto(true);
             $('.nbPhotosToModerate').text(ret.data.nbPhotosToModerate);
         }
+    }
+
+    if ($('.grid-item:visible').size() === 0) {
+        $('.fullscreen-photo').empty();
+        $('.grid-filter').first().click();
+        window.location.hash = '';
+    } else {
+        nextPrevFullscreenPhoto(true);
     }
 
     if (ret.message && ret.messageStatus) {
