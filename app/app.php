@@ -323,7 +323,7 @@ class App {
     }
 
     function handleTemplate($request) {
-        if ($request['template'] === 'fullPhoto') {
+        if ($request['template'] === 'fullscreenPhoto') {
             $this->getFullPhotoHtmlcontent($request['photoId']);
         }
     }
@@ -437,7 +437,7 @@ class App {
         $photo = Lazer::table('photos')->where('photoid', '=', $photoId)->find();
         $app = $this;
         if (count($photo) === 1) {
-            require('./php/views/fullPhoto.php');
+            require('./php/views/fullscreenPhoto.php');
         }
         die();
     }

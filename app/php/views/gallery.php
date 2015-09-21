@@ -33,7 +33,7 @@ $photoPath = './photos/';
             <?php endif; ?>
         <?php endforeach; ?>
     </div>
-    <div class="fullPhoto"></div>
+    <div class="fullscreen-photo"></div>
 <?php else : ?>
     <div class="container-fluid">
         <div class="row">
