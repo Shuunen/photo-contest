@@ -74,17 +74,17 @@ function handleEvents() {
 }
 
 function nextPrevFullscreenPhoto(next) {
-    var activeItem = $('.grid-item.active');
+    var activeItem = $('.grid-item:visible.active');
     var targetItem;
     if (next) {
-        targetItem = activeItem.next('.grid-item');
+        targetItem = activeItem.next('.grid-item:visible');
         if (!targetItem.length) {
-            targetItem = $('.grid-item').first();
+            targetItem = $('.grid-item:visible').first();
         }
     } else {
-        targetItem = activeItem.prev('.grid-item');
+        targetItem = activeItem.prev('.grid-item:visible');
         if (!targetItem.length) {
-            targetItem = $('.grid-item').last();
+            targetItem = $('.grid-item:visible').last();
         }
     }
     // trigger fake click
@@ -247,9 +247,17 @@ function initMasonry() {
     if (window.location.hash !== "") {
         var a = $('.grid-filter[href="' + window.location.hash + '"]');
         a.addClass('active');
-        $('.grid').isotope({
-            filter: a.data('filter')
-        });
+        $('.grid')
+            .isotope({
+                filter: a.data('filter')
+            })
+            .one('arrangeComplete', function () {
+                if ($('.grid-item:visible').size() === 0) {
+                    $('.grid-filter').first().click();
+                    window.location.hash = '';
+                }
+            });
+
     } else {
         $('.grid-filter').first().addClass('active');
     }
@@ -318,7 +326,7 @@ function afterModeration(jsonData) {
     console.log('afterModeration return from B/E', ret);
 
     if (!ret.data) {
-        console.warn('why does we get here without data ?'); // TODO : fix
+        console.warn('no data received');
         return;
     }
 
@@ -333,21 +341,25 @@ function afterModeration(jsonData) {
 
     $('.grid-filter.active').click();
 
-    $('.fullscreen-photo').empty();
     if (typeof ret.data.nbPhotosToModerate !== 'undefined') {
         if (ret.data.nbPhotosToModerate === 0) {
             $('.nbPhotosToModerate').remove();
+            $('.fullscreen-photo').empty();
             if (window.location.hash === '#submitted') {
                 $('.grid-filter[data-filter="*"]').click();
             }
+            if (photostatus !== 'deleted') {
+                ret.message = 'All photos have been approved !';
+            }
         } else {
+            nextPrevFullscreenPhoto(true);
             $('.nbPhotosToModerate').text(ret.data.nbPhotosToModerate);
         }
     }
 
     if (ret.message && ret.messageStatus) {
         $.smkAlert({
-            text: ret.message, type: ret.messageStatus, time: 5
+            text: ret.message, type: ret.messageStatus, time: 4
         });
     }
 }
