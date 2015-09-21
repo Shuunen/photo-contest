@@ -51,9 +51,7 @@ function __autoload($class_name) {
 
         <!-- build:js scripts/app.js -->
         <script type="text/javascript" src="./scripts/main.js"></script>
-        <script type="text/javascript" src="./scripts/ratings.js"></script>
         <script type="text/javascript" src="./scripts/upload.js"></script>
-        <script type="text/javascript" src="./scripts/moderate.js"></script>
         <!-- endbuild -->
 
         <?php require './php/views/analytics.php' ?>
