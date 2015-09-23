@@ -98,19 +98,19 @@ function refresh() {
 function nextPrevFullscreenPhoto(next) {
     var activeItem = $('.grid-item:visible.active');
     var targetItem;
-    console.log('active item :', activeItem);
+    // console.log('active item :', activeItem);
     if (next) {
-        targetItem = activeItem.nextAll(':visible:eq(0)');
-        console.log('next :', targetItem);
+        targetItem = activeItem.nextAll('.grid-item:visible:eq(0)');
+        // console.log('next :', targetItem);
         if (!targetItem.length) {
-            console.info('next :', targetItem);
+            // console.info('next :', targetItem);
             targetItem = $('.grid-item:visible').first();
         }
     } else {
-        targetItem = activeItem.prevAll(':visible:eq(0)');
-        console.log('prev :', targetItem);
+        targetItem = activeItem.prevAll('.grid-item:visible:eq(0)'); 
+        // console.log('prev :', targetItem);
         if (!targetItem.length) {
-            console.info('prev :', targetItem);
+            // console.info('prev :', targetItem);
             targetItem = $('.grid-item:visible').last();
         }
     }
