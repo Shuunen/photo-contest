@@ -1,4 +1,4 @@
-<div class="main">
+<div class="main fade">
     <?php
     if ($app->isLogged) {
         require 'nav.php';
@@ -24,9 +24,3 @@
     }        
     ?>
 </div>
-<?php
-if($app->isDesktop) {
-    require 'bokeh.php';
-}
-//echo '<h3>isDesktop : ' . ($app->isDesktop ? 'YES' : 'no') . '</h3>';
-//echo '<h3>HTTP_USER_AGENT : ' . $_SERVER['HTTP_USER_AGENT'] . '</h3>';

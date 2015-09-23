@@ -35,6 +35,15 @@ function __autoload($class_name) {
     <body class="<?php echo ($app->isDesktop ? 'desktop':'mobile') ?>">
 
         <?php require './php/views/main.php' ?>
+        
+        <?php
+        if($app->isDesktop) {
+            require './php/views/bokeh.php';
+        }
+        //echo '<h3>isDesktop : ' . ($app->isDesktop ? 'YES' : 'no') . '</h3>';
+        //echo '<h3>HTTP_USER_AGENT : ' . $_SERVER['HTTP_USER_AGENT'] . '</h3>';
+        ?>
+        
         <script>
           var voteOpenDate = "<?php print $app->startVoteDate->format('Y-m-d H:i:s');?>";
         </script>

@@ -329,6 +329,8 @@ class App {
     function handleTemplate($request) {
         if ($request['template'] === 'fullscreenPhoto') {
             $this->getFullPhotoHtmlcontent($request['photoId']);
+        } else if ($request['template'] === 'main') {
+            $this->getMainContent();
         }
     }
 
@@ -381,8 +383,12 @@ class App {
 
             $type = $request['type'];
 
-
-            if (!$this->isLogged) {
+            /*
+             * Anonymous or logged user
+             */
+            if ($type === 'template') {
+                $data = $this->handleTemplate($request);
+            } else if (!$this->isLogged) {
                 /*
                  * Anonymous user
                  */
@@ -403,8 +409,6 @@ class App {
                     $data = $this->handleRemovePhoto($request);
                 } else if ($this->voteOpened && $type === 'rate') {
                     $data = $this->handleRate($request);
-                } else if ($type === 'template') {
-                    $data = $this->handleTemplate($request);
                 } else if ($this->isAdmin) {
                     /*
                      * Logged admin
@@ -466,6 +470,12 @@ class App {
         } else {
             die('No photo found with this id.');
         }
+    }
+
+    function getMainContent() {
+        $app = $this;
+        require('./php/views/main.php');
+        die();
     }
 
     function getRateForPhotoAndCategory($photoId, $categoryId) {

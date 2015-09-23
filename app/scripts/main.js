@@ -29,7 +29,9 @@ function handleEvents() {
 
         // console.log('clicked on', el);
 
-        if (el.classList.contains('grid-filter')) {
+        if (el.classList.contains('refresh-button')) {
+            refresh();
+        } else if (el.classList.contains('grid-filter')) {
             clickedOnGridFilter(el);
         } else if (el.classList.contains('grid-item-thumb')) {
             clickedOnGridItemThumb(el);
@@ -68,6 +70,27 @@ function handleEvents() {
         else if (event.keyCode === 39 || event.keyCode === 37) {
             var next = (event.keyCode === 39);
             nextPrevFullscreenPhoto(next);
+        }
+    });
+
+}
+
+function refresh() {
+
+    document.body.classList.remove('loaded');
+
+    var container = document.querySelector('.main');
+    container.innerHTML = '<i class="fa fa-spinner fa-spin fa-5x"></i>';
+
+    $.ajax({
+        type: 'get',
+        data: 'type=template&template=main',
+        success: function (html) {
+            // console.log(data);
+            // container.classList.toggle('fade');
+            container.outerHTML = html;
+            initImageGrid();
+            handleLoginForm();
         }
     });
 
@@ -164,29 +187,32 @@ function clickedOnLogoutLink() {
         type: 'get',
         data: 'type=logout&ajax=true',
         success: function () {
-            window.location.reload();
+            refresh();
         }
     });
 }
 
 function clickedOnUploadModal(el) {
+
     if (el.classList.contains('handled')) {
         return;
-    } else {
-        el.classList.add('handled');
-
-        console.log('display countdown in add photo modal');
-
-        $('.countdown.submitOpened').countdown(voteOpenDate)
-            .on('update.countdown', function (event) {
-                var totalHours = event.offset.totalDays * 24 + event.offset.hours;
-                var totalSeconds = totalHours * 3600 + event.offset.seconds;
-                var format = '%-D day%!D or ' + totalSeconds + ' seconds if you\'re a robot.';
-                $(this).html(event.strftime(format));
-            }).on('finish.countdown', function () {
-                window.location.reload();
-            });
     }
+
+    el.classList.add('handled');
+
+    console.log('display countdown in add photo modal');
+
+    $('.countdown.submitOpened')
+        .countdown(voteOpenDate)
+        .on('update.countdown', function (event) {
+            var totalHours = event.offset.totalDays * 24 + event.offset.hours;
+            var totalSeconds = totalHours * 3600 + event.offset.seconds;
+            var format = '%-D day%!D or ' + totalSeconds + ' seconds if you\'re a robot.';
+            $(this).html(event.strftime(format));
+        })
+        .on('finish.countdown', function () {
+            refresh();
+        });
 }
 
 function clickedOnAddUserModal(el) {
@@ -234,20 +260,26 @@ function initImageGrid() {
 
 function initMasonry() {
 
-    $('.gallery').isotope({
-        layoutMode: 'masonry',
-        itemSelector: '.grid-item',
-        masonry: {
-            gutter: 5,
-            columnWidth: 250,
-            isFitWidth: true
-        }
-    });
+    var grid = $('.grid')
+        .isotope({
+            layoutMode: 'masonry',
+            itemSelector: '.grid-item',
+            masonry: {
+                gutter: 5,
+                columnWidth: 250,
+                isFitWidth: true
+            }
+        })
+        .one('layoutComplete', function () {
+            console.info('layoutComplete removing fade');
+            document.body.classList.add('loaded');
+            $('.main').addClass('in');
+        });
 
     if (window.location.hash !== "") {
         var a = $('.grid-filter[href="' + window.location.hash + '"]');
         a.addClass('active');
-        $('.grid')
+        grid
             .isotope({
                 filter: a.data('filter')
             })
@@ -259,13 +291,21 @@ function initMasonry() {
             });
 
     } else {
-        $('.grid-filter').first().addClass('active');
+        $('.grid-filter').first().addClass('active').click();
     }
 }
 
 function handleLoginForm() {
 
-    $('form.login').submit(function (event) {
+    var form = $('form.login');
+
+    if (form.size() === 0) {
+        return;
+    }
+
+    document.querySelector('.main').classList.add('in');
+
+    form.submit(function (event) {
         event.preventDefault();
         var data = $(this).serialize();
         data += '&ajax=true';
@@ -273,7 +313,7 @@ function handleLoginForm() {
             type: 'get',
             data: data,
             success: function () {
-                window.location.reload();
+                refresh();
             }
         });
     });
@@ -316,7 +356,7 @@ function initVoteOpenedForCountdown() {
             $(this).html(event.strftime(format));
         })
         .on('finish.countdown', function () {
-            window.location.reload();
+            refresh();
         });
 }
 

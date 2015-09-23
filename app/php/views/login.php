@@ -1,4 +1,4 @@
-<form class="login form-horizontal animated fadeInUp">
+<form class="login form-horizontal">
     <div class="form-group">
         <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
 

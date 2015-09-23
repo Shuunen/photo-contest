@@ -4,14 +4,22 @@
 @import "bokeh";
 
 body {
-    background-image: -webkit-linear-gradient(right bottom, #0A0707 0%, #110C0D 50%, #0C090A 100%);
-    background-image: linear-gradient(right bottom, #0A0707 0%, #110C0D 50%, #0C090A 100%);
-    font-size: 16px;
+    background-color: #110C0D;
+    font-size: 16px;    
+    overflow: hidden;
+    &.loaded {
+        overflow:inherit; 
+    }
 }
 
 .main {
     z-index: 10;
     position: relative;
+    & > .fa-spin {
+        position: absolute;
+        top: 45vh;
+        left: 47vw;
+    }
 }
 
 .modal-backdrop {
