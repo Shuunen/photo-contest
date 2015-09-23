@@ -312,17 +312,22 @@ function clickedOnAddUserModal(el) {
 function initImageGrid() {
 
     var nbPhotosToLoad = $('.gallery [data-layzr]').size();
-    new Layzr({
-        container: '.gallery',
-        selector: '[data-layzr]',
-        hiddenAttr: 'data-layzr-hidden',
-        callback: function () {
-            if (--nbPhotosToLoad === 0) {
-                console.log('all images loaded');
-                setTimeout(initMasonry, 100);
+
+    if(nbPhotosToLoad) {
+        new Layzr({
+            container: '.gallery',
+            selector: '[data-layzr]',
+            hiddenAttr: 'data-layzr-hidden',
+            callback: function () {
+                if (--nbPhotosToLoad === 0) {
+                    console.log('all images loaded');
+                    setTimeout(initMasonry, 100);
+                }
             }
-        }
-    });
+        });
+    } else {
+        $('.main').addClass('in');
+    }
 }
 
 function initMasonry() {

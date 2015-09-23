@@ -152,6 +152,11 @@ class App {
                 $image->save($thumbPathOut, IMAGETYPE_JPEG);
                 //end create thumb
 
+                // if original image is a png, delete it
+                if (strpos($fullPathIn, '.png') !== false) {
+                    unlink($fullPathIn);
+                }
+
                 try {
                     $this->storePhotoToDB($request);
                 } catch (Exception $e) {
