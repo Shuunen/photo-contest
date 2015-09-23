@@ -107,7 +107,7 @@ function nextPrevFullscreenPhoto(next) {
             targetItem = $('.grid-item:visible').first();
         }
     } else {
-        targetItem = activeItem.prevAll('.grid-item:visible:eq(0)'); 
+        targetItem = activeItem.prevAll('.grid-item:visible:eq(0)');
         // console.log('prev :', targetItem);
         if (!targetItem.length) {
             // console.info('prev :', targetItem);
@@ -165,6 +165,8 @@ function clickedOnGridFilter(el) {
 
     $('.grid-filter').removeClass('active');
     $(el).addClass('active');
+    $(el).focus();
+    window.location.hash = $(el).attr('href');
 
     var filter = $(el).data('filter');
     $('.grid').isotope({
@@ -313,7 +315,7 @@ function initImageGrid() {
 
     var nbPhotosToLoad = $('.gallery [data-layzr]').size();
 
-    if(nbPhotosToLoad) {
+    if (nbPhotosToLoad) {
         new Layzr({
             container: '.gallery',
             selector: '[data-layzr]',
@@ -346,21 +348,30 @@ function initMasonry() {
             console.info('layoutComplete removing fade');
             document.body.classList.add('loaded');
             $('.main').addClass('in');
+        })
+        .on('arrangeComplete', function () {
+
+            var fullscreen = document.querySelector('.fullscreen-photo');
+
+            if ($('.grid-item:visible').size() === 0) {
+                console.log('no more photo');
+                if (fullscreen.childElementCount) {
+                    console.log('exiting fullscreen');
+                    fullscreen.innerHTML = '';
+                }
+                console.log('going back to "all" filter');
+                $('.grid-filter').first().click();
+            } else if (fullscreen.childElementCount) {
+                nextPrevFullscreenPhoto(true);
+            }
         });
 
     if (window.location.hash !== "") {
         var a = $('.grid-filter[href="' + window.location.hash + '"]');
         a.addClass('active');
-        grid
-            .isotope({
-                filter: a.data('filter')
-            })
-            .one('arrangeComplete', function () {
-                if ($('.grid-item:visible').size() === 0) {
-                    $('.grid-filter').first().click();
-                    window.location.hash = '';
-                }
-            });
+        grid.isotope({
+            filter: a.data('filter')
+        });
 
     } else {
         $('.grid-filter').first().addClass('active').click();
@@ -451,30 +462,23 @@ function afterModeration(jsonData) {
         item.attr('data-photostatus', photostatus);
     }
 
-    $('.grid-filter.active').click();
+    var activeFilter = $('.grid-filter.active').attr('href');
 
-    if (typeof ret.data.nbPhotosToModerate !== 'undefined') {
-        if (ret.data.nbPhotosToModerate === 0) {
-            $('.nbPhotosToModerate').remove();
-            if (photostatus !== 'deleted') {
-                ret.message = 'All photos have been approved !';
+    $.ajax({
+        type: 'get',
+        data: 'type=template&template=nav',
+        success: function (html) {
+
+            document.querySelector('nav').outerHTML = html;
+
+            $('.grid-filter[href="' + activeFilter + '"]').click();
+
+            if (ret.message && ret.messageStatus) {
+                $.smkAlert({
+                    text: ret.message, type: ret.messageStatus, time: 4
+                });
             }
-        } else {
-            $('.nbPhotosToModerate').text(ret.data.nbPhotosToModerate);
         }
-    }
+    });
 
-    if ($('.grid-item:visible').size() === 0) {
-        $('.fullscreen-photo').empty();
-        $('.grid-filter').first().click();
-        window.location.hash = '';
-    } else {
-        nextPrevFullscreenPhoto(true);
-    }
-
-    if (ret.message && ret.messageStatus) {
-        $.smkAlert({
-            text: ret.message, type: ret.messageStatus, time: 4
-        });
-    }
 }

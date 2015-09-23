@@ -337,6 +337,8 @@ class App {
             $this->getFullPhotoHtmlcontent($request['photoId']);
         } else if ($request['template'] === 'main') {
             $this->getMainContent();
+        } else if ($request['template'] === 'nav') {
+            $this->getNavContent();
         }
     }
 
@@ -459,6 +461,10 @@ class App {
         return $photos = Lazer::table('photos')->where('status', '=', 'submitted')->findAll();
     }
 
+    function getPhotosCensored() {
+        return $photos = Lazer::table('photos')->where('status', '=', 'censored')->findAll();
+    }
+
     function getUserPhotos() {
         return $photos = Lazer::table('photos')->where('userid', '=', $this->currentUser->userid)->findAll();
     }
@@ -481,6 +487,12 @@ class App {
     function getMainContent() {
         $app = $this;
         require('./php/views/main.php');
+        die();
+    }
+
+    function getNavContent(){
+        $app = $this;
+        require('./php/views/nav.php');
         die();
     }
 

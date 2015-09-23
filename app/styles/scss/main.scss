@@ -100,6 +100,10 @@ body {
     }
     .navbar-nav > li > a {
         height: 42px;
+        &.active {
+            color: #EBEBEB;
+            background-color: #485563;
+        }
     }
     .navbar-text {
         margin-left: 0;
@@ -114,6 +118,9 @@ body {
 
 .desktop .navbar-default .navbar-nav > li > a {
     transition: all 0.3s ease-out;
+    &:hover {
+        background-color: #275c6c;
+    }
 }
 
 .alert-info {
@@ -237,3 +244,8 @@ body {
 .smk-alert p {
     margin: 0;
 }
+
+.btn-info:active, .btn-info.active {
+
+}
+
