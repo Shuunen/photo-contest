@@ -28,7 +28,7 @@ function __autoload($class_name) {
         <link href="../bower_components/fineuploader-dist/dist/fine-uploader-gallery.min.css" rel="stylesheet">
         <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
         <link href="../bower_components/smoke/dist/css/smoke.min.css" rel="stylesheet">
-        <link href="./styles/css/main.css" rel="stylesheet">
+        <link href="./styles/css/main.css?v<?php echo $app->version ?>" rel="stylesheet">
         <!-- endbuild -->
     </head>
 
@@ -37,16 +37,15 @@ function __autoload($class_name) {
         <?php require './php/views/main.php' ?>
         
         <?php
-        if($app->isDesktop) {
-            require './php/views/bokeh.php';
-        }
-        //echo '<h3>isDesktop : ' . ($app->isDesktop ? 'YES' : 'no') . '</h3>';
-        //echo '<h3>HTTP_USER_AGENT : ' . $_SERVER['HTTP_USER_AGENT'] . '</h3>';
+            if($app->isDesktop) {
+                require './php/views/bokeh.php';
+            }
         ?>
         
         <script>
           var voteOpenDate = "<?php print $app->startVoteDate->format('Y-m-d H:i:s');?>";
         </script>
+
         <!-- build:js scripts/scripts.js -->
         <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
         <script type="text/javascript" src="../bower_components/fineuploader-dist/dist/fine-uploader.min.js"></script>
@@ -59,7 +58,7 @@ function __autoload($class_name) {
         <!-- endbuild -->
 
         <!-- build:js scripts/app.js -->
-        <script type="text/javascript" src="./scripts/main.js"></script>
+        <script type="text/javascript" src="./scripts/main.js?v<?php echo $app->version ?>"></script>
         <!-- endbuild -->
 
         <?php require './php/views/analytics.php' ?>

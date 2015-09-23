@@ -14,6 +14,7 @@ class App {
 
     function __construct() {
 
+        $this->version = 4;
         $this->isUser = false;
         $this->isAdmin = false;
         $this->isLogged = false;
