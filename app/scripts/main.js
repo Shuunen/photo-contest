@@ -79,8 +79,7 @@ function refresh() {
 
     document.body.classList.remove('loaded');
 
-    var container = document.querySelector('.main');
-    container.innerHTML = '<i class="fa fa-spinner fa-spin fa-5x"></i>';
+    startFullscreenLoading();
 
     $.ajax({
         type: 'get',
@@ -88,7 +87,7 @@ function refresh() {
         success: function (html) {
             // console.log(data);
             // container.classList.toggle('fade');
-            container.outerHTML = html;
+            document.querySelector('.main').outerHTML = html;
             initImageGrid();
             handleLoginForm();
         }
@@ -99,14 +98,19 @@ function refresh() {
 function nextPrevFullscreenPhoto(next) {
     var activeItem = $('.grid-item:visible.active');
     var targetItem;
+    console.log('active item :', activeItem);
     if (next) {
-        targetItem = activeItem.next('.grid-item:visible');
+        targetItem = activeItem.nextAll(':visible:eq(0)');
+        console.log('next :', targetItem);
         if (!targetItem.length) {
+            console.info('next :', targetItem);
             targetItem = $('.grid-item:visible').first();
         }
     } else {
-        targetItem = activeItem.prev('.grid-item:visible');
+        targetItem = activeItem.prevAll(':visible:eq(0)');
+        console.log('prev :', targetItem);
         if (!targetItem.length) {
+            console.info('prev :', targetItem);
             targetItem = $('.grid-item:visible').last();
         }
     }
@@ -128,7 +132,7 @@ function clickedOnGridItemThumb(el) {
     $(el).parent('.grid-item').addClass('active');
 
     // display loading gif while full photo is loading
-    $('.fullscreen-photo').html('<div class="item"><i class="fa fa-spinner fa-spin fa-5x"></i></div>');
+    startFullscreenLoading();
 
     $.ajax({
         type: 'get',
@@ -200,6 +204,8 @@ function clickedOnUploadModal(el) {
 
     el.classList.add('handled');
 
+    handlePhotoUpload();
+
     console.log('display countdown in add photo modal');
 
     $('.countdown.submitOpened')
@@ -213,6 +219,67 @@ function clickedOnUploadModal(el) {
         .on('finish.countdown', function () {
             refresh();
         });
+}
+
+function startFullscreenLoading() {
+    $('.fullscreen-photo').html('<div class="item"><i class="fa fa-spinner fa-spin fa-5x"></i></div>');
+}
+
+function handlePhotoUpload() {
+
+    var userId = document.getElementsByName('userId')[0];
+    if (!userId) {
+        return;
+    }
+
+    userId = userId.value;
+    var bAllUploaded = false;
+    var bAllAdded = false;
+    var galleryUploader = new qq.FineUploader({
+        element: document.getElementById("fine-uploader-gallery"),
+        template: 'qq-template-gallery',
+        autoUpload: false,
+        request: {
+            endpoint: './php/fine-uploader/endpoint.php',
+            params: {
+                userId: userId
+            }
+        },
+        thumbnails: {
+            placeholders: {
+                waitingPath: './images/placeholders/waiting-generic.png',
+                notAvailablePath: './images/placeholders/not_available-generic.png'
+            }
+        },
+        validation: {
+            allowedExtensions: ['jpeg', 'jpg', 'gif', 'png']
+        },
+        callbacks: {
+            onProgress: function () {
+                startFullscreenLoading();
+            },
+            onComplete: function (id, name, json) {
+                // console.log(json);
+                $.ajax({
+                    type: 'get',
+                    data: 'type=addPhoto&photoUrl=' + json.uploadName + '&ajax=true',
+                    success: function (json) {
+                        // console.log(json);
+                        if (bAllUploaded) {
+                            refresh();
+                        }
+                    }
+                });
+            },
+            onAllComplete: function () {
+                bAllUploaded = true;
+            }
+        }
+    });
+
+    qq(document.getElementById("uploadButton")).attach('click', function () {
+        galleryUploader.uploadStoredFiles();
+    });
 }
 
 function clickedOnAddUserModal(el) {
