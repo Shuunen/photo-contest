@@ -219,18 +219,18 @@ class App {
     function getResults() {
 
         $categories = $this->getCategories();
-        $photos = $photos = Lazer::table('photos')->where('status', '=', 'approved')->findAll();
 
         $rates = [];
         foreach ($categories as $category) {
-            $rates[$category->categoryid] = getResultsByCategory($category->categoryid);
+            $rates[$category->categoryid] = $this->getResultsByCategory($category->categoryid);
         }
 
         return $rates;
     }
 
     function getResultsByCategory($categoryId) {
-        $nbUsers = $photos = Lazer::table('users')->findAll()->count();
+        $nbUsers = Lazer::table('users')->findAll()->count();
+        $photos =  Lazer::table('photos')->where('status', '=', 'approved')->findAll();
         $results = [];
         foreach ($photos as $photo) {
             $photoRates = Lazer::table('rates')->where('photoid', '=', $photo->photoid)->andWhere('categoryid', '=', $categoryId)->findAll();
@@ -239,13 +239,14 @@ class App {
                 foreach ($photoRates as $photoRate) {
                     $results[$photo->photoid] += $photoRate->rate;
                 }
-                $results[$photo->photoid] += ($nbUsers - count($photoRates)) * 2.5;
-                $results[$photo->photoid] = $results[$photo->photoid] / $nbUsers;
             }
+
+            $results[$photo->photoid] += ($nbUsers - count($photoRates)) * 2.5;
+            $results[$photo->photoid] = round($results[$photo->photoid] / $nbUsers , 4);
         }
         arsort($results);
 
-        return results;
+        return $results;
     }
 
     function storeRateToDB($request) {

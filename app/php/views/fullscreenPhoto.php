@@ -6,19 +6,19 @@ $photoPath = './photos/';
     <div class="photo-container">
         <img data-photoid="<?php echo $photo->photoid ?>" src="<?php echo $photoPath . $photo->userid . '/' . $photo->filepath ?>">
     </div>
-    
+
     <button type="button" event-emitter class="slide-control prev btn" title="Previous photo">
         <i class="fa fa-chevron-left fa-3x"></i>
     </button>
-    
+
     <button type="button" event-emitter class="slide-control next btn" title="Next photo">
         <i class="fa fa-chevron-right fa-3x"></i>
     </button>
-    
+
      <button type="button" event-emitter class="close-fullscreen-photo btn" title="Close photo">
         <i class="fa fa-times fa-3x"></i>
     </button>
-    
+
     <?php if ($app->currentUser->role === 'admin'): ?>
         <div class="moderation-controls">
             <button data-action="approve" type="button" event-emitter class="moderation-control btn btn-success" <?php print $photo->status === "approved" ? "disabled" : ""; ?>>
@@ -39,7 +39,7 @@ $photoPath = './photos/';
                     <div class="rating">
                         <div class="category"><?php print $category->label; ?> :</div>
                         <div class="stars rating-category" data-catgerory-id="<?php print $category->categoryid; ?>" data-photo-id="<?php print $photo->photoid ?>">
-                            <input name="rating-<?php print $category->categoryid; ?>" type="hidden" class="rating" data-filled="fa fa-star fa-2x" data-filled-selected="fa fa-star fa-2x" data-empty="fa fa-star-o fa-2x" value="<?php print $app->getRateForPhotoAndCategory($photo->photoid, $category->categoryid); ?>"></span>
+                            <input name="rating-<?php print $category->categoryid; ?>" type="hidden" class="rating" data-fractions="2" data-start="0" data-stop="5" data-filled="fa fa-star fa-2x" data-filled-selected="fa fa-star fa-2x" data-empty="fa fa-star-o fa-2x" value="<?php print $app->getRateForPhotoAndCategory($photo->photoid, $category->categoryid); ?>"></span>
                         </div>
                     </div>
                 <?php endforeach; ?>
