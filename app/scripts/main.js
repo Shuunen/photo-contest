@@ -170,9 +170,19 @@ function clickedOnGridFilter(el) {
     window.location.hash = $(el).attr('href');
 
     var filter = $(el).data('filter');
-    $('.grid').isotope({
-        filter: filter
-    });
+    if(filter !==""){
+      $('.grid').isotope({
+          filter: filter
+      });
+    }
+
+    var sort = $(el).data('sort');
+    if(sort !== ""){
+      $('.grid').isotope({
+          sortBy: sort,
+          sortAscending: false
+      });
+    }
 }
 
 function clickedOnDeletePhoto(el) {
@@ -344,6 +354,13 @@ function initMasonry() {
                 gutter: 5,
                 columnWidth: 250,
                 isFitWidth: true
+            },
+            getSortData: {
+              global: '[data-result-gobal]',
+              travels: '[data-result-travels]',
+              '40': '[data-result-40]',
+              most_creative: '[data-result-most_creative]',
+              funniest: '[data-result-funniest]'
             }
         })
         .one('layoutComplete', function () {
@@ -371,10 +388,20 @@ function initMasonry() {
     if (window.location.hash !== "") {
         var a = $('.grid-filter[href="' + window.location.hash + '"]');
         a.addClass('active');
-        grid.isotope({
-            filter: a.data('filter')
-        });
+        var filter = a.data('filter');
+        if(filter !==""){
+          grid.isotope({
+              filter: filter
+          });
+        }
 
+        var sort = a.data('sort');
+        if(sort !== ""){
+          grid.isotope({
+              sortBy: sort,
+              sortAscending: false
+          });
+        }
     } else {
         $('.grid-filter').first().addClass('active').click();
     }

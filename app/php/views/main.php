@@ -12,7 +12,12 @@
 
     } else {
 
-        require 'gallery.php';
+
+        if($app->showResults){
+          require 'gallery-results.php';
+        }else{
+          require 'gallery.php';
+        }
 
         if ($app->submitOpened) {
             require 'uploadModal.php';
@@ -22,9 +27,6 @@
             require 'addUserModal.php';
         }
 
-        if($app->showResults){
-          require 'results.php';
-        }
     }
     ?>
 </div>

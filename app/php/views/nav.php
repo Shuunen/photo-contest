@@ -6,7 +6,7 @@
         </div>
 
         <ul class="nav navbar-nav navbar-right">
-
+          <?php if(!$app->showResults):?>
             <?php $photos = $app->getAllPhotos(); ?>
             <li>
                 <a href="#" class="grid-filter btn btn-info" event-emitter data-filter="*">
@@ -54,7 +54,19 @@
                     <?php endif; ?>
                 </a>
             </li>
-
+          <?php else :?>
+            <li>
+                <a href="#global" class="grid-filter btn btn-info" event-emitter data-sort="global">Global</a>
+            </li>
+            <?php $categories = $app->getCategories();?>
+            <?php foreach($categories as $category):?>
+              <li>
+                  <a href="#<?php print $category->categoryid;?>" class="grid-filter btn btn-info" event-emitter data-sort="<?php print $category->categoryid;?>">
+                      <?php print $category->label;?>
+                  </a>
+              </li>
+            <?php endforeach;?>
+          <?php endif;?>
             <?php if ($app->isAdmin): ?>
                 <!--<li><a href="#" data-toggle="modal" data-target="#tablePhotosModal">Table photos</a></li>-->
                 <li><a href="#" data-toggle="modal" event-emitter data-target="#addUserModal">Add User</a></li>
