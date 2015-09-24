@@ -149,6 +149,7 @@ function clickedOnGridItemThumb(el) {
 function clickedOnModerationControl(el) {
     var action = $(el).data('action');
     var photoId = $(el).parents('.fullscreen-photo .item').find('img').data('photoid');
+    startFullscreenLoading();
     console.log('moderate : ' + action + ' & photoId : ' + photoId);
     $.ajax({
         type: 'get',
@@ -181,6 +182,7 @@ function clickedOnDeletePhoto(el) {
         console.error('cannot delete photo without photoId');
         return false;
     }
+    startFullscreenLoading();
     $.ajax({
         type: 'get',
         data: 'type=removePhoto&photoId=' + photoId + '&ajax=true',
@@ -476,6 +478,7 @@ function afterModeration(jsonData) {
     var photostatus = ret.data.photostatus;
     var item = $('img[data-photoid="' + photoid + '"]').parent('.grid-item');
     if (photostatus === 'deleted') {
+        $('.grid').isotope( 'remove', item ).isotope('layout');
         item.remove();
     } else {
         item.attr('data-photostatus', photostatus);
