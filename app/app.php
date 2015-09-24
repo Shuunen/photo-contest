@@ -14,21 +14,25 @@ class App {
 
     function __construct() {
 
-        $this->version = 4;
+        $this->version = 4.1;
         $this->isUser = false;
+        $this->isVisitor = false;
         $this->isAdmin = false;
         $this->isLogged = false;
         $this->currentUser = null;
-        $this->startVoteDate = new DateTime('2015-09-26', new DateTimeZone('Pacific/Niue'));
         $now = new DateTime('now');
+        $this->startVoteDate = new DateTime('2015-09-26', new DateTimeZone('Pacific/Niue'));
         $this->startVoteDate->setTimezone($now->getTimezone());
 
         $this->endVoteDate = new DateTime('2015-10-05', new DateTimeZone('Pacific/Niue'));
         $this->endVoteDate->setTimezone($now->getTimezone());
 
+        $this->resultsDate = new DateTime('2015-10-15');
+
         // vote are opened after September 25 & until October 25
         $this->voteOpened = $this->startVoteDate < $now && $now <= $this->endVoteDate;
         $this->voteEnded = $now > $this->endVoteDate;
+        $this->showResults = $now > $this->resultsDate;
 
         // submit are opened until September 25
         $this->submitOpened = $now <= $this->startVoteDate;
@@ -38,7 +42,9 @@ class App {
             $this->isLogged = true;
             if (isset($this->currentUser->role) && $this->currentUser->role === 'admin') {
                 $this->isAdmin = true;
-            } else {
+            } else if(isset($this->currentUser->role) && $this->currentUser->role === 'visitor') {
+                $this->isVisitor = true;
+            }else {
                 $this->isUser = true;
             }
         }
@@ -220,12 +226,12 @@ class App {
 
         $categories = $this->getCategories();
 
-        $rates = [];
+        $results = [];
         foreach ($categories as $category) {
-            $rates[$category->categoryid] = $this->getResultsByCategory($category->categoryid);
+            $results[$category->categoryid] = $this->getResultsByCategory($category->categoryid);
         }
 
-        return $rates;
+        return $results;
     }
 
     function getResultsByCategory($categoryId) {
@@ -245,6 +251,28 @@ class App {
             $results[$photo->photoid] = round($results[$photo->photoid] / $nbUsers , 4);
         }
         arsort($results);
+
+        return $results;
+    }
+
+    function getResultsByPhoto($photoId){
+
+        $categories = $this->getCategories();
+        $nbUsers = Lazer::table('users')->findAll()->count();
+
+        $results = [];
+        foreach ($categories as $category) {
+            $photoRates = Lazer::table('rates')->where('photoid', '=', $photoId)->andWhere('categoryid', '=', $category->categoryid)->findAll();
+            $results[$category->categoryid] = 0;
+            if (count($photoRates) > 0) {
+                foreach ($photoRates as $photoRate) {
+                    $results[$category->categoryid] += $photoRate->rate;
+                }
+            }
+
+            $results[$category->categoryid] += ($nbUsers - count($photoRates)) * 2.5;
+            $results[$category->categoryid] = round($results[$category->categoryid] / $nbUsers , 4);
+        }
 
         return $results;
     }
@@ -450,6 +478,10 @@ class App {
         return $cat = Lazer::table('categories')->findAll();
     }
 
+    function getCategoryInfo($categoryId) {
+        return $category = Lazer::table('categories')->where('categoryid', '=', $categoryId)->find();
+    }
+
     function getAllPhotos() {
         return $photos = Lazer::table('photos')->findAll();
     }
@@ -464,6 +496,10 @@ class App {
 
     function getPhotosCensored() {
         return $photos = Lazer::table('photos')->where('status', '=', 'censored')->findAll();
+    }
+
+    function getPhotoInfo($photoId) {
+        return $photoInfo = Lazer::table('photos')->where('photoid', '=', $photoId)->find();
     }
 
     function getUserPhotos() {

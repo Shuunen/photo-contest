@@ -32,7 +32,7 @@ $photoPath = './photos/';
         <button type="button" title="Delete this photo" event-emitter class="btn btn-danger delete-photo">
             Delete this photo&nbsp;&nbsp;<span class="fa fa-trash" aria-hidden="true"></span>
         </button>
-    <?php elseif ($app->currentUser->userid !== $photo->userid) : ?>
+    <?php elseif ($app->currentUser->userid !== $photo->userid || (!$app->voteOpened && $app->voteEnded && $this->showResults)) : ?>
         <?php if ($app->voteOpened) : ?>
             <div class="ratings">
                 <?php foreach ($categories as $category) : ?>
@@ -44,12 +44,28 @@ $photoPath = './photos/';
                     </div>
                 <?php endforeach; ?>
             </div>
+        <?php elseif($app->voteEnded && !$this->showResults):?>
+            <div class="countdown-container">Votes are closed, the results will come soon.</div>
+        <?php elseif($this->showResults):?>
+            <div class="results-container">
+              <?php
+                $user = $app->getUserByUserid($photo->userid);
+                $results = $app->getResultsByPhoto($photo->photoid);
+              ?>
+
+              <div class="author"><?php print count($user) === 1 ? $user->name : $photo->userid;;?></div>
+              <?php foreach ($categories as $category) : ?>
+                    <div class="category-vote-results">
+                        <span class="category"><?php print $category->label; ?> : </span><span><?php print $results[$category->categoryid];?></span>
+                    </div>
+                <?php endforeach; ?>
+            </div>
         <?php else : ?>
             <div class="countdown-container">Votes will be opened in&nbsp;
                 <div class="countdown voteOpened"></div>
             </div>
         <?php endif; ?>
-    <?php else : ?>
+    <?php elseif(!$app->voteOpened && !$app->voteEnded) : ?>
         <button type="button" title="Delete this photo" event-emitter class="btn btn-danger delete-photo">
             Delete this photo&nbsp;&nbsp;<span class="fa fa-trash" aria-hidden="true"></span>
         </button>

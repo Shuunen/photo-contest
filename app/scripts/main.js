@@ -411,7 +411,7 @@ function initRating() {
             var title;
             $(this).tooltip({
               container: 'body',
-              placement: 'bottom',
+              placement: 'top',
               trigger: 'manual',
               title: function () {
                 return title;

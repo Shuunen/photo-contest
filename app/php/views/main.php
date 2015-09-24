@@ -9,7 +9,7 @@
     if (!$app->isLogged) {
 
         require 'login.php';
-        
+
     } else {
 
         require 'gallery.php';
@@ -21,6 +21,10 @@
         if ($app->isAdmin) {
             require 'addUserModal.php';
         }
-    }        
+
+        if($app->showResults){
+          require 'results.php';
+        }
+    }
     ?>
 </div>
