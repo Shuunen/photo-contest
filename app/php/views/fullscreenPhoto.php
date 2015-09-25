@@ -75,6 +75,8 @@ $photoPath = './photos/';
                 &nbsp;<span><?php echo ucwords($photo->status) ?></span>
             </div>
         </div>
+    <?php elseif($app->currentUser->userid === $photo->userid && $app->voteOpened) :?>
+      <div class="countdown-container">You can't vote for your own photo.</div>
     <?php endif; ?>
 
 </div>
