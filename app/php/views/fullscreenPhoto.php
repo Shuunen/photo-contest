@@ -37,7 +37,7 @@ $photoPath = './photos/';
         <?php if ($app->voteOpened) : ?>
             <div class="ratings">
                 <?php foreach ($categories as $category) : ?>
-                    <div class="rating">
+                    <div class="rating col-md-6">
                         <div class="category"><?php print $category->label; ?> :</div>
                         <div class="stars rating-category" data-catgerory-id="<?php print $category->categoryid; ?>" data-photo-id="<?php print $photo->photoid ?>">
                             <input name="rating-<?php print $category->categoryid; ?>" type="hidden" class="rating" data-fractions="2" data-start="0" data-stop="5" data-filled="fa fa-star fa-2x" data-filled-selected="fa fa-star fa-2x" data-empty="fa fa-star-o fa-2x" value="<?php print $app->getRateForPhotoAndCategory($photo->photoid, $category->categoryid); ?>"></span>
@@ -48,7 +48,7 @@ $photoPath = './photos/';
         <?php elseif($app->voteEnded && !$this->showResults):?>
             <div class="countdown-container">Votes are closed, the results will come soon.</div>
         <?php elseif($this->showResults):?>
-            <div class="results-container">
+            <div class="results-container col-md-8 center text-left">
               <?php
                 $user = $app->getUserByUserid($photo->userid);
                 $results = $app->getResultsByPhoto($photo->photoid);
@@ -56,8 +56,13 @@ $photoPath = './photos/';
 
               <div class="author"><?php print count($user) === 1 ? $user->name : $photo->userid;;?></div>
               <?php foreach ($categories as $category) : ?>
-                    <div class="category-vote-results">
-                        <span class="category"><?php print $category->label; ?> : </span><span><?php print $results[$category->categoryid];?></span>
+                    <div class="media col-xs-6">
+                      <div class="media-left media-middle">
+                        <?php print $category->label; ?>
+                      </div>
+                      <div class="media-body media-middle">
+                         : <strong><?php print $results[$category->categoryid];?></strong>
+                      </div>
                     </div>
                 <?php endforeach; ?>
             </div>

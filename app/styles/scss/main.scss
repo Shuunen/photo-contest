@@ -71,7 +71,7 @@ body {
     justify-content: center;
     .rating {
         display: flex;
-        flex-basis: 270px;
+        /*flex-basis: 270px;*/
         align-items: center;
         justify-content: center;
         .category {
@@ -200,6 +200,7 @@ body {
         margin-top: 20px;
         & > img {
             max-height: 100%;
+            max-width: 100%;
             cursor: default;
         }
     }
