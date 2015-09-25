@@ -8,20 +8,21 @@
         <ul class="nav navbar-nav navbar-right">
           <?php if(!$app->showResults):?>
             <?php $photos = $app->getAllPhotos(); ?>
+            <?php $photos_vote = $app->getPhotosToVote(); ?>
+            <?php $photos_user = $app->getUserPhotos(); ?>
             <li>
                 <a href="#" class="grid-filter btn btn-info" event-emitter data-filter="*">
                     All photos
                     <?php if (count($photos)) : ?>
-                        <span class="badge"><?php echo count($photos) ?></span>
+                        <span class="badge"><?php echo count($photos_user)+count($photos_vote) ?></span>
                     <?php endif; ?>
                 </a>
             </li>
-            <?php $photos = $app->getUserPhotos(); ?>
             <li>
                 <a href="#my-photos" class="grid-filter btn btn-info" event-emitter data-filter=".my-photos">
                     My photos
-                    <?php if (count($photos)) : ?>
-                        <span class="badge"><?php echo count($photos) ?></span>
+                    <?php if (count($photos_user)) : ?>
+                        <span class="badge"><?php echo count($photos_user) ?></span>
                     <?php endif; ?>
                 </a>
             </li>
@@ -45,12 +46,11 @@
                     </a>
                 </li>
             <?php endif; ?>
-            <?php $photos = $app->getPhotosToVote(); ?>
             <li>
                 <a href="#vote" class="grid-filter btn btn-info" event-emitter data-filter=".vote">
                     Opened to vote
-                    <?php if (count($photos)) : ?>
-                        <span class="badge"><?php echo count($photos) ?></span>
+                    <?php if (count($photos_vote)) : ?>
+                        <span class="badge"><?php echo count($photos_vote) ?></span>
                     <?php endif; ?>
                 </a>
             </li>
