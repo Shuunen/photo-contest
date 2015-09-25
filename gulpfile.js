@@ -47,7 +47,7 @@ gulp.task('html', ['js','styles'], function () {
 });
 
 gulp.task('images', function () {
-  return gulp.src('app/images/**/*')
+  return gulp.src('app/images/**/*.{jpg,png}')
     .pipe($.cache($.imagemin({
       progressive: true,
       interlaced: true,
@@ -86,11 +86,13 @@ gulp.task('extras', function () {
 
   gulp.src(['app/php/**/*'])
   .pipe(gulp.dest('dist/php'));
-  
+
   gulp.src(['app/photos/'])
   .pipe(gulp.dest('dist/photos'));
 
-  gulp.src(['bower_components/fine-uploader/_build/*.gif'])
+  gulp.src('app/images/**/*.gif').pipe(gulp.dest('dist/images'));
+
+  gulp.src(['bower_components/fineuploader-dist/dist/*.gif'])
   .pipe(gulp.dest('dist/styles/'));
 
   gulp.src(['bower_components/font-awesome/fonts/*'])
