@@ -1,3 +1,4 @@
+<?php if($app->isDesktop) : ?>
 <div class="bokeh">
     <div class="light"></div>
     <div class="light"></div>
@@ -100,3 +101,4 @@
     <div class="light"></div>
     <div class="light"></div>
 </div>
+<?php endif; ?>

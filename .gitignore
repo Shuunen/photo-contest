@@ -7,6 +7,7 @@ test/bower_components
 nbproject
 .idea
 *.map
+*.css
 app/database/Lazer/*
 app/photos/**
 app/photos/*.*

@@ -6,19 +6,19 @@ $photoPath = './photos/';
     <div class="photo-container">
         <img data-photoid="<?php echo $photo->photoid ?>" src="<?php echo $photoPath . $photo->userid . '/' . $photo->filepath ?>">
     </div>
-    
+
     <button type="button" event-emitter class="slide-control prev btn" title="Previous photo">
         <i class="fa fa-chevron-left fa-3x"></i>
     </button>
-    
+
     <button type="button" event-emitter class="slide-control next btn" title="Next photo">
         <i class="fa fa-chevron-right fa-3x"></i>
     </button>
-    
+
      <button type="button" event-emitter class="close-fullscreen-photo btn" title="Close photo">
         <i class="fa fa-times fa-3x"></i>
     </button>
-    
+
     <?php if ($app->currentUser->role === 'admin'): ?>
         <div class="moderation-controls">
             <button data-action="approve" type="button" event-emitter class="moderation-control btn btn-success" <?php print $photo->status === "approved" ? "disabled" : ""; ?>>
@@ -32,15 +32,31 @@ $photoPath = './photos/';
         <button type="button" title="Delete this photo" event-emitter class="btn btn-danger delete-photo">
             Delete this photo&nbsp;&nbsp;<span class="fa fa-trash" aria-hidden="true"></span>
         </button>
-    <?php elseif ($app->currentUser->userid !== $photo->userid) : ?>
+    <?php elseif ($app->currentUser->userid !== $photo->userid || (!$app->voteOpened && $app->voteEnded && $this->showResults)) : ?>
         <?php if ($app->voteOpened) : ?>
             <div class="ratings">
                 <?php foreach ($categories as $category) : ?>
                     <div class="rating">
                         <div class="category"><?php print $category->label; ?> :</div>
                         <div class="stars rating-category" data-catgerory-id="<?php print $category->categoryid; ?>" data-photo-id="<?php print $photo->photoid ?>">
-                            <input name="rating-<?php print $category->categoryid; ?>" type="hidden" class="rating" data-filled="fa fa-star fa-2x" data-filled-selected="fa fa-star fa-2x" data-empty="fa fa-star-o fa-2x" value="<?php print $app->getRateForPhotoAndCategory($photo->photoid, $category->categoryid); ?>"></span>
+                            <input name="rating-<?php print $category->categoryid; ?>" type="hidden" class="rating" data-fractions="2" data-start="0" data-stop="5" data-filled="fa fa-star fa-2x" data-filled-selected="fa fa-star fa-2x" data-empty="fa fa-star-o fa-2x" value="<?php print $app->getRateForPhotoAndCategory($photo->photoid, $category->categoryid); ?>"></span>
                         </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php elseif($app->voteEnded && !$this->showResults):?>
+            <div class="countdown-container">Votes are closed, the results will come soon.</div>
+        <?php elseif($this->showResults):?>
+            <div class="results-container">
+              <?php
+                $user = $app->getUserByUserid($photo->userid);
+                $results = $app->getResultsByPhoto($photo->photoid);
+              ?>
+
+              <div class="author"><?php print count($user) === 1 ? $user->name : $photo->userid;;?></div>
+              <?php foreach ($categories as $category) : ?>
+                    <div class="category-vote-results">
+                        <span class="category"><?php print $category->label; ?> : </span><span><?php print $results[$category->categoryid];?></span>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -49,7 +65,7 @@ $photoPath = './photos/';
                 <div class="countdown voteOpened"></div>
             </div>
         <?php endif; ?>
-    <?php else : ?>
+    <?php elseif(!$app->voteOpened && !$app->voteEnded) : ?>
         <button type="button" title="Delete this photo" event-emitter class="btn btn-danger delete-photo">
             Delete this photo&nbsp;&nbsp;<span class="fa fa-trash" aria-hidden="true"></span>
         </button>

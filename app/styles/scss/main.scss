@@ -5,10 +5,10 @@
 
 body {
     background-color: #110C0D;
-    font-size: 16px;    
+    font-size: 16px;
     overflow: hidden;
     &.loaded {
-        overflow:inherit; 
+        overflow:inherit;
     }
 }
 
@@ -100,6 +100,10 @@ body {
     }
     .navbar-nav > li > a {
         height: 42px;
+        &.active {
+            color: #EBEBEB;
+            background-color: #485563;
+        }
     }
     .navbar-text {
         margin-left: 0;
@@ -109,11 +113,15 @@ body {
         margin-left: 4px;
         font-weight: normal;
         font-size: 14px;
+        pointer-events: none;
     }
 }
 
 .desktop .navbar-default .navbar-nav > li > a {
     transition: all 0.3s ease-out;
+    &:hover {
+        background-color: #275c6c;
+    }
 }
 
 .alert-info {
@@ -188,7 +196,7 @@ body {
         display: flex;
         align-items: center;
         justify-content: center;
-        height: calc(100vh - 100px);;
+        height: calc(100vh - 150px);;
         margin-top: 20px;
         & > img {
             max-height: 100%;
@@ -236,4 +244,27 @@ body {
 
 .smk-alert p {
     margin: 0;
+}
+
+.btn-info:active, .btn-info.active {
+
+}
+
+.rate-results{
+  .category-results{
+    > div{
+      margin-bottom: 10px;
+    }
+    img{
+      margin:auto;
+      max-width:100%;
+    }
+    .photo-info{
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0,0,0,0.7);
+    }
+  }
 }

@@ -2,39 +2,38 @@
 
   $results = $app->getResults();
 
-  foreach($results as $cat => $photos){
-    print $cat."<br>";
-
-    foreach($photos as $photoId => $rate){
-      $photoInfo = Lazer::table('photos')->where('photoid', '=', $photoId)->find();
-      print '<img src="'.'./photos/' . $photoInfo->userid . '/' . 'thumbs/' . $photoInfo->filepath.'">'." : ".$rate."<br>";
-    }
-    print "<br><br>";
-  }
-
 ?>
-<div class="rateResults">
+<div class="rate-results">
 
-  <?php foreach($results as $cat => $photos) :?>
-    <div class="col-md-6">
-    <?php $category = Lazer::table('categories')->where('categoryid', '=', $cat)->find();?>
+  <?php foreach($results as $catId => $photos) :?>
+    <div class="col-md-3 category-results">
+    <?php $category = $app->getCategoryInfo($catId);?>
     <h2><?php print $category->label;?></h2>
     <?php $count = 0;?>
     <?php foreach($photos as $photoId => $rate):?>
 
-      <?php $photoInfo = Lazer::table('photos')->where('photoid', '=', $photoId)->find();?>
-
+      <?php
+        $photoInfo = $app->getPhotoInfo($photoId);
+        $user = $app->getUserByUserid($photoInfo->userid);?>
 
       <?php if($count < 3 ) : ?>
-        <div class="col-md-<?php print 5-$count;?>">
+        <div class="col-md-12 text-center">
           <img class="result-<?php print $count;?>" src="<?php print './photos/' . $photoInfo->userid . '/' . 'thumbs/' . $photoInfo->filepath;?>">
-          <div class="photoInfo">
-            <?php $user = Lazer::table('users')->where('userid', '=', $photoInfo->userid)->find();?>
-            <span class="author"><?php print $user->name;?></span><span class="rate">$rate</span>
+          <div class="photo-info">
+            <div class="author"><?php print count($user) === 1 ? $user->name : $photoInfo->userid;?></div>
+            <div class="rate">Rate : <?php print $rate;?></div>
           </div>
         </div>
       <?php else :?>
-        <?php break;?>
+        <div class="col-md-12">
+          <div class="col-md-6">
+            <img class="result-<?php print $count;?>" src="<?php print './photos/' . $photoInfo->userid . '/' . 'thumbs/' . $photoInfo->filepath;?>">
+          </div>
+          <div class="col-md-6">
+            <div class="author"><?php print count($user) === 1 ? $user->name : $photoInfo->userid;?></div>
+            <div class="rate">Rate : <?php print $rate;?></div>
+          </div>
+        </div>
       <?php endif;?>
 
       <?php $count++; ?>

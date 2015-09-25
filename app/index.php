@@ -35,18 +35,13 @@ function __autoload($class_name) {
     <body class="<?php echo ($app->isDesktop ? 'desktop':'mobile') ?>">
 
         <?php require './php/views/main.php' ?>
-        
-        <?php
-        if($app->isDesktop) {
-            require './php/views/bokeh.php';
-        }
-        //echo '<h3>isDesktop : ' . ($app->isDesktop ? 'YES' : 'no') . '</h3>';
-        //echo '<h3>HTTP_USER_AGENT : ' . $_SERVER['HTTP_USER_AGENT'] . '</h3>';
-        ?>
-        
+
+        <?php require './php/views/bokeh.php' ?>
+
         <script>
-          var voteOpenDate = "<?php print $app->startVoteDate->format('Y-m-d H:i:s');?>";
+          var voteOpenDate = "<?php print $app->startVoteDate->format('Y-m-d H:i:s') ?>";
         </script>
+
         <!-- build:js scripts/scripts.js -->
         <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
         <script type="text/javascript" src="../bower_components/fineuploader-dist/dist/fine-uploader.min.js"></script>
