@@ -2,7 +2,7 @@
 $categories = $app->getCategories();
 $photoPath = './photos/';
 ?>
-<div class="item close-fullscreen-photo" event-emitter title="Close photo">
+<div class="item close-fullscreen-photo" event-emitter>
     <div class="photo-container">
         <img data-photoid="<?php echo $photo->photoid ?>" src="<?php echo $photoPath . $photo->userid . '/' . $photo->filepath ?>">
     </div>
