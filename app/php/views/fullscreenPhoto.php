@@ -32,7 +32,8 @@ $photoPath = './photos/';
         <button type="button" title="Delete this photo" event-emitter class="btn btn-danger delete-photo">
             Delete this photo&nbsp;&nbsp;<span class="fa fa-trash" aria-hidden="true"></span>
         </button>
-    <?php elseif ($app->currentUser->userid !== $photo->userid || (!$app->voteOpened && $app->voteEnded && $this->showResults)) : ?>
+    <?php endif;?>
+    <?php if ($app->currentUser->userid !== $photo->userid || (!$app->voteOpened && $app->voteEnded && $this->showResults)) : ?>
         <?php if ($app->voteOpened) : ?>
             <div class="ratings">
                 <?php foreach ($categories as $category) : ?>
@@ -77,6 +78,8 @@ $photoPath = './photos/';
         </div>
     <?php elseif($app->currentUser->userid === $photo->userid && $app->voteOpened) :?>
       <div class="countdown-container">You can't vote for your own photo.</div>
+    <?php elseif($app->voteEnded && !$this->showResults):?>
+      <div class="countdown-container">Votes are closed, the results will come soon.</div>
     <?php endif; ?>
 
 </div>
