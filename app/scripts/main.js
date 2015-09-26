@@ -160,6 +160,7 @@ function clickedOnModerationControl(el) {
 
 function clickedOnCloseFullscreenPhoto() {
     $('.fullscreen-photo').empty();
+	refresh();
 }
 
 function clickedOnGridFilter(el) {
@@ -458,10 +459,40 @@ function initRating() {
             type: 'get',
             data: 'type=rate&photoId=' + category.attr("data-photo-id") + '&categoryId=' + category.attr("data-catgerory-id") + '&rate=' + $(this).val() + '&ajax=true',
             success: function (json) {
-                //console.log(json);
+                var json = JSON.parse(json);
+				// refreshThumb(json.data.photoid);	// TODO : fix this to avoid reloading all
             }
         });
     });
+}
+
+function refreshThumb(photoid) {
+	console.log('will refresh photoid thumb',photoid);
+	var thumb = document.querySelector('[data-photoid="'+photoid+'"]');
+	if(!thumb){
+		return;
+	} else {
+		thumb = thumb.parentElement;
+	}
+	console.log('found thumb container',thumb);
+	$.ajax({
+		type: 'get',
+		data: 'type=template&template=thumb&photoid='+photoid,
+		success: function (html) {
+			if(html.length && html.length > 50){
+				thumb.outerHTML = html;		
+				new Layzr({
+					container: '.grid',
+					selector: '[data-layzr]',
+					hiddenAttr: 'data-layzr-hidden',
+					callback: function () {						
+						console.log('thumb loaded');
+						$('.grid-filter.active').click();
+					}
+				});
+			}
+		}
+	});		
 }
 
 function initVoteOpenedForCountdown() {

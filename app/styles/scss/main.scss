@@ -269,3 +269,14 @@ body {
     }
   }
 }
+
+.rate-status {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 80px;
+    height: 80px;    
+    z-index: 20;
+	&.rate-started { background-image: url('../../images/rate-started.png');}
+	&.rate-complete { background-image: url('../../images/rate-complete.png');}
+}

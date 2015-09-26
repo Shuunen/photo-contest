@@ -15,6 +15,7 @@ class App {
     function __construct() {
 
         $this->version = 4.1;
+		$this->photoPath = './photos/';
         $this->isUser = false;
         $this->isVisitor = false;
         $this->isAdmin = false;
@@ -220,6 +221,8 @@ class App {
 
         $_SESSION['message'] = 'Rate ' . $request['photoId'] . ' for the category ' . $request['categoryId'] . ' with ' . $request['rate'];
         $_SESSION['messageStatus'] = 'success';
+		
+		return array('photoid' => $request['photoId']);
     }
 
     function getResults() {
@@ -368,7 +371,11 @@ class App {
             $this->getMainContent();
         } else if ($request['template'] === 'nav') {
             $this->getNavContent();
-        }
+        } else if ($request['template'] === 'thumb') {
+            $this->getThumbContent($request['photoid']);
+        } else {
+			die('This template is not handled');
+		}
     }
 
     function handleCreateUser($request) {
@@ -532,6 +539,17 @@ class App {
         require('./php/views/nav.php');
         die();
     }
+	
+	function getThumbContent($photoid){
+		$photo = Lazer::table('photos')->where('photoid', '=', $photoid)->find();
+        $app = $this;
+        if (count($photo) === 1) {
+            require('./php/views/gallery-thumb.php');
+            die();
+        } else {
+            die('No photo found with this id.');
+        }
+	}
 
     function getRateForPhotoAndCategory($photoId, $categoryId) {
 
@@ -541,6 +559,12 @@ class App {
         } else {
             return $rate->rate;
         }
+    }
+	
+	function getRatesCountForPhoto($photoId) {
+
+        $rate = Lazer::table('rates')->where('photoid', '=', $photoId)->andWhere('userid', '=', $this->currentUser->userid)->findAll();
+        return $rate->count();
     }
 
     function randomPassword() {
