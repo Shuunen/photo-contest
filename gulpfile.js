@@ -79,7 +79,8 @@ gulp.task('fonts', function () {
 gulp.task('extras', function () {
    gulp.src([
     'app/*.*',
-    '!app/*.html'
+    '!app/*.html',
+    '!app/index.php'
   ], {
     dot: true
   }).pipe(gulp.dest('dist'));
