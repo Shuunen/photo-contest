@@ -144,6 +144,13 @@ body {
     button {
         margin-right: 15px;
     }
+	&.on-side {
+	    position: absolute;
+		left: 20px;
+		width: 130px;
+		bottom: 90px;
+		justify-content: flex-start;
+	}
 }
 
 .delete-photo {
@@ -268,6 +275,22 @@ body {
       background-color: rgba(0,0,0,0.7);
     }
   }
+}
+
+.results-container {
+    max-width: 400px;
+	.author {
+	    text-align: center;
+		margin: 10px;
+		font-size: 16px;
+	}
+	.media { 
+		margin-top: 5px;
+	}
+	.media-middle,
+	.media-left {
+		white-space: nowrap;
+	}
 }
 
 .rate-status {

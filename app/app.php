@@ -262,6 +262,8 @@ class App {
 
         $categories = $this->getCategories();
         $nbUsers = Lazer::table('users')->findAll()->count();
+		
+		// $time_start = microtime(true);
 
         $results = [];
         foreach ($categories as $category) {
@@ -272,10 +274,9 @@ class App {
                     $results[$category->categoryid] += $photoRate->rate;
                 }
             }
-
-            $results[$category->categoryid] += ($nbUsers - count($photoRates)) * 2.5;
-            $results[$category->categoryid] = round($results[$category->categoryid] / $nbUsers , 4);
         }
+		
+		// die('results : '.  (microtime(true) - $time_start)*100 .' secondes<br/>'); // 17 secondes
 
         return $results;
     }

@@ -16,9 +16,7 @@ $photoPath = './photos/';
                   foreach($res as $catId => $result){
                     $globalRes += $result;
                     $sortAttrs .= ' data-result-'.$catId.'="'.$result.'"';
-
                   }
-                  $globalRes = $globalRes/count($res);
                 ?>
 
                 <?php if ($photo->status === 'approved') : ?>

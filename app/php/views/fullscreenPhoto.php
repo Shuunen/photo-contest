@@ -20,7 +20,7 @@ $photoPath = './photos/';
     </button>
 
     <?php if ($app->currentUser->role === 'admin'): ?>
-        <div class="moderation-controls">
+        <div class="moderation-controls <?php echo (($app->showResults)?'on-side':'') ?>">
             <button data-action="approve" type="button" event-emitter class="moderation-control btn btn-success" <?php print $photo->status === "approved" ? "disabled" : ""; ?>>
                 <span class="fa fa-check-circle" aria-hidden="true"></span> Approve<?php print $photo->status === "approved" ? "d" : ""; ?>
             </button>
@@ -48,20 +48,23 @@ $photoPath = './photos/';
         <?php elseif($app->voteEnded && !$this->showResults):?>
             <div class="countdown-container">Votes are closed, the results will come soon.</div>
         <?php elseif($this->showResults):?>
-            <div class="results-container col-md-8 center text-left">
+            <div class="results-container center text-left">
               <?php
                 $user = $app->getUserByUserid($photo->userid);
                 $results = $app->getResultsByPhoto($photo->photoid);
+				$globalRes = 0;
+				foreach($results as $result){
+					$globalRes += $result;
+                }
               ?>
-
-              <div class="author"><?php print count($user) === 1 ? $user->name : $photo->userid;;?></div>
+              <div class="author"><i>by</i>&nbsp;<?php print count($user) === 1 ? $user->name : $photo->userid;;?>,&nbsp;<i>total stars :</i>&nbsp;<?php echo $globalRes ?>&nbsp;<i class="fa fa-star-o"></i></div>
               <?php foreach ($categories as $category) : ?>
                     <div class="media col-xs-6">
                       <div class="media-left media-middle">
                         <?php print $category->label; ?>
                       </div>
                       <div class="media-body media-middle">
-                         : <strong><?php print $results[$category->categoryid];?></strong>
+                         : <strong><?php print $results[$category->categoryid];?></strong> <i class="fa fa-star-o"></i>
                       </div>
                     </div>
                 <?php endforeach; ?>
