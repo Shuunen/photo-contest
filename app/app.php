@@ -556,9 +556,10 @@ class App {
     }
 
   function getThumbContent($photoid){
-    $photo = Lazer::table('photos')->where('photoid', '=', $photoid)->find();
-        $app = $this;
-        if (count($photo) === 1) {
+    $photos = Lazer::table('photos')->where('photoid', '=', $photoid)->findAll()->asArray();
+    $app = $this;
+        if (count($photos) === 1) {
+            $photo = $photos[0];
             require('./php/views/gallery-thumb.php');
             die();
         } else {
