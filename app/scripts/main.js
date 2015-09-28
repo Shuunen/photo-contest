@@ -160,7 +160,6 @@ function clickedOnModerationControl(el) {
 
 function clickedOnCloseFullscreenPhoto() {
     $('.fullscreen-photo').empty();
-  refresh();
 }
 
 function clickedOnGridFilter(el) {
