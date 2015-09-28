@@ -381,7 +381,8 @@ function initMasonry() {
                 }
                 console.log('going back to "all" filter');
                 $('.grid-filter').first().click();
-            } else if (fullscreen.childElementCount) {
+            } else if (fullscreen.childElementCount && !fullscreen.classList.contains('voteOpened')) {
+                console.log('automagically goes to next photo');
                 nextPrevFullscreenPhoto(true);
             }
         });
@@ -441,7 +442,8 @@ function initRating() {
             data: 'type=rate&photoId=' + category.attr("data-photo-id") + '&categoryId=' + category.attr("data-catgerory-id") + '&rate=' + $(this).val() + '&ajax=true',
             success: function (json) {
                 var json = JSON.parse(json);
-        // refreshThumb(json.data.photoid);	// TODO : fix this to avoid reloading all
+                console.log(json);
+                refreshThumb(json.data.photoid);
             }
         });
     });
@@ -454,39 +456,37 @@ function initRating() {
             success: function (json) {
                 var json = JSON.parse(json);
                 category.find('input.rating').rating('rate', 0);
-        // refreshThumb(json.data.photoid);	// TODO : fix this to avoid reloading all
             }
         });
     });
 }
 
 function refreshThumb(photoid) {
-  console.log('will refresh photoid thumb',photoid);
-  var thumb = document.querySelector('[data-photoid="'+photoid+'"]');
-  if(!thumb){
-    return;
-  } else {
-    thumb = thumb.parentElement;
-  }
-  console.log('found thumb container',thumb);
-  $.ajax({
-    type: 'get',
-    data: 'type=template&template=thumb&photoid='+photoid,
-    success: function (html) {
-      if(html.length && html.length > 50){
-        thumb.outerHTML = html;
-        new Layzr({
-          container: '.grid',
-          selector: '[data-layzr]',
-          hiddenAttr: 'data-layzr-hidden',
-          callback: function () {
-            console.log('thumb loaded');
-            $('.grid-filter.active').click();
-          }
-        });
-      }
+    console.log('will refresh photoid thumb', photoid);
+    this.photoid = photoid;
+    this.gridItem = document.querySelector('[data-griditem-photoid="' + this.photoid + '"]');
+    if (!this.gridItem) {
+        return;
     }
-  });
+    console.log('found gridItem', gridItem);
+    $.ajax({
+        type: 'get',
+        data: 'type=template&template=thumb&photoid=' + photoid,
+        success: function (html) {
+            if (html.length && html.length > 50) {
+                this.gridItem.outerHTML = html;
+                new Layzr({
+                    container: '.grid',
+                    selector: '[data-layzr]',
+                    hiddenAttr: 'data-layzr-hidden',
+                    callback: function () {
+                        console.log('thumb loaded, reload grid');
+                        $('.grid').isotope("reloadItems").isotope();
+                    }
+                });
+            }
+        }.bind(this)
+    });
 }
 
 function initVoteOpenedForCountdown() {

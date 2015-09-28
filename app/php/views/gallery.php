@@ -1,4 +1,4 @@
-<?php $photos = $app->getAllPhotos() ?>
+﻿<?php $photos = $app->getAllPhotos() ?>
 <?php if (count($photos)) : ?>
     <div class="gallery grid">
         <div class="grid-sizer"></div>
@@ -6,7 +6,7 @@
             <?php require 'gallery-thumb.php' ?>
         <?php endforeach; ?>
     </div>
-    <div class="fullscreen-photo"></div>
+    <div class="fullscreen-photo <?php echo ($app->voteOpened ? 'voteOpened' : '') ?>"></div>
 <?php else : ?>
     <div class="container-fluid">
         <div class="row">
