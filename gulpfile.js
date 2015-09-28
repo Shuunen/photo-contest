@@ -21,7 +21,7 @@ gulp.task('styles', function () {
       require('autoprefixer-core')({browsers: ['last 2 versions']})
     ]))
     .pipe($.sourcemaps.write())
-    .pipe(gulp.dest('.tmp/styles/css'))
+    .pipe(gulp.dest('.tmp/styles'))
     .pipe(reload({stream: true}));
 });
 

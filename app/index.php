@@ -28,7 +28,7 @@ function __autoload($class_name) {
         <link href="../bower_components/fineuploader-dist/dist/fine-uploader-gallery.min.css" rel="stylesheet">
         <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
         <link href="../bower_components/smoke/dist/css/smoke.min.css" rel="stylesheet">
-        <link href="./styles/css/main.css" rel="stylesheet">
+        <link href="./styles/main.css" rel="stylesheet">
         <!-- endbuild -->
     </head>
 
