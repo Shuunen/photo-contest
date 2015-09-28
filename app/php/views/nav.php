@@ -2,7 +2,7 @@
     <div class="container-fluid">
 
         <div class="navbar-header">
-            <a class="navbar-brand refresh-button" event-emitter href="#">Photo contest 2015</a>
+            <a class="navbar-brand refresh-button" event-emitter href="#">Photo contest 2015 <small class="text-muted">v<?php echo $app->version ?></small></a>
         </div>
 
         <ul class="nav navbar-nav navbar-right">
