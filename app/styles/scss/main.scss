@@ -48,6 +48,9 @@ body {
         background: transparent;
         margin-bottom: 5px;
         overflow: hidden;
+        &.rate-complete{
+          opacity:0.5;
+        }
     }
 }
 
