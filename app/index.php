@@ -32,7 +32,7 @@ function __autoload($class_name) {
         <!-- endbuild -->
     </head>
 
-    <body class="<?php print ($app->isDesktop ? 'desktop':'mobile'); ?>">
+    <body class="<?php print ($app->onDesktop ? 'desktop':'mobile'); ?>">
 
         <?php require './php/views/main.php' ?>
 

@@ -18,6 +18,7 @@ class App {
         $this->photoPath = './photos/';
         $this->isUser = false;
         $this->isVisitor = false;
+        $this->isModerator = false;
         $this->isAdmin = false;
         $this->isLogged = false;
         $this->currentUser = null;
@@ -26,7 +27,7 @@ class App {
         $this->higherVote = "5";
 
         $now = new DateTime('now');
-        $this->startVoteDate = new DateTime('2015-09-26', new DateTimeZone('Pacific/Niue'));
+        $this->startVoteDate = new DateTime('2015-09-29', new DateTimeZone('Pacific/Niue'));
         $this->startVoteDate->setTimezone($now->getTimezone());
 
         $this->endVoteDate = new DateTime('2015-10-08', new DateTimeZone('Pacific/Niue'));
@@ -45,19 +46,29 @@ class App {
         if (isset($_SESSION['user'])) {
             $this->currentUser = $_SESSION['user'];
             $this->isLogged = true;
-            if (isset($this->currentUser->role) && $this->currentUser->role === 'admin') {
-                $this->isAdmin = true;
-            } else if(isset($this->currentUser->role) && $this->currentUser->role === 'visitor') {
-                $this->isVisitor = true;
-            }else {
+            if (isset($this->currentUser->role)) {
+                switch ($this->currentUser->role) {
+                    case "admin":
+                        $this->isAdmin = true;
+                        break;
+                    case "moderator":
+                        $this->isModerator = true;
+                        break;
+                    case "visitor":
+                        $this->isVisitor = true;
+                        break;
+                    default:
+                        $this->isUser = true;
+                }
+            } else {
                 $this->isUser = true;
             }
         }
 
-        $this->isDesktop = true;
+        $this->onDesktop = true;
         $useragent = $_SERVER['HTTP_USER_AGENT'];
         if (preg_match('/android|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i', $useragent) || preg_match('/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i', substr($useragent, 0, 4))) {
-            $this->isDesktop = false;
+            $this->onDesktop = false;
         }
 
         $this->installDB();
@@ -68,11 +79,7 @@ class App {
     function getGUID() {
         $charid = strtoupper(md5(uniqid(rand(), true)));
         $hyphen = chr(45); // "-"
-        $uuid = substr($charid, 0, 8) . $hyphen
-            . substr($charid, 8, 4) . $hyphen
-            . substr($charid, 12, 4) . $hyphen
-            . substr($charid, 16, 4) . $hyphen
-            . substr($charid, 20, 12);
+        $uuid = substr($charid, 0, 8) . $hyphen . substr($charid, 8, 4) . $hyphen . substr($charid, 12, 4) . $hyphen . substr($charid, 16, 4) . $hyphen . substr($charid, 20, 12);
         return $uuid;
     }
 
@@ -226,7 +233,7 @@ class App {
         $_SESSION['message'] = 'Rate ' . $request['photoId'] . ' for the category ' . $request['categoryId'] . ' with ' . $rate;
         $_SESSION['messageStatus'] = 'success';
 
-    return array('photoid' => $request['photoId']);
+        return array('photoid' => $request['photoId']);
     }
 
     function getResults() {
@@ -243,7 +250,7 @@ class App {
 
     function getResultsByCategory($categoryId) {
         $nbUsers = Lazer::table('users')->findAll()->count();
-        $photos =  Lazer::table('photos')->where('status', '=', 'approved')->findAll();
+        $photos = Lazer::table('photos')->where('status', '=', 'approved')->findAll();
         $results = [];
         foreach ($photos as $photo) {
             $photoRates = Lazer::table('rates')->where('photoid', '=', $photo->photoid)->andWhere('categoryid', '=', $categoryId)->findAll();
@@ -259,12 +266,12 @@ class App {
         return $results;
     }
 
-    function getResultsByPhoto($photoId){
+    function getResultsByPhoto($photoId) {
 
         $categories = $this->getCategories();
         $nbUsers = Lazer::table('users')->findAll()->count();
 
-    // $time_start = microtime(true);
+        // $time_start = microtime(true);
 
         $results = [];
         foreach ($categories as $category) {
@@ -277,7 +284,7 @@ class App {
             }
         }
 
-    // die('results : '.  (microtime(true) - $time_start)*100 .' secondes<br/>'); // 17 secondes
+        // die('results : '.  (microtime(true) - $time_start)*100 .' secondes<br/>'); // 17 secondes
 
         return $results;
     }
@@ -288,10 +295,10 @@ class App {
 
         $newRate = $request['rate'];
 
-        if(floatval($newRate) > floatval($this->higherVote)){
-          $newRate = $this->higherVote;
-        }elseif (floatval($newRate) < floatval($this->lowerVote)){
-          $newRate = $this->lowerVote;
+        if (floatval($newRate) > floatval($this->higherVote)) {
+            $newRate = $this->higherVote;
+        } elseif (floatval($newRate) < floatval($this->lowerVote)) {
+            $newRate = $this->lowerVote;
         }
 
         if ($existingRate->count() == 0) {
@@ -308,7 +315,7 @@ class App {
             $existingRate->save();
         }
 
-      return $newRate;
+        return $newRate;
     }
 
     function handleModeration($request) {
@@ -352,13 +359,7 @@ class App {
             unlink('./photos/' . $path);
             unlink('./photos/' . $thumbPath);
             $_SESSION['message'] = 'Photo ' . $photo->filepath . ' has been deleted';
-
-            $return = array('photoid' => $photo->photoid, 'photostatus' => 'deleted');
-            if ($this->isAdmin) {
-                $nbPhotosToModerate = $this->getPhotosToModerate()->count();
-                $return['nbPhotosToModerate'] = $nbPhotosToModerate;
-            }
-            return $return;
+            return array('photoid' => $photo->photoid, 'photostatus' => 'deleted');
         } else {
             $_SESSION['message'] = 'Photo has already been deleted';
         }
@@ -386,8 +387,8 @@ class App {
         } else if ($request['template'] === 'thumb') {
             $this->getThumbContent($request['photoid']);
         } else {
-      die('This template is not handled');
-    }
+            die('This template is not handled');
+        }
     }
 
     function handleCreateUser($request) {
@@ -465,21 +466,29 @@ class App {
                     $data = $this->handleRemovePhoto($request);
                 } else if ($this->voteOpened && $type === 'rate') {
                     $data = $this->handleRate($request);
+                } else if ($this->isModerator) {
+                    /*
+                     * Logged moderator
+                     */
+                    if ($type === 'moderation') {
+                        $data = $this->handleModeration($request);
+                    } else {
+                        $_SESSION['message'] = 'This method is not handled for moderators.';
+                    }
+
                 } else if ($this->isAdmin) {
                     /*
                      * Logged admin
                      */
-                    if ($type === 'moderation') {
-                        $data = $this->handleModeration($request);
-                    } else if ($type === 'createUser') {
+                     if ($type === 'createUser') {
                         $data = $this->handleCreateUser($request);
                     } else if ($type === 'regenThumbnails') {
                         $data = $this->regenThumbnails();
                     } else {
-                        $_SESSION['message'] = 'This method is not handled.';
+                        $_SESSION['message'] = 'This method is not handled for admins.';
                     }
                 } else {
-                    $_SESSION['message'] = 'This method is not handled or for admin only.';
+                    $_SESSION['message'] = 'This method is not handled or for higher privileges users only.';
                 }
             }
 
@@ -546,15 +555,15 @@ class App {
         die();
     }
 
-    function getNavContent(){
+    function getNavContent() {
         $app = $this;
         require('./php/views/nav.php');
         die();
     }
 
-  function getThumbContent($photoid){
-    $photos = Lazer::table('photos')->where('photoid', '=', $photoid)->findAll()->asArray();
-    $app = $this;
+    function getThumbContent($photoid) {
+        $photos = Lazer::table('photos')->where('photoid', '=', $photoid)->findAll()->asArray();
+        $app = $this;
         if (count($photos) === 1) {
             $photo = $photos[0];
             require('./php/views/gallery-thumb.php');
@@ -562,7 +571,7 @@ class App {
         } else {
             die('No photo found with this id.');
         }
-  }
+    }
 
     function getRateForPhotoAndCategory($photoId, $categoryId) {
 
@@ -574,7 +583,7 @@ class App {
         }
     }
 
-  function getRatesCountForPhoto($photoId) {
+    function getRatesCountForPhoto($photoId) {
 
         $rate = Lazer::table('rates')->where('photoid', '=', $photoId)->andWhere('userid', '=', $this->currentUser->userid)->findAll();
         return $rate->count();

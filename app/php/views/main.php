@@ -12,11 +12,10 @@
 
     } else {
 
-
-        if($app->showResults){
-          require 'gallery-results.php';
-        }else{
-          require 'gallery.php';
+        if ($app->showResults) {
+            require 'gallery-results.php';
+        } else {
+            require 'gallery.php';
         }
 
         if ($app->submitOpened) {
@@ -25,11 +24,10 @@
 
         if ($app->isAdmin) {
             require 'addUserModal.php';
-            if($app->showResults){
-              require 'resultsModal.php';
+            if ($app->showResults) {
+                require 'resultsModal.php';
             }
         }
-
     }
     ?>
 </div>

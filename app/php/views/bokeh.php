@@ -1,4 +1,4 @@
-<?php if($app->isDesktop) : ?>
+<?php if($app->onDesktop) : ?>
 <div class="bokeh">
     <div class="light"></div>
     <div class="light"></div>
