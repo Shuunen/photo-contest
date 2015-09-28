@@ -21,6 +21,10 @@ class App {
         $this->isAdmin = false;
         $this->isLogged = false;
         $this->currentUser = null;
+
+        $this->lowerVote = "0";
+        $this->higherVote = "5";
+
         $now = new DateTime('now');
         $this->startVoteDate = new DateTime('2015-09-26', new DateTimeZone('Pacific/Niue'));
         $this->startVoteDate->setTimezone($now->getTimezone());
@@ -217,9 +221,9 @@ class App {
 
     function handleRate($request) {
 
-        $this->storeRateToDB($request);
+        $rate = $this->storeRateToDB($request);
 
-        $_SESSION['message'] = 'Rate ' . $request['photoId'] . ' for the category ' . $request['categoryId'] . ' with ' . $request['rate'];
+        $_SESSION['message'] = 'Rate ' . $request['photoId'] . ' for the category ' . $request['categoryId'] . ' with ' . $rate;
         $_SESSION['messageStatus'] = 'success';
 
     return array('photoid' => $request['photoId']);
@@ -285,19 +289,29 @@ class App {
 
         $existingRate = Lazer::table('rates')->where('photoid', '=', $request['photoId'])->andWhere('userid', '=', $this->currentUser->userid)->andWhere('categoryid', '=', $request['categoryId'])->find();
 
+        $rate = $request['rate'];
+
+        if(intval($rate) > intval($this->higherVote)){
+          $rate = $this->higherVote;
+        }elseif (intval($rate) < intval($this->lowerVote)){
+          $rate = $this->lowerVote;
+        }
+
         if ($existingRate->count() == 0) {
 
             $rate = Lazer::table('rates');
             $rate->photoid = $request['photoId'];
             $rate->userid = $this->currentUser->userid;
             $rate->categoryid = $request['categoryId'];
-            $rate->rate = $request['rate'];
+            $rate->rate = $rate;
             $rate->save();
         } else {
 
-            $existingRate->rate = $request['rate'];
+            $existingRate->rate = $rate;
             $existingRate->save();
         }
+
+      return $rate;
     }
 
     function handleModeration($request) {

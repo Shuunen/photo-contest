@@ -40,7 +40,7 @@ $photoPath = './photos/';
                     <div class="rating col-md-6">
                         <div class="category"><?php print $category->label; ?> :</div>
                         <div class="stars rating-category" data-catgerory-id="<?php print $category->categoryid; ?>" data-photo-id="<?php print $photo->photoid ?>">
-                          <input name="rating-<?php print $category->categoryid; ?>" type="hidden" class="rating" data-fractions="2" data-start="0" data-stop="5" data-filled="fa fa-star fa-2x" data-filled-selected="fa fa-star fa-2x" data-empty="fa fa-star-o fa-2x" value="<?php print $app->getRateForPhotoAndCategory($photo->photoid, $category->categoryid); ?>">
+                          <input name="rating-<?php print $category->categoryid; ?>" type="hidden" class="rating" data-fractions="2" data-start="<?php print $app->lowerVote;?>" data-stop="<?php print $app->higherVote;?>" data-filled="fa fa-star fa-2x" data-filled-selected="fa fa-star fa-2x" data-empty="fa fa-star-o fa-2x" value="<?php print $app->getRateForPhotoAndCategory($photo->photoid, $category->categoryid); ?>">
                             <span class="clear-vote fa fa-times" title="Clear vote"></span>
                         </div>
                     </div>
