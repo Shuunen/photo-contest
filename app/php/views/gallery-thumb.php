@@ -20,7 +20,7 @@
   ?>
 
   <?php if ($app->isAdmin || $app->isUser && $photo->status === 'approved' || $app->isUser && $photo->userid === $app->currentUser->userid) : ?>
-    <div class="grid-item <?php print $class; ?>" data-photostatus="<?php echo $photo->status ?>">
+    <div class="grid-item <?php print $class; ?>" data-photostatus="<?php echo $photo->status ?>" data-griditem-photoid="<?php echo $photo->photoid ?>">
       <?php
       $photoThumb = $app->photoPath . $photo->userid . '/' . 'thumbs/' . $photo->filepath;
       $photoFull = $app->photoPath . $photo->userid . '/' . $photo->filepath;

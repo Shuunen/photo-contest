@@ -1,8 +1,4 @@
-<?php
-$photos = $app->getAllPhotos();
-$photoPath = './photos/';
-?>
-
+<?php $photos = $app->getAllPhotos() ?>
 <?php if (count($photos)) : ?>
     <div class="gallery grid">
         <div class="grid-sizer"></div>
@@ -22,8 +18,8 @@ $photoPath = './photos/';
                 <?php if ($photo->status === 'approved') : ?>
                   <div class="grid-item <?php print $class; ?>" data-result-gobal="<?php print $globalRes;?>" <?php print $sortAttrs;?> >
                       <?php
-                      $photoThumb = $photoPath . $photo->userid . '/' . 'thumbs/' . $photo->filepath;
-                      $photoFull = $photoPath . $photo->userid . '/' . $photo->filepath;
+                      $photoThumb = $app->photoPath . $photo->userid . '/' . 'thumbs/' . $photo->filepath;
+                      $photoFull = $app->photoPath . $photo->userid . '/' . $photo->filepath;
                       ?>
                         <img class="grid-item-thumb" event-emitter data-photoid="<?php echo $photo->photoid ?>" data-layzr="<?php echo $photoThumb ?>" data-thumb="<?php echo $photoThumb ?>" data-full="<?php echo $photoFull ?>">
                   </div>
@@ -31,7 +27,7 @@ $photoPath = './photos/';
             <?php endif; ?>
         <?php endforeach; ?>
     </div>
-    <div class="fullscreen-photo"></div>
+    <div class="fullscreen-photo <?php echo ($app->voteOpened ? 'voteOpened' : '') ?>"></div>
 <?php else : ?>
     <div class="container-fluid">
         <div class="row">

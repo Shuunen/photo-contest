@@ -6,7 +6,7 @@
             <?php require 'gallery-thumb.php' ?>
         <?php endforeach; ?>
     </div>
-    <div class="fullscreen-photo"></div>
+    <div class="fullscreen-photo <?php echo ($app->voteOpened ? 'voteOpened' : '') ?>"></div>
 <?php else : ?>
     <div class="container-fluid">
         <div class="row">
