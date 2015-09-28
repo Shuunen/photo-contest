@@ -27,7 +27,7 @@
             <?php endif; ?>
         <?php endforeach; ?>
     </div>
-    <div class="fullscreen-photo <?php echo ($app->voteOpened ? 'voteOpened' : '') ?>"></div>
+    <div class="fullscreen-photo auto-next"></div>
 <?php else : ?>
     <div class="container-fluid">
         <div class="row">

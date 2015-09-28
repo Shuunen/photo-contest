@@ -1,6 +1,5 @@
 <?php
-  $photos = $app->getAllPhotos();
-  $photos = $photos->asArray();
+  $photos = $app->getAllPhotos()->asArray();
   shuffle($photos);
 ?>
 <?php if (count($photos)) : ?>
@@ -10,7 +9,7 @@
             <?php require 'gallery-thumb.php' ?>
         <?php endforeach; ?>
     </div>
-    <div class="fullscreen-photo <?php echo ($app->voteOpened ? 'voteOpened' : '') ?>"></div>
+    <div class="fullscreen-photo auto-next"></div>
 <?php else : ?>
     <div class="container-fluid">
         <div class="row">

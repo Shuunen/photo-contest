@@ -1,4 +1,4 @@
-/* global qq, voteOpenDate */
+/* global qq, voteOpenDate, Isotope */
 
 $(document).ready(function () {
 
@@ -235,8 +235,12 @@ function clickedOnUploadModal(el) {
         });
 }
 
-function startFullscreenLoading() {
-    $('.fullscreen-photo').html('<div class="item"><i class="fa fa-spinner fa-spin fa-5x"></i></div>');
+function startFullscreenLoading(bDisableAutoNext) {
+    var fullscreenPhoto = $('.fullscreen-photo');
+    fullscreenPhoto.html('<div class="item"><i class="fa fa-spinner fa-spin fa-5x"></i></div>');
+    if (bDisableAutoNext) {
+        fullscreenPhoto.removeClass('auto-next');
+    }
 }
 
 function handlePhotoUpload() {
@@ -380,7 +384,7 @@ function initMasonry() {
                 }
                 console.log('going back to "all" filter');
                 $('.grid-filter').first().click();
-            } else if (fullscreen.childElementCount && !fullscreen.classList.contains('voteOpened')) {
+            } else if (fullscreen.childElementCount && fullscreen.classList.contains('auto-next')) {
                 console.log('automagically goes to next photo');
                 nextPrevFullscreenPhoto(true);
             }
@@ -435,13 +439,14 @@ function handleLoginForm() {
 function initRating() {
 
     $('input.rating').rating().on('change', function (event) {
+        $('.fullscreen-photo').removeClass('auto-next');
         var category = $(event.currentTarget).parents(".rating-category");
         $.ajax({
             type: 'get',
             data: 'type=rate&photoId=' + category.attr("data-photo-id") + '&categoryId=' + category.attr("data-catgerory-id") + '&rate=' + $(this).val() + '&ajax=true',
             success: function (json) {
                 var json = JSON.parse(json);
-                console.log(json);
+                // console.log(json);
                 refreshThumb(json.data.photoid);
             }
         });
@@ -453,7 +458,7 @@ function initRating() {
             type: 'get',
             data: 'type=rate&photoId=' + category.attr("data-photo-id") + '&categoryId=' + category.attr("data-catgerory-id") + '&rate=' + 0 + '&ajax=true',
             success: function (json) {
-                var json = JSON.parse(json);
+                // var json = JSON.parse(json);
                 category.find('input.rating').rating('rate', 0);
             }
         });
@@ -555,3 +560,11 @@ function afterModeration(jsonData) {
     });
 
 }
+
+Isotope.prototype.getFilteredItemElements = function () {
+    var elems = [];
+    for (var i = 0, len = this.filteredItems.length; i < len; i++) {
+        elems.push(this.filteredItems[i].element);
+    }
+    return elems;
+};
