@@ -289,12 +289,12 @@ class App {
 
         $existingRate = Lazer::table('rates')->where('photoid', '=', $request['photoId'])->andWhere('userid', '=', $this->currentUser->userid)->andWhere('categoryid', '=', $request['categoryId'])->find();
 
-        $rate = $request['rate'];
+        $newRate = $request['rate'];
 
-        if(floatval($rate) > floatval($this->higherVote)){
-          $rate = $this->higherVote;
-        }elseif (floatval($rate) < floatval($this->lowerVote)){
-          $rate = $this->lowerVote;
+        if(floatval($newRate) > floatval($this->higherVote)){
+          $newRate = $this->higherVote;
+        }elseif (floatval($newRate) < floatval($this->lowerVote)){
+          $newRate = $this->lowerVote;
         }
 
         if ($existingRate->count() == 0) {
@@ -303,15 +303,15 @@ class App {
             $rate->photoid = $request['photoId'];
             $rate->userid = $this->currentUser->userid;
             $rate->categoryid = $request['categoryId'];
-            $rate->rate = $rate;
+            $rate->rate = $newRate;
             $rate->save();
         } else {
 
-            $existingRate->rate = $rate;
+            $existingRate->rate = $newRate;
             $existingRate->save();
         }
 
-      return $rate;
+      return $newRate;
     }
 
     function handleModeration($request) {
