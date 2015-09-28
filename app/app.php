@@ -291,9 +291,9 @@ class App {
 
         $rate = $request['rate'];
 
-        if(intval($rate) > intval($this->higherVote)){
+        if(floatval($rate) > floatval($this->higherVote)){
           $rate = $this->higherVote;
-        }elseif (intval($rate) < intval($this->lowerVote)){
+        }elseif (floatval($rate) < floatval($this->lowerVote)){
           $rate = $this->lowerVote;
         }
 
