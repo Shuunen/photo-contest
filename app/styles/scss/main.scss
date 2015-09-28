@@ -144,13 +144,13 @@ body {
     button {
         margin-right: 15px;
     }
-	&.on-side {
-	    position: absolute;
-		left: 20px;
-		width: 130px;
-		bottom: 90px;
-		justify-content: flex-start;
-	}
+  &.on-side {
+      position: absolute;
+    left: 20px;
+    width: 130px;
+    bottom: 90px;
+    justify-content: flex-start;
+  }
 }
 
 .delete-photo {
@@ -209,6 +209,15 @@ body {
             max-height: 100%;
             max-width: 100%;
             cursor: default;
+        }
+    }
+    span.clear-vote{
+        opacity:0.5;
+        cursor: pointer;
+        margin-left: 5px;
+        font-size:1.5em;
+        &:hover{
+          opacity:1;
         }
     }
 }
@@ -279,18 +288,18 @@ body {
 
 .results-container {
     max-width: 400px;
-	.author {
-	    text-align: center;
-		margin: 10px;
-		font-size: 16px;
-	}
-	.media { 
-		margin-top: 5px;
-	}
-	.media-middle,
-	.media-left {
-		white-space: nowrap;
-	}
+  .author {
+      text-align: center;
+    margin: 10px;
+    font-size: 16px;
+  }
+  .media {
+    margin-top: 5px;
+  }
+  .media-middle,
+  .media-left {
+    white-space: nowrap;
+  }
 }
 
 .rate-status {
@@ -298,9 +307,9 @@ body {
     top: 0;
     right: 0;
     width: 80px;
-    height: 80px;     
+    height: 80px;
     z-index: 20;
-	pointer-events: none;
-	&.rate-started { background-image: url('../images/rate-started.png');}
-	&.rate-complete { background-image: url('../images/rate-complete.png');}
+  pointer-events: none;
+  &.rate-started { background-image: url('../images/rate-started.png');}
+  &.rate-complete { background-image: url('../images/rate-complete.png');}
 }

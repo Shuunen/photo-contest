@@ -160,7 +160,7 @@ function clickedOnModerationControl(el) {
 
 function clickedOnCloseFullscreenPhoto() {
     $('.fullscreen-photo').empty();
-	refresh();
+  refresh();
 }
 
 function clickedOnGridFilter(el) {
@@ -434,65 +434,59 @@ function handleLoginForm() {
 
 function initRating() {
 
-    $('input.rating').rating({
-          extendSymbol: function () {
-            var title;
-            $(this).tooltip({
-              container: 'body',
-              placement: 'top',
-              trigger: 'manual',
-              title: function () {
-                return title;
-              }
-            });
-            $(this).on('rating.rateenter', function (e, rate) {
-              title = rate;
-              $(this).tooltip('show');
-            })
-            .on('rating.rateleave', function () {
-              $(this).tooltip('hide');
-            });
-          }
-        }).on('change', function (event) {
+    $('input.rating').rating().on('change', function (event) {
         var category = $(event.currentTarget).parents(".rating-category");
         $.ajax({
             type: 'get',
             data: 'type=rate&photoId=' + category.attr("data-photo-id") + '&categoryId=' + category.attr("data-catgerory-id") + '&rate=' + $(this).val() + '&ajax=true',
             success: function (json) {
                 var json = JSON.parse(json);
-				// refreshThumb(json.data.photoid);	// TODO : fix this to avoid reloading all
+        // refreshThumb(json.data.photoid);	// TODO : fix this to avoid reloading all
+            }
+        });
+    });
+
+    $('span.clear-vote').click(function(event){
+      var category = $(event.currentTarget).parents(".rating-category");
+      $.ajax({
+            type: 'get',
+            data: 'type=rate&photoId=' + category.attr("data-photo-id") + '&categoryId=' + category.attr("data-catgerory-id") + '&rate=' + 0 + '&ajax=true',
+            success: function (json) {
+                var json = JSON.parse(json);
+                category.find('input.rating').rating('rate', 0);
+        // refreshThumb(json.data.photoid);	// TODO : fix this to avoid reloading all
             }
         });
     });
 }
 
 function refreshThumb(photoid) {
-	console.log('will refresh photoid thumb',photoid);
-	var thumb = document.querySelector('[data-photoid="'+photoid+'"]');
-	if(!thumb){
-		return;
-	} else {
-		thumb = thumb.parentElement;
-	}
-	console.log('found thumb container',thumb);
-	$.ajax({
-		type: 'get',
-		data: 'type=template&template=thumb&photoid='+photoid,
-		success: function (html) {
-			if(html.length && html.length > 50){
-				thumb.outerHTML = html;		
-				new Layzr({
-					container: '.grid',
-					selector: '[data-layzr]',
-					hiddenAttr: 'data-layzr-hidden',
-					callback: function () {						
-						console.log('thumb loaded');
-						$('.grid-filter.active').click();
-					}
-				});
-			}
-		}
-	});		
+  console.log('will refresh photoid thumb',photoid);
+  var thumb = document.querySelector('[data-photoid="'+photoid+'"]');
+  if(!thumb){
+    return;
+  } else {
+    thumb = thumb.parentElement;
+  }
+  console.log('found thumb container',thumb);
+  $.ajax({
+    type: 'get',
+    data: 'type=template&template=thumb&photoid='+photoid,
+    success: function (html) {
+      if(html.length && html.length > 50){
+        thumb.outerHTML = html;
+        new Layzr({
+          container: '.grid',
+          selector: '[data-layzr]',
+          hiddenAttr: 'data-layzr-hidden',
+          callback: function () {
+            console.log('thumb loaded');
+            $('.grid-filter.active').click();
+          }
+        });
+      }
+    }
+  });
 }
 
 function initVoteOpenedForCountdown() {
