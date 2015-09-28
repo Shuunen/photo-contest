@@ -28,7 +28,7 @@ class App {
         $this->endVoteDate = new DateTime('2015-10-08', new DateTimeZone('Pacific/Niue'));
         $this->endVoteDate->setTimezone($now->getTimezone());
 
-        $this->resultsDate = new DateTime('2015-10-10');
+        $this->resultsDate = new DateTime('2015-10-09');
 
         // vote are opened after September 25 & until October 07
         $this->voteOpened = $this->startVoteDate < $now && $now <= $this->endVoteDate;
