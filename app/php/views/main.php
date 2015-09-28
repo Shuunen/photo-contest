@@ -25,6 +25,9 @@
 
         if ($app->isAdmin) {
             require 'addUserModal.php';
+            if($app->showResults){
+              require 'resultsModal.php';
+            }
         }
 
     }

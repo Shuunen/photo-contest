@@ -253,9 +253,6 @@ class App {
                     $results[$photo->photoid] += $photoRate->rate;
                 }
             }
-
-            $results[$photo->photoid] += ($nbUsers - count($photoRates)) * 2.5;
-            $results[$photo->photoid] = round($results[$photo->photoid] / $nbUsers , 4);
         }
         arsort($results);
 

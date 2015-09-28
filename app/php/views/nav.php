@@ -68,7 +68,9 @@
             <?php endforeach;?>
           <?php endif;?>
             <?php if ($app->isAdmin): ?>
-                <!--<li><a href="#" data-toggle="modal" data-target="#tablePhotosModal">Table photos</a></li>-->
+                <?php if ($app->showResults): ?>
+                  <li><a href="#" data-toggle="modal" data-target="#resultsModal">Results Table</a></li>
+                <?php endif; ?>
                 <li><a href="#" data-toggle="modal" event-emitter data-target="#addUserModal">Add User</a></li>
             <?php endif; ?>
             <?php if ($app->submitOpened) : ?>
