@@ -1,4 +1,8 @@
-<?php $photos = $app->getAllPhotos() ?>
+<?php
+  $photos = $app->getAllPhotos();
+  $photos = $photos->asArray();
+  shuffle($photos);
+?>
 <?php if (count($photos)) : ?>
     <div class="gallery grid">
         <div class="grid-sizer"></div>
