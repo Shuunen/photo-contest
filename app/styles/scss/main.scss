@@ -274,6 +274,8 @@ body {
 }
 
 .rate-results{
+  max-height: 600px;
+  overflow: auto;
   .category-results{
     > div{
       margin-bottom: 10px;

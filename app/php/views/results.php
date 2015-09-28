@@ -3,12 +3,12 @@
   $results = $app->getResults();
 
 ?>
-<div class="rate-results">
+<div class="rate-results row">
 
   <?php foreach($results as $catId => $photos) :?>
     <div class="col-md-3 category-results">
     <?php $category = $app->getCategoryInfo($catId);?>
-    <h2><?php print $category->label;?></h2>
+    <h3 class="text-center"><?php print $category->label;?></h3>
     <?php $count = 0;?>
     <?php foreach($photos as $photoId => $rate):?>
 
@@ -16,14 +16,15 @@
         $photoInfo = $app->getPhotoInfo($photoId);
         $user = $app->getUserByUserid($photoInfo->userid);?>
 
-      <?php if($count < 3 ) : ?>
-        <div class="col-md-12 text-center">
+      <?php if($count < 10) :?>
+        <div class="col-md-12">
           <div class="photo-infos">
-            <div class="author"><?php print $user->name;?></div>
-            <div class="rate">Rate : <?php print $rate;?> stars</div>
+            <div class="author"><a href="<?php print $app->photoPath . $photoInfo->userid . '/' . $photoInfo->filepath ?>" target="_blank"><?php print $user->name;?></a></div>
+            <div class="rate">Results : <?php print $rate;?> <i class="fa fa-star"></i></div>
           </div>
         </div>
       <?php endif;?>
+
 
       <?php $count++; ?>
     <?php endforeach;?>

@@ -4,6 +4,8 @@ define('LAZER_DATA_PATH', realpath(dirname(__FILE__)) . '/database/Lazer/'); //P
 
 use Lazer\Classes\Database as Lazer;
 
+use Lazer\Classes\Relation as Relation;
+
 date_default_timezone_set("Europe/Paris");
 
 include './php/ImageResize/ImageResize.php';
@@ -27,7 +29,7 @@ class App {
         $this->higherVote = "5";
 
         $now = new DateTime('now');
-        $this->startVoteDate = new DateTime('2015-09-29', new DateTimeZone('Pacific/Niue'));
+        $this->startVoteDate = new DateTime('2015-09-26', new DateTimeZone('Pacific/Niue'));
         $this->startVoteDate->setTimezone($now->getTimezone());
 
         $this->endVoteDate = new DateTime('2015-10-08', new DateTimeZone('Pacific/Niue'));
@@ -103,7 +105,7 @@ class App {
         $email = $request["email"];
         $password = $request["password"];
 
-        $user = Lazer::table('users')->where('email', '=', $email)->find();
+        $user = Lazer::table('users')->with('rights')->where('email', '=', $email)->find();
 
         if (count($user) === 1) {
             $_SESSION['messageStatus'] = 'success';
@@ -634,6 +636,112 @@ class App {
                     $user->save();
                 }
             }
+        }
+
+        //install rights
+        try {
+            \Lazer\Classes\Helpers\Validate::table('rights')->exists();
+        } catch (\Lazer\Classes\LazerException $e) {
+            //Database doesn't exist
+
+
+            Lazer::create('rights', array(
+                'role' => 'string',
+                'see_login' => 'boolean',
+                'see_nav' => 'boolean',
+                'see_approved_photos' => 'boolean',
+                'see_results' => 'boolean',
+                'vote' => 'boolean',
+                'see_censored' => 'boolean',
+                'moderate' => 'boolean',
+                'add_users' => 'boolean',
+                'see_pre_results' => 'boolean',
+                'delete_photo' => 'boolean',
+            ));
+
+            Relation::table('users')->belongsTo('rights')->localKey('role')->foreignKey('role')->setRelation();
+
+            $role = Lazer::table('rights');
+
+            $role->role = "superadmin";
+            $role->see_login = true;
+            $role->see_nav = true;
+            $role->see_approved_photos = true;
+            $role->see_results = true;
+            $role->vote = true;
+            $role->see_censored = true;
+            $role->moderate = true;
+            $role->add_users = true;
+            $role->see_pre_results = true;
+            $role->delete_photo = true;
+            $role->save();
+
+            $role->role = "admin";
+            $role->see_login = true;
+            $role->see_nav = true;
+            $role->see_approved_photos = true;
+            $role->see_results = true;
+            $role->vote = true;
+            $role->see_censored = true;
+            $role->moderate = false;
+            $role->add_users = true;
+            $role->see_pre_results = false;
+            $role->delete_photo = false;
+            $role->save();
+
+            $role->role = "moderator";
+            $role->see_login = true;
+            $role->see_nav = true;
+            $role->see_approved_photos = true;
+            $role->see_results = true;
+            $role->vote = true;
+            $role->see_censored = true;
+            $role->moderate = true;
+            $role->add_users = false;
+            $role->see_pre_results = true;
+            $role->delete_photo = true;
+            $role->save();
+
+            $role->role = "user";
+            $role->see_login = true;
+            $role->see_nav = true;
+            $role->see_approved_photos = true;
+            $role->see_results = true;
+            $role->vote = true;
+            $role->see_censored = false;
+            $role->moderate = false;
+            $role->add_users = false;
+            $role->see_pre_results = false;
+            $role->delete_photo = true;
+            $role->save();
+
+            $role->role = "visitor";
+            $role->see_login = true;
+            $role->see_nav = true;
+            $role->see_approved_photos = true;
+            $role->see_results = true;
+            $role->vote = false;
+            $role->see_censored = false;
+            $role->moderate = false;
+            $role->add_users = false;
+            $role->see_pre_results = false;
+            $role->delete_photo = false;
+            $role->save();
+
+
+            $role->role = "anonymous";
+            $role->see_login = true;
+            $role->see_nav = false;
+            $role->see_approved_photos = false;
+            $role->see_results = false;
+            $role->vote = false;
+            $role->see_censored = false;
+            $role->moderate = false;
+            $role->add_users = false;
+            $role->see_pre_results = false;
+            $role->delete_photo = false;
+            $role->save();
+
         }
 
         //install categories
