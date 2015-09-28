@@ -14,8 +14,8 @@ class App {
 
     function __construct() {
 
-        $this->version = 4.1;
-		$this->photoPath = './photos/';
+        $this->version = 5.1;
+        $this->photoPath = './photos/';
         $this->isUser = false;
         $this->isVisitor = false;
         $this->isAdmin = false;
@@ -25,12 +25,12 @@ class App {
         $this->startVoteDate = new DateTime('2015-09-26', new DateTimeZone('Pacific/Niue'));
         $this->startVoteDate->setTimezone($now->getTimezone());
 
-        $this->endVoteDate = new DateTime('2015-10-05', new DateTimeZone('Pacific/Niue'));
+        $this->endVoteDate = new DateTime('2015-10-08', new DateTimeZone('Pacific/Niue'));
         $this->endVoteDate->setTimezone($now->getTimezone());
 
-        $this->resultsDate = new DateTime('2015-10-15');
+        $this->resultsDate = new DateTime('2015-10-10');
 
-        // vote are opened after September 25 & until October 25
+        // vote are opened after September 25 & until October 07
         $this->voteOpened = $this->startVoteDate < $now && $now <= $this->endVoteDate;
         $this->voteEnded = $now > $this->endVoteDate;
         $this->showResults = $now > $this->resultsDate;
@@ -221,8 +221,8 @@ class App {
 
         $_SESSION['message'] = 'Rate ' . $request['photoId'] . ' for the category ' . $request['categoryId'] . ' with ' . $request['rate'];
         $_SESSION['messageStatus'] = 'success';
-		
-		return array('photoid' => $request['photoId']);
+
+    return array('photoid' => $request['photoId']);
     }
 
     function getResults() {
@@ -262,8 +262,8 @@ class App {
 
         $categories = $this->getCategories();
         $nbUsers = Lazer::table('users')->findAll()->count();
-		
-		// $time_start = microtime(true);
+
+    // $time_start = microtime(true);
 
         $results = [];
         foreach ($categories as $category) {
@@ -275,8 +275,8 @@ class App {
                 }
             }
         }
-		
-		// die('results : '.  (microtime(true) - $time_start)*100 .' secondes<br/>'); // 17 secondes
+
+    // die('results : '.  (microtime(true) - $time_start)*100 .' secondes<br/>'); // 17 secondes
 
         return $results;
     }
@@ -375,8 +375,8 @@ class App {
         } else if ($request['template'] === 'thumb') {
             $this->getThumbContent($request['photoid']);
         } else {
-			die('This template is not handled');
-		}
+      die('This template is not handled');
+    }
     }
 
     function handleCreateUser($request) {
@@ -540,9 +540,9 @@ class App {
         require('./php/views/nav.php');
         die();
     }
-	
-	function getThumbContent($photoid){
-		$photo = Lazer::table('photos')->where('photoid', '=', $photoid)->find();
+
+  function getThumbContent($photoid){
+    $photo = Lazer::table('photos')->where('photoid', '=', $photoid)->find();
         $app = $this;
         if (count($photo) === 1) {
             require('./php/views/gallery-thumb.php');
@@ -550,7 +550,7 @@ class App {
         } else {
             die('No photo found with this id.');
         }
-	}
+  }
 
     function getRateForPhotoAndCategory($photoId, $categoryId) {
 
@@ -561,8 +561,8 @@ class App {
             return $rate->rate;
         }
     }
-	
-	function getRatesCountForPhoto($photoId) {
+
+  function getRatesCountForPhoto($photoId) {
 
         $rate = Lazer::table('rates')->where('photoid', '=', $photoId)->andWhere('userid', '=', $this->currentUser->userid)->findAll();
         return $rate->count();
