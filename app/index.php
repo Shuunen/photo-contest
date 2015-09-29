@@ -23,7 +23,7 @@ function __autoload($class_name) {
 
         <title>Photo contest 2015 | <?php print $app->version ?></title>
 
-        <!-- build:css styles/styles.css?v=<?php print $app->version ?> -->
+        <!-- build:css styles/styles.css -->
         <link href="../bower_components/bootstrap-rating/bootstrap-rating.css" rel="stylesheet">
         <link href="../bower_components/fineuploader-dist/dist/fine-uploader-gallery.min.css" rel="stylesheet">
         <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
@@ -52,7 +52,7 @@ function __autoload($class_name) {
         <script type="text/javascript" src="../bower_components/smoke/dist/js/smoke.min.js"></script>
         <!-- endbuild -->
 
-        <!-- build:js scripts/app.js?v=<?php print $app->version ?> -->
+        <!-- build:js scripts/app.js -->
         <script type="text/javascript" src="./scripts/main.js"></script>
         <!-- endbuild -->
 
