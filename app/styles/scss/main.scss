@@ -8,7 +8,7 @@ body {
     font-size: 16px;
     overflow: hidden;
     &.loaded {
-        overflow:inherit;
+        overflow: inherit;
     }
 }
 
@@ -48,9 +48,9 @@ body {
         background: transparent;
         margin-bottom: 5px;
         overflow: hidden;
-        .rate-complete + img{
+        .rate-complete + img {
             -webkit-filter: grayscale(100%);
-            opacity:0.6;
+            opacity: 0.6;
         }
     }
 }
@@ -61,7 +61,7 @@ body {
         & > img {
             transform: scale(1.1);
             -webkit-filter: grayscale(0);
-            opacity:1;
+            opacity: 1;
         }
     }
     & > img {
@@ -150,13 +150,13 @@ body {
     button {
         margin-right: 15px;
     }
-  &.on-side {
-      position: absolute;
-    left: 20px;
-    width: 130px;
-    bottom: 90px;
-    justify-content: flex-start;
-  }
+    &.on-side {
+        position: absolute;
+        left: 20px;
+        width: 130px;
+        bottom: 90px;
+        justify-content: flex-start;
+    }
 }
 
 .delete-photo {
@@ -217,16 +217,18 @@ body {
             cursor: default;
         }
         & > .fa-spin {
-            margin-top: 90px;
+            position: absolute;
+            top: calc(50% - 40px);
+            left: calc(50% - 40px);
         }
     }
-    span.clear-vote{
-        opacity:0.5;
+    span.clear-vote {
+        opacity: 0.5;
         cursor: pointer;
         margin-left: 5px;
-        font-size:1.5em;
-        &:hover{
-          opacity:1;
+        font-size: 1.5em;
+        &:hover {
+            opacity: 1;
         }
     }
 }
@@ -276,49 +278,50 @@ body {
 
 }
 
-.rate-results{
-  max-height: 600px;
-  overflow: auto;
-  .progress{
-    background-color: $brand-primary;
-    height: 5px;
-    width: 0;
-  }
-  .category-results{
-    > div{
-      margin-bottom: 10px;
+.rate-results {
+    max-height: 600px;
+    overflow: auto;
+    .progress {
+        background-color: $brand-primary;
+        height: 5px;
+        width: 0;
     }
-    img{
-      margin:auto;
-      max-width:100%;
+    .category-results {
+        > div {
+            margin-bottom: 10px;
+        }
+        img {
+            margin: auto;
+            max-width: 100%;
+        }
+        .photo-info {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
     }
-    .photo-info{
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0,0,0,0.7);
-    }
-  }
 }
-.desktop .rate-results .progress{
-  transition: width 100ms;
+
+.desktop .rate-results .progress {
+    transition: width 100ms;
 }
 
 .results-container {
     max-width: 400px;
-  .author {
-      text-align: center;
-    margin: 10px;
-    font-size: 16px;
-  }
-  .media {
-    margin-top: 5px;
-  }
-  .media-middle,
-  .media-left {
-    white-space: nowrap;
-  }
+    .author {
+        text-align: center;
+        margin: 10px;
+        font-size: 16px;
+    }
+    .media {
+        margin-top: 5px;
+    }
+    .media-middle,
+    .media-left {
+        white-space: nowrap;
+    }
 }
 
 .rate-status {
@@ -328,7 +331,11 @@ body {
     width: 80px;
     height: 80px;
     z-index: 20;
-  pointer-events: none;
-  &.rate-started { background-image: url('../images/rate-started.png');}
-  &.rate-complete { background-image: url('../images/rate-complete.png');}
+    pointer-events: none;
+    &.rate-started {
+        background-image: url('../images/rate-started.png');
+    }
+    &.rate-complete {
+        background-image: url('../images/rate-complete.png');
+    }
 }
