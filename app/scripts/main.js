@@ -545,9 +545,13 @@ function refreshThumb(photoid) {
         data: 'type=template&template=thumb&photoid=' + photoid,
         success: function (html) {
             if (html.length && html.length > 50) {
+                var bWasActive = this.gridItem.classList.contains('active');
                 this.gridItem.outerHTML = html;
                 this.gridItem = document.querySelector('[data-griditem-photoid="' + this.photoid + '"]');
                 this.gridItem.setAttribute('style', this.gridItemStyle);
+                if (bWasActive) {
+                    this.gridItem.classList.add('active');
+                }
                 new Layzr({
                     container: '.grid',
                     selector: '[data-layzr]',
