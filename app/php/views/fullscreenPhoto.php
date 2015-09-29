@@ -49,45 +49,53 @@
         <?php elseif ($app->voteEnded && !$this->showResults): ?>
             <div class="countdown-container">Votes are closed, the results will come soon.</div>
         <?php elseif ($this->showResults): ?>
-            <div class="results-container center text-left">
-                <?php
-                $user = $app->getUserByUserid($photo->userid);
-                $results = $app->getResultsByPhoto($photo->photoid);
-                $resultsArray = $results->asArray()[0];
-                $globalRes = $results->global_results;
-                ?>
-                <div class="author"><i>by</i>&nbsp;<?php print count($user) === 1 ? $user->name : $photo->userid;; ?>,&nbsp;<i>total stars :</i>&nbsp;<?php echo $globalRes ?>&nbsp;<i class="fa fa-star"></i>
+            <?php
+            $user = $app->getUserByUserid($photo->userid);
+            $results = $app->getResultsByPhoto($photo->photoid);
+            $resultsArray = $results->asArray();
+            ?>
+            <?php if (isset($resultsArray[0])): ?>
+                <div class="results-container center text-left">
+
+                    <div class="author">
+                        <i>by</i>&nbsp;<?php print count($user) === 1 ? $user->name : $photo->userid;; ?>,&nbsp;<i>total stars :</i>&nbsp;<?php echo $results->global_results ?>&nbsp;<i class="fa fa-star"></i>
+                    </div>
+                    <?php foreach ($categories as $category) : ?>
+                        <?php
+                        $resultCatIndex = $category->categoryid;
+
+                        if ($category->categoryid === "40") {
+                            $resultCatIndex = "fourty";
+                        };
+                        ?>
+
+                        <?php if (isset($resultsArray[$resultCatIndex])): ?>
+                            <div class="media col-xs-6">
+                                <div class="media-left media-middle">
+                                    <?php print $category->label; ?>
+                                </div>
+                                <div class="media-body media-middle">
+                                    : <strong><?php print $resultsArray[$resultCatIndex]; ?></strong>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                            </div>
+                        <?php elseif ($resultsArray): ?>
+                            <div class="text-center">Specific results cannot be loaded.</div>
+                        <?php endif; ?>
+
+                    <?php endforeach; ?>
+
                 </div>
-                <?php foreach ($categories as $category) : ?>
-                    <?php
-                    $resultCatIndex = $category->categoryid;
+            <?php else : ?>
+                <div class="text-center">Results cannot be loaded.</div>
+            <?php endif; ?>
 
-                    if ($category->categoryid === "40") {
-                        $resultCatIndex = "fourty";
-                    };
-                    ?>
-
-                    <?php if (isset($resultsArray[$resultCatIndex])): ?>
-                        <div class="media col-xs-6">
-                            <div class="media-left media-middle">
-                                <?php print $category->label; ?>
-                            </div>
-                            <div class="media-body media-middle">
-                                : <strong><?php print $resultsArray[$resultCatIndex]; ?></strong>
-                                <i class="fa fa-star"></i>
-                            </div>
-                        </div>
-                    <?php elseif ($resultsArray): ?>
-                        <div class="text-center">Specific results cannot be loaded.</div>
-                    <?php endif; ?>
-
-                <?php endforeach; ?>
-            </div>
         <?php else : ?>
             <div class="countdown-container">Votes will be opened in&nbsp;
                 <div class="countdown voteOpened"></div>
             </div>
         <?php endif; ?>
+
     <?php elseif (!$app->voteOpened && !$app->voteEnded) : ?>
         <button type="button" title="Delete this photo" event-emitter class="btn btn-danger delete-photo">
             Delete my photo&nbsp;&nbsp;<span class="fa fa-trash" aria-hidden="true"></span>
