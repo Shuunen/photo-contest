@@ -276,6 +276,11 @@ body {
 .rate-results{
   max-height: 600px;
   overflow: auto;
+  .progress{
+    background-color: $brand-primary;
+    height: 5px;
+    width: 0;
+  }
   .category-results{
     > div{
       margin-bottom: 10px;
@@ -292,6 +297,9 @@ body {
       background-color: rgba(0,0,0,0.7);
     }
   }
+}
+.desktop .rate-results .progress{
+  transition: width 100ms;
 }
 
 .results-container {

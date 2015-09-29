@@ -13,15 +13,19 @@
         }
     } else {
         $res = $app->getResultsByPhoto($photo['photoid']);
-        $photoResultArray = $res->asArray()[0];
-        $sortAttrs = 'data-result-global="' . $res->global_results . '"';
-        $categories = $app->getCategories();
-        foreach ($categories as $category) {
-            $resultCatIndex = $category->categoryid;
-            if ($category->categoryid === "40") {
-                $resultCatIndex = "fourty";
-            }
-            $sortAttrs .= ' data-result-' . $category->categoryid . '="' . $photoResultArray[$resultCatIndex] . '"';
+        if(count($res)>0){
+          $photoResultArray = $res->asArray()[0];
+          $sortAttrs = 'data-result-global="' . $res->global_results . '"';
+          $categories = $app->getCategories();
+          foreach ($categories as $category) {
+              $resultCatIndex = $category->categoryid;
+              if ($category->categoryid === "40") {
+                  $resultCatIndex = "fourty";
+              }
+              $sortAttrs .= ' data-result-' . $category->categoryid . '="' . $photoResultArray[$resultCatIndex] . '"';
+          }
+        }else{
+
         }
     }
     ?>

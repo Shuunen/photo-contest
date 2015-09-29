@@ -267,36 +267,62 @@ function clickedOnResultsModal(el) {
     } else {
         el.classList.add('handled');
 
-        startFullscreenLoading();
-
-        $.ajax({
-            type: 'get',
-            data: 'type=template&template=resultsModal',
-            success: function (html) {
-                if (html.length && html.length > 50) {
-
-                    $('#resultsModal .modal-body').html(html);
-                    $('.fullscreen-photo').html('');
-                }
-            }.bind(this)
-        });
+        loadResultsModalContent();
 
     }
 
 }
 
+function loadResultsModalContent(){
+  startFullscreenLoading();
+
+  $.ajax({
+      type: 'get',
+      data: 'type=template&template=resultsModal',
+      success: function (html) {
+          if (html.length && html.length > 50) {
+
+              $('#resultsModal .modal-body').html(html);
+              $('.fullscreen-photo').html('');
+          }
+      }.bind(this)
+  });
+}
+
 function clickedOnComputeResults(el) {
 
-    startFullscreenLoading();
+    //startFullscreenLoading();
 
     $.ajax({
         type: 'get',
-        data: 'type=computeResults&ajax=true',
-        success: function () {
-            clickedOnResultsModal(el);
-        }.bind(this)
-    });
+        data: 'type=getAllPhotos&ajax=true',
+        success: function (response) {
+          var data = JSON.parse(response);
+          //console.log(photos);
+          computeResultsForPhoto(data.data,0);
+          $('#resultsModal .modal-body .progress').width(0+"%");
 
+
+        }
+    });
+}
+
+function computeResultsForPhoto(photos, photoIndex){
+
+    $.ajax({
+        type: 'get',
+        data: 'type=computeResultsForPhoto&photoid='+photos[photoIndex].photoid+'&ajax=true',
+        success: function () {
+            if(photoIndex < (photos.length-1)){
+              photoIndex++;
+              computeResultsForPhoto(photos, photoIndex);
+            }else{
+              photoIndex++;
+              loadResultsModalContent();
+            }
+            $('#resultsModal .modal-body .progress').width(Math.round(photoIndex*100/photos.length)+"%");
+        }
+    });
 
 }
 

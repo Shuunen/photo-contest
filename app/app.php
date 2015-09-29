@@ -330,7 +330,7 @@ class App {
           $globalResult += $result;
         }
         $results->global_results = floatval($globalResult);
-      $results->save();
+        $results->save();
 
     }
 
@@ -340,10 +340,6 @@ class App {
         // $time_start = microtime(true);
 
         $res = Lazer::table('results')->where("photoid", "=", $photoId)->find();
-        if(count($res) === 0){
-          $this->generateResultsByPhoto($photoId);
-          $res = Lazer::table('results')->where("photoid", "=", $photoId)->find();
-        }
 
         // die('results : '.  (microtime(true) - $time_start)*100 .' secondes<br/>'); // 17 secondes
 
@@ -535,6 +531,8 @@ class App {
                      */
                     if ($type === 'moderation') {
                         $data = $this->handleModeration($request);
+                    } else if ($type === 'computeResultsForPhoto' && isset($request['photoid'])) {
+                        $data = $this->generateResultsByPhoto($request['photoid']);
                     } else {
                         $_SESSION['message'] = 'This method is not handled for moderators.';
                     }
@@ -545,9 +543,15 @@ class App {
                      */
                      if ($type === 'createUser') {
                         $data = $this->handleCreateUser($request);
-                    } else if ($type === 'computeResults') {
-                        $data = $this->generateResults();
-                    }else if ($type === 'regenThumbnails') {
+                    } else if ($type === 'computeResultsForPhoto' && isset($request['photoid'])) {
+                        $data = $this->generateResultsByPhoto($request['photoid']);
+                    } else if ($type === 'getAllPhotos') {
+                        $photos = $this->getAllPhotos();
+                        if(count($photos)>0){
+                          $data = $photos->asArray();
+                          $_SESSION['messageStatus'] = 'success';
+                        }
+                    } else if ($type === 'regenThumbnails') {
                         $data = $this->regenThumbnails();
                     } else {
                         $_SESSION['message'] = 'This method is not handled for admins.';
@@ -559,7 +563,7 @@ class App {
 
             if (isset($request['ajax'])) {
                 // if ajax, print json and exit
-                echo json_encode(array('message' => $_SESSION['message'], 'messageStatus' => $_SESSION['messageStatus'], 'data' => $data), JSON_FORCE_OBJECT);
+                echo json_encode(array('message' => $_SESSION['message'], 'messageStatus' => $_SESSION['messageStatus'], 'data' => $data));
                 $_SESSION['message'] = '';
                 $_SESSION['messageStatus'] = '';
                 die();

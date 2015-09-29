@@ -6,6 +6,7 @@
 
 ?>
 <div class="rate-results row">
+  <div class="progress"></div>
   <h2>Results</h2>
   <?php if(count($results) === 0):?>
     <div class="col-md-12 text-center">
