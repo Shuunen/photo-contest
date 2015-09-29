@@ -18,7 +18,7 @@
     </button>
 
     <?php if ($app->currentUser->role === 'moderator'): ?>
-        <div class="moderation-controls <?php echo(($app->showResults) ? 'on-side' : '') ?>">
+        <div class="moderation-controls <?php echo($app->showResults ? 'on-side' : '') ?>">
             <button data-action="approve" type="button" event-emitter class="moderation-control btn btn-success" <?php print $photo->status === "approved" ? "disabled" : ""; ?>>
                 <span class="fa fa-check-circle" aria-hidden="true"></span> Approve<?php print $photo->status === "approved" ? "d" : ""; ?>
             </button>
@@ -49,37 +49,32 @@
         <?php elseif ($app->voteEnded && !$this->showResults): ?>
             <div class="countdown-container">Votes are closed, the results will come soon.</div>
         <?php elseif ($this->showResults): ?>
-            <?php
-            $user = $app->getUserByUserid($photo->userid);
-            $results = $app->getResultsByPhoto($photo->photoid);
-            $resultsArray = $results->asArray();
-            ?>
-            <?php if (isset($resultsArray[0])): ?>
+
+            <?php $user = $app->getUserByUserid($photo->userid) ?>
+            <?php $results = $app->getResultsByPhoto($photo->photoid)->asArray() ?>
+
+            <?php if (isset($results[0])): ?>
+
+                <?php $results = $results[0] ?>
+
                 <div class="results-container center text-left">
 
                     <div class="author">
-                        <i>by</i>&nbsp;<?php print count($user) === 1 ? $user->name : $photo->userid;; ?>,&nbsp;<i>total stars :</i>&nbsp;<?php echo $results->global_results ?>&nbsp;<i class="fa fa-star"></i>
+                        <i>by</i>&nbsp;<?php print count($user) === 1 ? $user->name : $photo->userid;; ?>,&nbsp;<i>total stars :</i>&nbsp;<?php echo $results['global_results'] ?>&nbsp;<i class="fa fa-star"></i>
                     </div>
                     <?php foreach ($categories as $category) : ?>
-                        <?php
-                        $resultCatIndex = $category->categoryid;
-
-                        if ($category->categoryid === "40") {
-                            $resultCatIndex = "fourty";
-                        };
-                        ?>
-
-                        <?php if (isset($resultsArray[$resultCatIndex])): ?>
+                        <?php $index = $category->categoryid === "40" ? "fourty" : $category->categoryid ?>
+                        <?php if (isset($results[$index])): ?>
                             <div class="media col-xs-6">
                                 <div class="media-left media-middle">
                                     <?php print $category->label; ?>
                                 </div>
                                 <div class="media-body media-middle">
-                                    : <strong><?php print $resultsArray[$resultCatIndex]; ?></strong>
+                                    : <strong><?php print $results[$index]; ?></strong>
                                     <i class="fa fa-star"></i>
                                 </div>
                             </div>
-                        <?php elseif ($resultsArray): ?>
+                        <?php else : ?>
                             <div class="text-center">Specific results cannot be loaded.</div>
                         <?php endif; ?>
 
