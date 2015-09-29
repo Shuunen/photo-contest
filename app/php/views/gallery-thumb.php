@@ -40,7 +40,7 @@
 
             <?php $photoThumb = $app->photoPath . $photo["userid"] . '/' . 'thumbs/' . $photo["filepath"] ?>
             <?php $photoFull = $app->photoPath . $photo["userid"] . '/' . $photo["filepath"] ?>
-            <img class="grid-item-thumb" event-emitter data-photoid="<?php echo $photo["photoid"] ?>" data-layzr="<?php echo $photoThumb ?>" data-thumb="<?php echo $photoThumb ?>" data-full="<?php echo $photoFull ?>">
+            <img class="grid-item-thumb" event-emitter data-photoid="<?php echo $photo["photoid"] ?>" data-lazy="<?php echo $photoThumb ?>">
 
         </div>
     <?php endif; ?>

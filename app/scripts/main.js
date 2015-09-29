@@ -165,6 +165,7 @@ function clickedOnGridItemThumb(el) {
         success: function (data) {
             // console.log(data);
             $('.fullscreen-photo').html(data);
+            lazyLoadPhotos();
             initVoteOpenedForCountdown();
             initRating();
         }
@@ -421,23 +422,38 @@ function clickedOnAddUserModal(el) {
 
 function initImageGrid() {
 
-    var nbPhotosToLoad = $('.gallery [data-layzr]').size();
+    initMasonry();
 
-    if (nbPhotosToLoad) {
-        new Layzr({
-            container: '.gallery',
-            selector: '[data-layzr]',
-            hiddenAttr: 'data-layzr-hidden',
-            callback: function () {
-                if (--nbPhotosToLoad === 0) {
-                    console.log('all images loaded');
-                    setTimeout(initMasonry, 100);
-                }
-            }
-        });
-    } else {
-        $('.main').addClass('in');
+    lazyLoadPhotos();
+}
+
+function lazyLoadPhotos(callback) {
+
+    var photo = document.querySelector('[data-lazy]');
+
+    if (!photo) {
+        // console.log('all photos loaded');
+        return callback ? callback() : true;
     }
+
+    var path = photo.getAttribute('data-lazy');
+
+    // console.info('loading "' + path + '" ...');
+
+    photo.classList.add('fade');
+
+    photo.onload = function () {
+        // console.log('photo loaded');
+        this.removeAttribute('data-lazy');
+        this.classList.add('in');
+        lazyLoadPhotos(callback);
+    };
+
+    photo.onerror = function () {
+        console.error('photo loading failed');
+    };
+
+    photo.src = path;
 }
 
 function initMasonry() {
@@ -578,14 +594,9 @@ function refreshThumb(photoid) {
                 if (bWasActive) {
                     this.gridItem.classList.add('active');
                 }
-                new Layzr({
-                    container: '.grid',
-                    selector: '[data-layzr]',
-                    hiddenAttr: 'data-layzr-hidden',
-                    callback: function () {
-                        console.log('thumb loaded, reload grid');
-                        $('.grid').isotope("reloadItems").isotope();
-                    }
+                lazyLoadPhotos(function () {
+                    console.log('thumb loaded, reload grid');
+                    $('.grid').isotope("reloadItems").isotope();
                 });
             }
         }.bind(this)
