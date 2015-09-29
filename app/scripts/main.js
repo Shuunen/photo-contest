@@ -424,7 +424,9 @@ function initImageGrid() {
 
     initMasonry();
 
-    lazyLoadPhotos();
+    lazyLoadPhotos(function(){
+        $('.grid').isotope();
+    });
 }
 
 function lazyLoadPhotos(callback) {
