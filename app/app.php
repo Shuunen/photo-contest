@@ -16,7 +16,7 @@ class App {
 
     function __construct() {
 
-        $this->version = 6.0;
+        $this->version = '6.0';
         $this->photoPath = './photos/';
         $this->isUser = false;
         $this->isVisitor = false;
@@ -245,23 +245,25 @@ class App {
         $results = [];
         foreach ($categories as $category) {
 
-          $catId = $category->categoryid;
-          if($category->categoryid === "40"){
-            $catId = "fourty";
-          }
-          $res = Lazer::table('results')->with('photos')->orderBy($catId, 'DESC')->findAll();
-          if($res->count()>0){
-            $results[$category->categoryid] = $res;
-          }
+            $catId = $category->categoryid;
+            if ($category->categoryid === "40") {
+                $catId = "fourty";
+            }
+            $res = Lazer::table('results')->with('photos')->orderBy($catId, 'DESC')->findAll();
+            if ($res->count() > 0) {
+                $results[$category->categoryid] = $res;
+            }
         }
 
         return $results;
     }
 
     function getResultsByCategory($categoryId) {
+
         $photos = Lazer::table('photos')->where('status', '=', 'approved')->findAll();
 
         $results = [];
+
         foreach ($photos as $photo) {
             $photoRates = Lazer::table('rates')->where('photoid', '=', $photo->photoid)->andWhere('categoryid', '=', $categoryId)->findAll();
             $results[$photo->photoid] = 0;
@@ -271,12 +273,13 @@ class App {
                 }
             }
         }
+
         arsort($results);
 
         return $results;
     }
 
-    function generateResults(){
+    function generateResults() {
 
         Lazer::table('results')->delete();
 
@@ -284,25 +287,25 @@ class App {
         $_SESSION['message'] = 'Results generated';
         $_SESSION['messageStatus'] = 'success';
 
-        try{
-          $photos = Lazer::table('photos')->where('status', '=', 'approved')->findAll();
+        try {
+            $photos = Lazer::table('photos')->where('status', '=', 'approved')->findAll();
 
-          $results = Lazer::table('results');
+            // $results = Lazer::table('results');
 
-          foreach ($photos as $photo) {
-            $this->generateResultsByPhoto($photo->photoid);
-          }
-        }catch (Exception $e) {
-          $status = "Error : ".$e->getMessage();
-          $_SESSION['messageStatus'] = 'error';
-          $_SESSION['message'] = 'Results not generated';
+            foreach ($photos as $photo) {
+                $this->generateResultsByPhoto($photo->photoid);
+            }
+        } catch (Exception $e) {
+            $status = "Error : " . $e->getMessage();
+            $_SESSION['messageStatus'] = 'error';
+            $_SESSION['message'] = 'Results not generated';
         }
 
         return $status;
 
     }
 
-    function generateResultsByPhoto($photoId){
+    function generateResultsByPhoto($photoId) {
 
         $categories = $this->getCategories();
         $results = Lazer::table('results');
@@ -310,24 +313,24 @@ class App {
         $globalResult = 0;
         $results->photoid = $photoId;
         foreach ($categories as $category) {
-          $photoRates = Lazer::table('rates')->where('photoid', '=', $photoId)->andWhere('categoryid', '=', $category->categoryid)->findAll();
-          $result = 0;
-          if (count($photoRates) > 0) {
-            foreach ($photoRates as $photoRate) {
-              $result += $photoRate->rate;
+            $photoRates = Lazer::table('rates')->where('photoid', '=', $photoId)->andWhere('categoryid', '=', $category->categoryid)->findAll();
+            $result = 0;
+            if (count($photoRates) > 0) {
+                foreach ($photoRates as $photoRate) {
+                    $result += $photoRate->rate;
+                }
             }
-          }
-          if($category->categoryid === "40"){
-            $results->fourty = floatval($result);
-          }elseif($category->categoryid === "travels"){
-            $results->travels = floatval($result);
-          }elseif($category->categoryid === "funniest"){
-            $results->funniest = floatval($result);
-          }elseif($category->categoryid === "most_creative"){
-            $results->most_creative = floatval($result);
-          }
+            if ($category->categoryid === "40") {
+                $results->fourty = floatval($result);
+            } elseif ($category->categoryid === "travels") {
+                $results->travels = floatval($result);
+            } elseif ($category->categoryid === "funniest") {
+                $results->funniest = floatval($result);
+            } elseif ($category->categoryid === "most_creative") {
+                $results->most_creative = floatval($result);
+            }
 
-          $globalResult += $result;
+            $globalResult += $result;
         }
         $results->global_results = floatval($globalResult);
         $results->save();
@@ -443,7 +446,7 @@ class App {
             $this->getNavContent();
         } else if ($request['template'] === 'thumb') {
             $this->getThumbContent($request['photoid']);
-        }else if ($request['template'] === 'resultsModal') {
+        } else if ($request['template'] === 'resultsModal') {
             $this->getResultsModalContent();
         } else {
             die('This template is not handled');
@@ -541,15 +544,15 @@ class App {
                     /*
                      * Logged admin
                      */
-                     if ($type === 'createUser') {
+                    if ($type === 'createUser') {
                         $data = $this->handleCreateUser($request);
                     } else if ($type === 'computeResultsForPhoto' && isset($request['photoid'])) {
                         $data = $this->generateResultsByPhoto($request['photoid']);
                     } else if ($type === 'getAllPhotos') {
                         $photos = $this->getAllPhotos();
-                        if(count($photos)>0){
-                          $data = $photos->asArray();
-                          $_SESSION['messageStatus'] = 'success';
+                        if (count($photos) > 0) {
+                            $data = $photos->asArray();
+                            $_SESSION['messageStatus'] = 'success';
                         }
                     } else if ($type === 'regenThumbnails') {
                         $data = $this->regenThumbnails();
@@ -660,8 +663,9 @@ class App {
 
     function getRatesCountForPhoto($photoId) {
 
-        $rate = Lazer::table('rates')->where('photoid', '=', $photoId)->andWhere('userid', '=', $this->currentUser->userid)->findAll();
-        return $rate->count();
+        //return 1;
+        $count = Lazer::table('rates')->where('photoid', '=', $photoId)->findAll()->count();
+        return $count;
     }
 
     function randomPassword() {
