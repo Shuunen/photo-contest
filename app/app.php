@@ -73,6 +73,17 @@ class App {
             $this->onDesktop = false;
         }
 
+        $this->db = new PDO('sqlite:./database/db.db');
+        $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+
+        /*
+        $entries = Lazer::table('rates')->limit(1000,1110)->findAll();
+        foreach ($entries as $entry) {
+            $query = 'INSERT INTO rates VALUES (' . $entry->id . ',"' . $entry->photoid . '","' . $entry->userid . '","' . $entry->categoryid . '",' . $entry->rate . ')';
+            $this->db->exec($query) or die($this->db->errorInfo());
+        }
+        */
+
         $this->installDB();
 
         $this->handleRequest();
@@ -258,27 +269,6 @@ class App {
         return $results;
     }
 
-    function getResultsByCategory($categoryId) {
-
-        $photos = Lazer::table('photos')->where('status', '=', 'approved')->findAll();
-
-        $results = [];
-
-        foreach ($photos as $photo) {
-            $photoRates = Lazer::table('rates')->where('photoid', '=', $photo->photoid)->andWhere('categoryid', '=', $categoryId)->findAll();
-            $results[$photo->photoid] = 0;
-            if (count($photoRates) > 0) {
-                foreach ($photoRates as $photoRate) {
-                    $results[$photo->photoid] += $photoRate->rate;
-                }
-            }
-        }
-
-        arsort($results);
-
-        return $results;
-    }
-
     function generateResults() {
 
         Lazer::table('results')->delete();
@@ -313,13 +303,14 @@ class App {
         $globalResult = 0;
         $results->photoid = $photoId;
         foreach ($categories as $category) {
-            $photoRates = Lazer::table('rates')->where('photoid', '=', $photoId)->andWhere('categoryid', '=', $category->categoryid)->findAll();
+
+            $photoRates = $this->getRates($photoId, $category->categoryid);
+
             $result = 0;
-            if (count($photoRates) > 0) {
-                foreach ($photoRates as $photoRate) {
-                    $result += $photoRate->rate;
-                }
+            foreach ($photoRates as $photoRate) {
+                $result += $photoRate['rate'];
             }
+
             if ($category->categoryid === "40") {
                 $results->fourty = floatval($result);
             } elseif ($category->categoryid === "travels") {
@@ -338,42 +329,58 @@ class App {
     }
 
     function getResultsByPhoto($photoId) {
-
-
         // $time_start = microtime(true);
-
         $res = Lazer::table('results')->where("photoid", "=", $photoId)->find();
-
         // die('results : '.  (microtime(true) - $time_start)*100 .' secondes<br/>'); // 17 secondes
-
         return $res;
+    }
+
+    function getRates($photoId, $categoryId, $userId) {
+
+        $query = "SELECT * FROM rates WHERE photoid=\"$photoId\"";
+
+        if ($categoryId) {
+            $query .= " AND categoryid=\"$categoryId\"";
+        }
+
+        if ($userId) {
+            $query .= " AND userid=\"$userId\"";
+        }
+
+        $results = $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+
+        return $results;
+
+    }
+
+    function setRate($photoId, $categoryId, $userId, $rate) {
+
+        $existingRate = $this->getRates($photoId, $categoryId, $userId);
+
+        if (count($existingRate)) {
+
+            $query = "UPDATE rates SET rate = \"$rate\" WHERE photoid=\"$photoId\" AND categoryid=\"$categoryId\" AND userid=\"$userId\"";
+            $this->db->exec($query) or die($this->db->errorInfo());
+
+        } else {
+
+            $query = "INSERT INTO rates (id,photoid,userid,categoryid,rate) VALUES (NULL, \"$photoId\",\"$userId\",\"$categoryId\",\"$rate\")";
+            $this->db->exec($query) or die($this->db->errorInfo());
+        }
+
     }
 
     function storeRateToDB($request) {
 
-        $existingRate = Lazer::table('rates')->where('photoid', '=', $request['photoId'])->andWhere('userid', '=', $this->currentUser->userid)->andWhere('categoryid', '=', $request['categoryId'])->find();
-
+        // Security check
         $newRate = $request['rate'];
-
         if (floatval($newRate) > floatval($this->higherVote)) {
             $newRate = $this->higherVote;
         } elseif (floatval($newRate) < floatval($this->lowerVote)) {
             $newRate = $this->lowerVote;
         }
 
-        if ($existingRate->count() == 0) {
-
-            $rate = Lazer::table('rates');
-            $rate->photoid = $request['photoId'];
-            $rate->userid = $this->currentUser->userid;
-            $rate->categoryid = $request['categoryId'];
-            $rate->rate = $newRate;
-            $rate->save();
-        } else {
-
-            $existingRate->rate = $newRate;
-            $existingRate->save();
-        }
+        $this->setRate($request['photoId'], $request['categoryId'], $this->currentUser->userid, $newRate);
 
         return $newRate;
     }
@@ -653,19 +660,14 @@ class App {
 
     function getRateForPhotoAndCategory($photoId, $categoryId) {
 
-        $rate = Lazer::table('rates')->where('photoid', '=', $photoId)->andWhere('categoryid', '=', $categoryId)->andWhere('userid', '=', $this->currentUser->userid)->find();
-        if ($rate->count() == 0) {
-            return 0;
-        } else {
-            return $rate->rate;
-        }
+        $results = $this->getRates($photoId, $categoryId, $this->currentUser->userid);
+        $rate = isset($results[0]) ? $results[0]['rate'] : 0;
+        return $rate;
     }
 
     function getRatesCountForPhoto($photoId) {
-
-        //return 1;
-        $count = Lazer::table('rates')->where('photoid', '=', $photoId)->findAll()->count();
-        return $count;
+        $results = $this->getRates($photoId, null, $this->currentUser->userid);
+        return count($results);
     }
 
     function randomPassword() {
@@ -862,20 +864,6 @@ class App {
                 'userid' => 'string',
                 'filepath' => 'string',
                 'status' => 'string'
-            ));
-        }
-
-        //install rates
-        try {
-            \Lazer\Classes\Helpers\Validate::table('rates')->exists();
-        } catch (\Lazer\Classes\LazerException $e) {
-            //Database doesn't exist
-
-            Lazer::create('rates', array(
-                'photoid' => 'string',
-                'userid' => 'string',
-                'categoryid' => 'string',
-                'rate' => 'string',
             ));
         }
 
