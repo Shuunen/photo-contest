@@ -48,9 +48,9 @@ body {
         background: transparent;
         margin-bottom: 5px;
         overflow: hidden;
-        &.rate-complete img{
+        .rate-complete + img{
             -webkit-filter: grayscale(100%);
-            opacity:0.7;
+            opacity:0.6;
         }
     }
 }
