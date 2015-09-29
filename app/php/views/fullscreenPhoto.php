@@ -1,4 +1,3 @@
-
 <div class="item close-fullscreen-photo" event-emitter>
 
     <div class="photo-container">
@@ -52,30 +51,36 @@
         <?php elseif ($this->showResults): ?>
             <div class="results-container center text-left">
                 <?php
-                  $user = $app->getUserByUserid($photo->userid);
-                  $results = $app->getResultsByPhoto($photo->photoid);
-                  $resultsArray = $results->asArray()[0];
-                  $globalRes = $results->global_results;
+                $user = $app->getUserByUserid($photo->userid);
+                $results = $app->getResultsByPhoto($photo->photoid);
+                $resultsArray = $results->asArray()[0];
+                $globalRes = $results->global_results;
                 ?>
                 <div class="author"><i>by</i>&nbsp;<?php print count($user) === 1 ? $user->name : $photo->userid;; ?>,&nbsp;<i>total stars :</i>&nbsp;<?php echo $globalRes ?>&nbsp;<i class="fa fa-star"></i>
                 </div>
                 <?php foreach ($categories as $category) : ?>
                     <?php
-                      $resultCatIndex = $category->categoryid;
+                    $resultCatIndex = $category->categoryid;
 
-                      if($category->categoryid === "40"){
+                    if ($category->categoryid === "40") {
                         $resultCatIndex = "fourty";
-                      };
+                    };
                     ?>
-                    <div class="media col-xs-6">
-                        <div class="media-left media-middle">
-                            <?php print $category->label; ?>
+
+                    <?php if (isset($resultsArray[$resultCatIndex])): ?>
+                        <div class="media col-xs-6">
+                            <div class="media-left media-middle">
+                                <?php print $category->label; ?>
+                            </div>
+                            <div class="media-body media-middle">
+                                : <strong><?php print $resultsArray[$resultCatIndex]; ?></strong>
+                                <i class="fa fa-star"></i>
+                            </div>
                         </div>
-                        <div class="media-body media-middle">
-                            : <strong><?php print $resultsArray[$resultCatIndex]; ?></strong>
-                            <i class="fa fa-star"></i>
-                        </div>
-                    </div>
+                    <?php elseif ($resultsArray): ?>
+                        <div class="text-center">Specific results cannot be loaded.</div>
+                    <?php endif; ?>
+
                 <?php endforeach; ?>
             </div>
         <?php else : ?>
