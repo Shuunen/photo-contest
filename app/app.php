@@ -278,8 +278,6 @@ class App {
 
     function generateResults(){
 
-        $categories = $this->getCategories();
-
         Lazer::table('results')->delete();
 
         $status = "Success";
@@ -292,30 +290,7 @@ class App {
           $results = Lazer::table('results');
 
           foreach ($photos as $photo) {
-            $globalResult = 0;
-            $results->photoid = $photo->photoid;
-            foreach ($categories as $category) {
-              $photoRates = Lazer::table('rates')->where('photoid', '=', $photo->photoid)->andWhere('categoryid', '=', $category->categoryid)->findAll();
-              $result = 0;
-              if (count($photoRates) > 0) {
-                foreach ($photoRates as $photoRate) {
-                  $result += $photoRate->rate;
-                }
-              }
-              if($category->categoryid === "40"){
-                $results->fourty = floatval($result);
-              }elseif($category->categoryid === "travels"){
-                $results->travels = floatval($result);
-              }elseif($category->categoryid === "funniest"){
-                $results->funniest = floatval($result);
-              }elseif($category->categoryid === "most_creative"){
-                $results->most_creative = floatval($result);
-              }
-
-              $globalResult += $result;
-            }
-            $results->global_results = floatval($globalResult);
-            $results->save();
+            $this->generateResultsByPhoto($photo->photoid);
           }
         }catch (Exception $e) {
           $status = "Error : ".$e->getMessage();
@@ -327,12 +302,48 @@ class App {
 
     }
 
+    function generateResultsByPhoto($photoId){
+
+        $categories = $this->getCategories();
+        $results = Lazer::table('results');
+
+        $globalResult = 0;
+        $results->photoid = $photoId;
+        foreach ($categories as $category) {
+          $photoRates = Lazer::table('rates')->where('photoid', '=', $photoId)->andWhere('categoryid', '=', $category->categoryid)->findAll();
+          $result = 0;
+          if (count($photoRates) > 0) {
+            foreach ($photoRates as $photoRate) {
+              $result += $photoRate->rate;
+            }
+          }
+          if($category->categoryid === "40"){
+            $results->fourty = floatval($result);
+          }elseif($category->categoryid === "travels"){
+            $results->travels = floatval($result);
+          }elseif($category->categoryid === "funniest"){
+            $results->funniest = floatval($result);
+          }elseif($category->categoryid === "most_creative"){
+            $results->most_creative = floatval($result);
+          }
+
+          $globalResult += $result;
+        }
+        $results->global_results = floatval($globalResult);
+      $results->save();
+
+    }
+
     function getResultsByPhoto($photoId) {
 
 
         // $time_start = microtime(true);
 
         $res = Lazer::table('results')->where("photoid", "=", $photoId)->find();
+        if(count($res) === 0){
+          $this->generateResultsByPhoto($photoId);
+          $res = Lazer::table('results')->where("photoid", "=", $photoId)->find();
+        }
 
         // die('results : '.  (microtime(true) - $time_start)*100 .' secondes<br/>'); // 17 secondes
 
