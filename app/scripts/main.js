@@ -164,10 +164,17 @@ function clickedOnGridItemThumb(el) {
         data: 'type=template&template=fullscreenPhoto&photoId=' + $(el).data('photoid'),
         success: function (data) {
             // console.log(data);
+
             $('.fullscreen-photo').html(data);
-            lazyLoadPhotos();
+
+            lazyLoadPhotos(function(){
+                // console.log('fullscreen photo loaded');
+                $('.photo-container .fa-spinner').remove();
+            });
+
             initVoteOpenedForCountdown();
             initRating();
+
         }
     });
 }

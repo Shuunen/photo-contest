@@ -2,6 +2,7 @@
 <div class="item close-fullscreen-photo" event-emitter>
 
     <div class="photo-container">
+        <i class="fa fa-spinner fa-spin fa-5x"></i>
         <img data-photoid="<?php echo $photo->photoid ?>" data-lazy="<?php echo $app->photoPath . $photo->userid . '/' . $photo->filepath ?>">
     </div>
 

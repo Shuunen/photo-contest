@@ -216,6 +216,9 @@ body {
             max-width: 100%;
             cursor: default;
         }
+        & > .fa-spin {
+            margin-top: 90px;
+        }
     }
     span.clear-vote{
         opacity:0.5;
