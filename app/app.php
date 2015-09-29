@@ -16,7 +16,7 @@ class App {
 
     function __construct() {
 
-        $this->version = 5.1;
+        $this->version = 6.0;
         $this->photoPath = './photos/';
         $this->isUser = false;
         $this->isVisitor = false;
