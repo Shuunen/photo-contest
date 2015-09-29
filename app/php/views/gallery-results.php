@@ -8,15 +8,23 @@
                   $class = '';
                   $sortAttrs = '';
                   $res = $app->getResultsByPhoto($photo->photoid);
-                  $globalRes = 0;
-                  foreach($res as $catId => $result){
-                    $globalRes += $result;
-                    $sortAttrs .= ' data-result-'.$catId.'="'.$result.'"';
+                  $photoResultArray = $res->asArray()[0];
+
+                  $globalRes = $res->global_results;
+                  $categories = $app->getCategories();
+                  foreach($categories as $category){
+                    $resultCatIndex = $category->categoryid;
+
+                    if($category->categoryid === "40"){
+                      $resultCatIndex = "fourty";
+                    }
+
+                    $sortAttrs .= ' data-result-'.$category->categoryid.'="'.$photoResultArray[$resultCatIndex].'"';
                   }
                 ?>
 
                 <?php if ($photo->status === 'approved') : ?>
-                  <div class="grid-item <?php print $class; ?>" data-result-gobal="<?php print $globalRes;?>" <?php print $sortAttrs;?> >
+                  <div class="grid-item <?php print $class; ?>" data-result-global="<?php print $globalRes;?>" <?php print $sortAttrs;?> >
                       <?php
                       $photoThumb = $app->photoPath . $photo->userid . '/' . 'thumbs/' . $photo->filepath;
                       $photoFull = $app->photoPath . $photo->userid . '/' . $photo->filepath;

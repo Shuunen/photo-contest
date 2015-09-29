@@ -244,15 +244,23 @@ class App {
 
         $results = [];
         foreach ($categories as $category) {
-            $results[$category->categoryid] = $this->getResultsByCategory($category->categoryid);
+
+          $catId = $category->categoryid;
+          if($category->categoryid === "40"){
+            $catId = "fourty";
+          }
+          $res = Lazer::table('results')->with('photos')->orderBy($catId, 'DESC')->findAll();
+          if($res->count()>0){
+            $results[$category->categoryid] = $res;
+          }
         }
 
         return $results;
     }
 
     function getResultsByCategory($categoryId) {
-        $nbUsers = Lazer::table('users')->findAll()->count();
         $photos = Lazer::table('photos')->where('status', '=', 'approved')->findAll();
+
         $results = [];
         foreach ($photos as $photo) {
             $photoRates = Lazer::table('rates')->where('photoid', '=', $photo->photoid)->andWhere('categoryid', '=', $categoryId)->findAll();
@@ -268,27 +276,67 @@ class App {
         return $results;
     }
 
-    function getResultsByPhoto($photoId) {
+    function generateResults(){
 
         $categories = $this->getCategories();
-        $nbUsers = Lazer::table('users')->findAll()->count();
+
+        Lazer::table('results')->delete();
+
+        $status = "Success";
+        $_SESSION['message'] = 'Results generated';
+        $_SESSION['messageStatus'] = 'success';
+
+        try{
+          $photos = Lazer::table('photos')->where('status', '=', 'approved')->findAll();
+
+          $results = Lazer::table('results');
+
+          foreach ($photos as $photo) {
+            $globalResult = 0;
+            $results->photoid = $photo->photoid;
+            foreach ($categories as $category) {
+              $photoRates = Lazer::table('rates')->where('photoid', '=', $photo->photoid)->andWhere('categoryid', '=', $category->categoryid)->findAll();
+              $result = 0;
+              if (count($photoRates) > 0) {
+                foreach ($photoRates as $photoRate) {
+                  $result += $photoRate->rate;
+                }
+              }
+              if($category->categoryid === "40"){
+                $results->fourty = floatval($result);
+              }elseif($category->categoryid === "travels"){
+                $results->travels = floatval($result);
+              }elseif($category->categoryid === "funniest"){
+                $results->funniest = floatval($result);
+              }elseif($category->categoryid === "most_creative"){
+                $results->most_creative = floatval($result);
+              }
+
+              $globalResult += $result;
+            }
+            $results->global_results = floatval($globalResult);
+            $results->save();
+          }
+        }catch (Exception $e) {
+          $status = "Error : ".$e->getMessage();
+          $_SESSION['messageStatus'] = 'error';
+          $_SESSION['message'] = 'Results not generated';
+        }
+
+        return $status;
+
+    }
+
+    function getResultsByPhoto($photoId) {
+
 
         // $time_start = microtime(true);
 
-        $results = [];
-        foreach ($categories as $category) {
-            $photoRates = Lazer::table('rates')->where('photoid', '=', $photoId)->andWhere('categoryid', '=', $category->categoryid)->findAll();
-            $results[$category->categoryid] = 0;
-            if (count($photoRates) > 0) {
-                foreach ($photoRates as $photoRate) {
-                    $results[$category->categoryid] += $photoRate->rate;
-                }
-            }
-        }
+        $res = Lazer::table('results')->where("photoid", "=", $photoId)->find();
 
         // die('results : '.  (microtime(true) - $time_start)*100 .' secondes<br/>'); // 17 secondes
 
-        return $results;
+        return $res;
     }
 
     function storeRateToDB($request) {
@@ -388,6 +436,8 @@ class App {
             $this->getNavContent();
         } else if ($request['template'] === 'thumb') {
             $this->getThumbContent($request['photoid']);
+        }else if ($request['template'] === 'resultsModal') {
+            $this->getResultsModalContent();
         } else {
             die('This template is not handled');
         }
@@ -484,7 +534,9 @@ class App {
                      */
                      if ($type === 'createUser') {
                         $data = $this->handleCreateUser($request);
-                    } else if ($type === 'regenThumbnails') {
+                    } else if ($type === 'computeResults') {
+                        $data = $this->generateResults();
+                    }else if ($type === 'regenThumbnails') {
                         $data = $this->regenThumbnails();
                     } else {
                         $_SESSION['message'] = 'This method is not handled for admins.';
@@ -537,7 +589,7 @@ class App {
     }
 
     function getUserByUserid($userid) {
-        return $user = Lazer::table('users')->where('userid', '=', $userid)->find();
+        return $user = Lazer::table('users')->with('rights')->where('userid', '=', $userid)->find();
     }
 
     function getFullPhotoHtmlcontent($photoId) {
@@ -560,6 +612,12 @@ class App {
     function getNavContent() {
         $app = $this;
         require('./php/views/nav.php');
+        die();
+    }
+
+    function getResultsModalContent() {
+        $app = $this;
+        require('./php/views/results.php');
         die();
     }
 
@@ -766,7 +824,7 @@ class App {
             $category->save();
 
             $category->categoryid = "funniest";
-            $category->label = 'Funiest';
+            $category->label = 'Funniest';
             $category->save();
 
             $category->categoryid = "40";
@@ -800,6 +858,24 @@ class App {
                 'categoryid' => 'string',
                 'rate' => 'string',
             ));
+        }
+
+        //install results
+        try {
+            \Lazer\Classes\Helpers\Validate::table('results')->exists();
+        } catch (\Lazer\Classes\LazerException $e) {
+            //Database doesn't exist
+
+            Lazer::create('results', array(
+                'photoid' => 'string',
+                'global_results' => 'double',
+                'travels' => 'double',
+                'most_creative' => 'double',
+                'funniest' => 'double',
+                'fourty' => 'double'
+            ));
+
+            Relation::table('results')->belongsTo('photos')->localKey('photoid')->foreignKey('photoid')->setRelation();
         }
     }
 

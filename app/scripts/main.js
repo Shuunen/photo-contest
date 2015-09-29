@@ -47,8 +47,12 @@ function handleEvents() {
             clickedOnAddUserModal(el);
         } else if (el.getAttribute('data-target') === '#uploadModal') {
             clickedOnUploadModal(el);
+        } else if (el.getAttribute('data-target') === '#resultsModal') {
+            clickedOnResultsModal(el);
         } else if (el.classList.contains('slide-control')) {
             clickedOnSlideControl(el);
+        } else if (el.getAttribute('data-action') === 'computeResults') {
+            clickedOnComputeResults(el);
         }
 
     });
@@ -235,6 +239,46 @@ function clickedOnUploadModal(el) {
         });
 }
 
+function clickedOnResultsModal(el){
+
+   if (el.classList.contains('handled')) {
+        return;
+    } else {
+        el.classList.add('handled');
+
+        startFullscreenLoading();
+
+        $.ajax({
+        type: 'get',
+        data: 'type=template&template=resultsModal',
+        success: function (html) {
+            if (html.length && html.length > 50) {
+
+              $('#resultsModal .modal-body').html(html);
+              $('.fullscreen-photo').html('');
+            }
+        }.bind(this)
+    });
+
+    }
+
+}
+
+function clickedOnComputeResults(el){
+
+    startFullscreenLoading();
+
+    $.ajax({
+        type: 'get',
+        data: 'type=computeResults&ajax=true',
+        success: function () {
+            clickedOnResultsModal(el);
+        }.bind(this)
+    });
+
+
+}
+
 function startFullscreenLoading(bDisableAutoNext) {
     var fullscreenPhoto = $('.fullscreen-photo');
     fullscreenPhoto.html('<div class="item"><i class="fa fa-spinner fa-spin fa-5x"></i></div>');
@@ -360,7 +404,7 @@ function initMasonry() {
                 isFitWidth: true
             },
             getSortData: {
-              global: '[data-result-gobal]',
+              global: '[data-result-global]',
               travels: '[data-result-travels]',
               '40': '[data-result-40]',
               most_creative: '[data-result-most_creative]',
@@ -472,6 +516,7 @@ function refreshThumb(photoid) {
     if (!this.gridItem) {
         return;
     }
+    this.gridItemStyle = this.gridItem.getAttribute("style");
     console.log('found gridItem', gridItem);
     $.ajax({
         type: 'get',
@@ -479,6 +524,8 @@ function refreshThumb(photoid) {
         success: function (html) {
             if (html.length && html.length > 50) {
                 this.gridItem.outerHTML = html;
+                this.gridItem = document.querySelector('[data-griditem-photoid="' + this.photoid + '"]');
+                this.gridItem.setAttribute('style',this.gridItemStyle);
                 new Layzr({
                     container: '.grid',
                     selector: '[data-layzr]',

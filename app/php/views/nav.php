@@ -91,7 +91,7 @@
             <?php endif; ?>
 
             <?php if (($app->isAdmin || $app->isModerator) && $app->showResults): ?>
-                <li><a href="#" data-toggle="modal" data-target="#resultsModal">Results Table</a></li>
+                <li><a href="#" data-toggle="modal" event-emitter data-target="#resultsModal">Results Table</a></li>
             <?php endif; ?>
 
             <?php if ($app->isAdmin): ?>
