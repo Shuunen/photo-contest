@@ -1,5 +1,6 @@
 <div class="main fade">
     <?php
+    
     if ($app->isLogged) {
         require 'nav.php';
     }
@@ -9,14 +10,10 @@
     if (!$app->isLogged) {
 
         require 'login.php';
-
+        
     } else {
 
-        if ($app->showResults) {
-            require 'gallery-results.php';
-        } else {
-            require 'gallery.php';
-        }
+        require 'gallery.php';
 
         if ($app->submitOpened) {
             require 'uploadModal.php';

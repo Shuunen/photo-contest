@@ -2,16 +2,32 @@
 
     <?php
     $class = '';
-    if ($app->currentUser->userid != $photo["userid"] && $photo["status"] === 'approved') {
-        $class .= " vote";
-    }
-    if ($app->currentUser->userid === $photo["userid"]) {
-        $class .= " my-photos";
+    $sortAttrs = ''; // TODO : merge $class & $sortAttrs into $attributes
+    if (!$app->showResults) {
+        // TODO : act like $sortAttrs and build a $filterAttrs rather than use classes
+        if ($app->currentUser->userid != $photo["userid"] && $photo["status"] === 'approved') {
+            $class .= " vote";
+        }
+        if ($app->currentUser->userid === $photo["userid"]) {
+            $class .= " my-photos";
+        }
+    } else {
+        $res = $app->getResultsByPhoto($photo['photoid']);
+        $photoResultArray = $res->asArray()[0];
+        $sortAttrs = 'data-result-global="' . $res->global_results . '"';
+        $categories = $app->getCategories();
+        foreach ($categories as $category) {
+            $resultCatIndex = $category->categoryid;
+            if ($category->categoryid === "40") {
+                $resultCatIndex = "fourty";
+            }
+            $sortAttrs .= ' data-result-' . $category->categoryid . '="' . $photoResultArray[$resultCatIndex] . '"';
+        }
     }
     ?>
 
     <?php if ($app->isAdmin || $app->isModerator || $app->isUser && $photo["status"] === 'approved' || $app->isUser && $photo["userid"] === $app->currentUser->userid) : ?>
-        <div class="grid-item <?php print $class; ?>" data-photostatus="<?php echo $photo["status"] ?>" data-griditem-photoid="<?php echo $photo["photoid"] ?>">
+        <div class="grid-item <?php print $class; ?>" data-photostatus="<?php echo $photo["status"] ?>" data-griditem-photoid="<?php echo $photo["photoid"] ?>" <?php print $sortAttrs ?>>
 
             <?php if ($app->voteOpened) : ?>
                 <?php $rateCount = $app->getRatesCountForPhoto($photo["photoid"]) ?>
