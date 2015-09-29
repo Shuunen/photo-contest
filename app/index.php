@@ -48,7 +48,6 @@ function __autoload($class_name) {
         <script type="text/javascript" src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="../bower_components/bootstrap-rating/bootstrap-rating.min.js"></script>
         <script type="text/javascript" src="../bower_components/jquery.countdown/dist/jquery.countdown.min.js"></script>
-        <script type="text/javascript" src="../bower_components/layzr.js/dist/layzr.min.js"></script>
         <script type="text/javascript" src="../bower_components/isotope/dist/isotope.pkgd.min.js"></script>
         <script type="text/javascript" src="../bower_components/smoke/dist/js/smoke.min.js"></script>
         <!-- endbuild -->

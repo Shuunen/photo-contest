@@ -2,7 +2,7 @@
 <div class="item close-fullscreen-photo" event-emitter>
 
     <div class="photo-container">
-        <img data-photoid="<?php echo $photo->photoid ?>" src="<?php echo $app->photoPath . $photo->userid . '/' . $photo->filepath ?>">
+        <img data-photoid="<?php echo $photo->photoid ?>" data-lazy="<?php echo $app->photoPath . $photo->userid . '/' . $photo->filepath ?>">
     </div>
 
     <button type="button" event-emitter class="slide-control prev btn" title="Previous photo">
