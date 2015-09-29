@@ -404,11 +404,11 @@ function initMasonry() {
                 isFitWidth: true
             },
             getSortData: {
-              global: '[data-result-global]',
-              travels: '[data-result-travels]',
-              '40': '[data-result-40]',
-              most_creative: '[data-result-most_creative]',
-              funniest: '[data-result-funniest]'
+              'global': '[data-result-global] parseFloat',
+              'travels': '[data-result-travels] parseFloat',
+              '40': '[data-result-40] parseFloat',
+              'most_creative': '[data-result-most_creative] parseFloat',
+              'funniest': '[data-result-funniest] parseFloat'
             }
         })
         .one('layoutComplete', function () {
