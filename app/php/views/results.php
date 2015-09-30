@@ -32,7 +32,7 @@
           <div class="media-body">
             <div class="photo-infos">
               <div class="author"><a href="<?php print $app->photoPath . $photoInfo->userid . '/' . $photoInfo->filepath;?>" target="_blank"><?php print $user->name;?></a></div>
-              <div class="rate">
+              <div class="rate" title="Average stars for this user : <?php print round($photoResult['avgStars'],4);?>">
                 <span class="lead"><i class="fa fa-star"></i>&nbsp;<?php print $photoResult["totalCat"];?></span>&nbsp;&nbsp;<em class="small"><?php print $photoResult["totalStars"];?></em>
               </div>
             </div>

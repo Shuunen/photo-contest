@@ -260,7 +260,7 @@ class App {
         }
         foreach ($categories as $category) {
 
-            $query = "SELECT id, photoid, userid, categoryId,  sum(rate) as totalCat, (SELECT sum(rate) from rates r2 where r1.photoid = r2.photoid group by photoid) as totalStars from rates r1 WHERE categoryId=\"$category->categoryid\" group by photoid order by 	totalCat DESC".$limitStatement;
+            $query = "SELECT id, photoid, userid, categoryId,  sum(rate) as totalCat, (SELECT sum(rate) from rates r2 where r1.photoid = r2.photoid group by photoid) as totalStars, (select avg(rate) from rates r3 where r1.userid = r3.userid) as avgStars from rates r1 WHERE categoryId=\"$category->categoryid\" group by photoid order by 	totalCat DESC".$limitStatement;
             $res = $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
 
             if (count($res) > 0) {
