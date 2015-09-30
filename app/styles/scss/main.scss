@@ -33,6 +33,11 @@ body {
 
 .navbar {
     font-size: 15px;
+    .navbar-header {
+        display: flex;
+        align-items: baseline;
+        font-size: 14px;
+    }
 }
 
 .grid {

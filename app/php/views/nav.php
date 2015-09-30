@@ -2,7 +2,12 @@
     <div class="container-fluid">
 
         <div class="navbar-header">
-            <a class="navbar-brand refresh-button" event-emitter href="#">Photo contest 2015 <small class="text-muted">v<?php echo $app->version ?></small></a>
+            <a class="navbar-brand refresh-button" event-emitter href="#">Photo contest 2015
+                <small class="text-muted">v<?php echo $app->version ?></small>
+            </a>
+            <?php if ($app->voteOpened || $app->showResults): ?>
+                <span><?php echo $app->getNbRates() ?> rates submitted</span>
+            <?php endif; ?>
         </div>
 
         <ul class="nav navbar-nav navbar-right">
@@ -102,7 +107,9 @@
                 <li><a href="#" data-toggle="modal" event-emitter data-target="#uploadModal">Submit photos</a></li>
             <?php endif; ?>
 
-            <li><a href="#" event-emitter title="Logged as <?php echo $app->currentUser->name ?>" class="logout-link">Logout</a></li>
+            <li>
+                <a href="#" event-emitter title="Logged as <?php echo $app->currentUser->name ?>" class="logout-link">Logout</a>
+            </li>
         </ul>
     </div>
     <!-- /.container-fluid -->
