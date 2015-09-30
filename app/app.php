@@ -335,6 +335,14 @@ class App {
         return $res;
     }
 
+    function getNbRates (){
+        $query = "SELECT count(*) as total FROM rates";
+
+        $results = $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+
+        return $results[0]['total'];
+    }
+
     function getRates($photoId, $categoryId, $userId) {
 
         $query = "SELECT * FROM rates WHERE photoid=\"$photoId\"";
