@@ -273,6 +273,8 @@ function clickedOnResultsModal(el) {
     } else {
         el.classList.add('handled');
 
+      startFullscreenLoading();
+
        $.ajax({
           type: 'get',
           data: 'type=template&template=resultsModal',

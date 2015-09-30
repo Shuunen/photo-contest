@@ -12,20 +12,12 @@
             $class .= " my-photos";
         }
     } else {
-        $res = $app->getResultsByPhoto($photo['photoid']);
-        if(count($res)>0){
-          $photoResultArray = $res->asArray()[0];
-          $sortAttrs = 'data-result-global="' . $res->global_results . '"';
-          $categories = $app->getCategories();
-          foreach ($categories as $category) {
-              $resultCatIndex = $category->categoryid;
-              if ($category->categoryid === "40") {
-                  $resultCatIndex = "fourty";
-              }
-              $sortAttrs .= ' data-result-' . $category->categoryid . '="' . $photoResultArray[$resultCatIndex] . '"';
-          }
-        }else{
+        $photoResultArray = $app->getResultsByPhoto($photo['photoid']);
 
+        $sortAttrs = 'data-result-global="' . $photoResultArray["totalStars"] . '"';
+        $categories = $app->getCategories();
+        foreach ($categories as $category) {
+            $sortAttrs .= ' data-result-' . $category->categoryid . '="' . $photoResultArray["total".$category->categoryid] . '"';
         }
     }
     ?>

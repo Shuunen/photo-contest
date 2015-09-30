@@ -286,25 +286,32 @@ body {
 .rate-results {
     max-height: 600px;
     overflow: auto;
-    .progress {
-        background-color: $brand-primary;
-        height: 5px;
-        width: 0;
-    }
+
     .category-results {
         > div {
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
-        img {
-            margin: auto;
-            max-width: 100%;
+        h3{
+          border-bottom: 1px solid grey;
+          padding-bottom: 10px;
         }
-        .photo-info {
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.7);
+        .media-left{
+          img {
+              margin: auto;
+              max-width: 50px
+          }
+        }
+        .photo-infos {
+          .author a{
+            color: lighten($brand-primary, 10%);
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            display: block;
+            overflow: hidden;
+          }
+          .small{
+            font-size:0.7em;
+          }
         }
     }
 }

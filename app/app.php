@@ -249,14 +249,18 @@ class App {
         return array('photoid' => $request['photoId']);
     }
 
-    function getResults() {
+    function getResults($limit=NULL) {
 
         $categories = $this->getCategories();
 
         $results = [];
+        $limitStatement="";
+        if($limit){
+          $limitStatement = " LIMIT ".$limit;
+        }
         foreach ($categories as $category) {
 
-            $query = "SELECT id, photoid, userid, categoryId,  sum(rate) as totalCat, (SELECT sum(rate) from rates r2 where r1.photoid = r2.photoid group by photoid) as totalStars from rates r1 WHERE categoryId=\"$categoryId\" group by photoid order by 	totalCat DESC";
+            $query = "SELECT id, photoid, userid, categoryId,  sum(rate) as totalCat, (SELECT sum(rate) from rates r2 where r1.photoid = r2.photoid group by photoid) as totalStars from rates r1 WHERE categoryId=\"$category->categoryid\" group by photoid order by 	totalCat DESC".$limitStatement;
             $res = $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
 
             if (count($res) > 0) {
@@ -273,12 +277,19 @@ class App {
         $categories = $this->getCategories();
         $cats = "";
         foreach ($categories as $category) {
-          $cats .= " (SELECT sum(rate) from rates r2 where r1.photoid = r2.photoid AND categoryid=\"$category->categoryid\" group by photoid) as total"$category->categoryid","
+          $cats .= " (SELECT sum(rate) from rates r2 where r1.photoid = r2.photoid AND categoryid=\"$category->categoryid\" group by photoid) as total".$category->categoryid.",";
         }
 
-        $query = "SELECT id, photoid, userid, categoryId,"$cats" sum(rate) as totalCat, (SELECT sum(rate) from rates r2 where r1.photoid = r2.photoid group by photoid) as totalStars from rates r1 WHERE photoid=\"$photoId\"";
+        $query = "SELECT id, photoid, userid, categoryId,".$cats." sum(rate) as totalCat, (SELECT sum(rate) from rates r2 where r1.photoid = r2.photoid group by photoid) as totalStars from rates r1 WHERE photoid=\"$photoId\"";
 
         $results = $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+        $results = $results[0];
+        foreach ($categories as $category) {
+          if(!isset($results['total'.$category->categoryid])){
+            $results['total'.$category->categoryid] = 0;
+          }
+        }
+
         // die('results : '.  (microtime(true) - $time_start)*100 .' secondes<br/>'); // 17 secondes
         return $results;
     }

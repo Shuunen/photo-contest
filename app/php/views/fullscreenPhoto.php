@@ -51,32 +51,28 @@
         <?php elseif ($this->showResults): ?>
 
             <?php $user = $app->getUserByUserid($photo->userid) ?>
-            <?php $results = $app->getResultsByPhoto($photo->photoid)->asArray() ?>
+            <?php $results = $app->getResultsByPhoto($photo->photoid); ?>
 
-            <?php if (isset($results[0])): ?>
-
-                <?php $results = $results[0] ?>
+            <?php if (isset($results)): ?>
 
                 <div class="results-container center text-left">
 
                     <div class="author">
                         <i>by</i>&nbsp;<?php print count($user) === 1 ? $user->name : $photo->userid; ?>,&nbsp;<i>total stars :</i>&nbsp;<?php echo $results['totalStars'] ?>&nbsp;<i class="fa fa-star"></i>
                     </div>
+
                     <?php foreach ($categories as $category) : ?>
 
-                        <?php if (isset($results["total".$category->categoryid])): ?>
-                            <div class="media col-xs-6">
-                                <div class="media-left media-middle">
-                                    <?php print $category->label; ?>
-                                </div>
-                                <div class="media-body media-middle">
-                                    : <strong><?php print $results["total".$category->categoryid]; ?></strong>
-                                    <i class="fa fa-star"></i>
-                                </div>
+                        <div class="media col-xs-6">
+                            <div class="media-left media-middle">
+                                <?php print $category->label; ?>
                             </div>
-                        <?php else : ?>
-                            <div class="text-center">Specific results cannot be loaded.</div>
-                        <?php endif; ?>
+                            <div class="media-body media-middle">
+                                : <strong><?php print $results["total".$category->categoryid]; ?></strong>
+                                <i class="fa fa-star"></i>
+                            </div>
+                        </div>
+
 
                     <?php endforeach; ?>
 
