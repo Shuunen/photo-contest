@@ -60,17 +60,17 @@
                 <div class="results-container center text-left">
 
                     <div class="author">
-                        <i>by</i>&nbsp;<?php print count($user) === 1 ? $user->name : $photo->userid;; ?>,&nbsp;<i>total stars :</i>&nbsp;<?php echo $results['global_results'] ?>&nbsp;<i class="fa fa-star"></i>
+                        <i>by</i>&nbsp;<?php print count($user) === 1 ? $user->name : $photo->userid; ?>,&nbsp;<i>total stars :</i>&nbsp;<?php echo $results['totalStars'] ?>&nbsp;<i class="fa fa-star"></i>
                     </div>
                     <?php foreach ($categories as $category) : ?>
-                        <?php $index = $category->categoryid === "40" ? "fourty" : $category->categoryid ?>
-                        <?php if (isset($results[$index])): ?>
+
+                        <?php if (isset($results["total".$category->categoryid])): ?>
                             <div class="media col-xs-6">
                                 <div class="media-left media-middle">
                                     <?php print $category->label; ?>
                                 </div>
                                 <div class="media-body media-middle">
-                                    : <strong><?php print $results[$index]; ?></strong>
+                                    : <strong><?php print $results["total".$category->categoryid]; ?></strong>
                                     <i class="fa fa-star"></i>
                                 </div>
                             </div>

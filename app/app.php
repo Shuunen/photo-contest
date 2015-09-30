@@ -256,12 +256,10 @@ class App {
         $results = [];
         foreach ($categories as $category) {
 
-            $catId = $category->categoryid;
-            if ($category->categoryid === "40") {
-                $catId = "fourty";
-            }
-            $res = Lazer::table('results')->with('photos')->orderBy($catId, 'DESC')->findAll();
-            if ($res->count() > 0) {
+            $query = "SELECT id, photoid, userid, categoryId,  sum(rate) as totalCat, (SELECT sum(rate) from rates r2 where r1.photoid = r2.photoid group by photoid) as totalStars from rates r1 WHERE categoryId=\"$categoryId\" group by photoid order by 	totalCat DESC";
+            $res = $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+
+            if (count($res) > 0) {
                 $results[$category->categoryid] = $res;
             }
         }
@@ -269,70 +267,20 @@ class App {
         return $results;
     }
 
-    function generateResults() {
-
-        Lazer::table('results')->delete();
-
-        $status = "Success";
-        $_SESSION['message'] = 'Results generated';
-        $_SESSION['messageStatus'] = 'success';
-
-        try {
-            $photos = Lazer::table('photos')->where('status', '=', 'approved')->findAll();
-
-            // $results = Lazer::table('results');
-
-            foreach ($photos as $photo) {
-                $this->generateResultsByPhoto($photo->photoid);
-            }
-        } catch (Exception $e) {
-            $status = "Error : " . $e->getMessage();
-            $_SESSION['messageStatus'] = 'error';
-            $_SESSION['message'] = 'Results not generated';
-        }
-
-        return $status;
-
-    }
-
-    function generateResultsByPhoto($photoId) {
-
-        $categories = $this->getCategories();
-        $results = Lazer::table('results');
-
-        $globalResult = 0;
-        $results->photoid = $photoId;
-        foreach ($categories as $category) {
-
-            $photoRates = $this->getRates($photoId, $category->categoryid);
-
-            $result = 0;
-            foreach ($photoRates as $photoRate) {
-                $result += $photoRate['rate'];
-            }
-
-            if ($category->categoryid === "40") {
-                $results->fourty = floatval($result);
-            } elseif ($category->categoryid === "travels") {
-                $results->travels = floatval($result);
-            } elseif ($category->categoryid === "funniest") {
-                $results->funniest = floatval($result);
-            } elseif ($category->categoryid === "most_creative") {
-                $results->most_creative = floatval($result);
-            }
-
-            $globalResult += $result;
-        }
-        $results->global_results = floatval($globalResult);
-        $results->save();
-
-    }
-
     function getResultsByPhoto($photoId) {
         // $time_start = microtime(true);
-        $res = Lazer::table('results')->where("photoid", "=", $photoId)->find();
+
+        $categories = $this->getCategories();
+        $cats = "";
+        foreach ($categories as $category) {
+          $cats .= " (SELECT sum(rate) from rates r2 where r1.photoid = r2.photoid AND categoryid=\"$category->categoryid\" group by photoid) as total"$category->categoryid","
+        }
+
+        $query = "SELECT id, photoid, userid, categoryId,"$cats" sum(rate) as totalCat, (SELECT sum(rate) from rates r2 where r1.photoid = r2.photoid group by photoid) as totalStars from rates r1 WHERE photoid=\"$photoId\"";
+
+        $results = $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
         // die('results : '.  (microtime(true) - $time_start)*100 .' secondes<br/>'); // 17 secondes
-        return $res;
+        return $results;
     }
 
     function getNbRates (){
@@ -343,7 +291,7 @@ class App {
         return $results[0]['total'];
     }
 
-    function getRates($photoId, $categoryId, $userId) {
+    function getRates($photoId, $categoryId=NULL, $userId=NULL) {
 
         $query = "SELECT * FROM rates WHERE photoid=\"$photoId\"";
 
@@ -549,8 +497,6 @@ class App {
                      */
                     if ($type === 'moderation') {
                         $data = $this->handleModeration($request);
-                    } else if ($type === 'computeResultsForPhoto' && isset($request['photoid'])) {
-                        $data = $this->generateResultsByPhoto($request['photoid']);
                     } else {
                         $_SESSION['message'] = 'This method is not handled for moderators.';
                     }
@@ -561,8 +507,6 @@ class App {
                      */
                     if ($type === 'createUser') {
                         $data = $this->handleCreateUser($request);
-                    } else if ($type === 'computeResultsForPhoto' && isset($request['photoid'])) {
-                        $data = $this->generateResultsByPhoto($request['photoid']);
                     } else if ($type === 'getAllPhotos') {
                         $photos = $this->getAllPhotos();
                         if (count($photos) > 0) {
@@ -873,24 +817,6 @@ class App {
                 'filepath' => 'string',
                 'status' => 'string'
             ));
-        }
-
-        //install results
-        try {
-            \Lazer\Classes\Helpers\Validate::table('results')->exists();
-        } catch (\Lazer\Classes\LazerException $e) {
-            //Database doesn't exist
-
-            Lazer::create('results', array(
-                'photoid' => 'string',
-                'global_results' => 'double',
-                'travels' => 'double',
-                'most_creative' => 'double',
-                'funniest' => 'double',
-                'fourty' => 'double'
-            ));
-
-            Relation::table('results')->belongsTo('photos')->localKey('photoid')->foreignKey('photoid')->setRelation();
         }
     }
 
