@@ -16,6 +16,8 @@ class App {
 
     function __construct() {
 
+        $this->installDB();
+
         $this->version = '6.1';
         $this->photoPath = './photos/';
         $this->isUser = false;
@@ -25,17 +27,21 @@ class App {
         $this->isLogged = false;
         $this->currentUser = null;
 
-        $this->lowerVote = "0";
-        $this->higherVote = "5";
+        $this->lowerVote = $this->getSettingsValue('lowerVote','0');
+        $this->higherVote = $this->getSettingsValue('higherVote','5');
+
+        $startVotingDate = $this->getSettingsValue('startVoteDate','2015-09-26');
+        $endVotingDate = $this->getSettingsValue('endVoteDate','2015-10-14');
+        $startResultsDate = $this->getSettingsValue('resultsDate','2015-10-14');
 
         $now = new DateTime('now');
-        $this->startVoteDate = new DateTime('2015-09-26', new DateTimeZone('Pacific/Niue'));
+        $this->startVoteDate = new DateTime($startVotingDate, new DateTimeZone('Pacific/Niue'));
         $this->startVoteDate->setTimezone($now->getTimezone());
 
-        $this->endVoteDate = new DateTime('2015-10-08', new DateTimeZone('Pacific/Niue'));
+        $this->endVoteDate = new DateTime($endVotingDate, new DateTimeZone('Pacific/Niue'));
         $this->endVoteDate->setTimezone($now->getTimezone());
 
-        $this->resultsDate = new DateTime('2015-10-09');
+        $this->resultsDate = new DateTime($startResultsDate);
 
         // vote are opened after September 25 & until October 07
         $this->voteOpened = $this->startVoteDate < $now && $now <= $this->endVoteDate;
@@ -84,9 +90,20 @@ class App {
         }
         */
 
-        $this->installDB();
-
         $this->handleRequest();
+    }
+
+    function getSettingsValue($settingsId,$defaultValue){
+        $date = Lazer::table('settings')->where('settingsid', '=', $settingsId)->find();
+        if(count($date) === 1){
+          return $date->settingsvalue;
+        }else{
+          return $defaultValue;
+        }
+    }
+
+    function getAllSettings(){
+        return Lazer::table('settings')->findAll();
     }
 
     function getGUID() {
@@ -460,6 +477,30 @@ class App {
         }
     }
 
+    function handleSetSettings($request){
+
+      $settingsSaved = [];
+
+      foreach($request as $key => $paramValue){
+        if($key != 'type' && $key != 'save' && $key != 'ajax'){
+          $existingSettings = Lazer::table('settings')->where('settingsid', '=', $key)->andWhere('settingsvalue', '!=', $paramValue)->find();
+          if (count($existingSettings) == 1) {
+              $existingSettings->settingsvalue = $paramValue;
+              $existingSettings->save();
+              $settingsSaved[] = $key;
+          }
+        }
+      }
+
+      if(count($settingsSaved) > 0){
+        $_SESSION['message'] = 'Settings '.join($settingsSaved,', ').(count($settingsSaved) > 1 ? ' have': ' has').' been saved.';
+        $_SESSION['messageStatus'] = 'success';
+      }else{
+        $_SESSION['message'] = 'No settings saved.';
+        $_SESSION['messageStatus'] = 'error';
+      }
+    }
+
     function handleRequest() {
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
@@ -518,6 +559,8 @@ class App {
                      */
                     if ($type === 'createUser') {
                         $data = $this->handleCreateUser($request);
+                    }else if ($type === 'setSettings') {
+                        $data = $this->handleSetSettings($request);
                     } else if ($type === 'getAllPhotos') {
                         $photos = $this->getAllPhotos();
                         if (count($photos) > 0) {
@@ -828,6 +871,46 @@ class App {
                 'filepath' => 'string',
                 'status' => 'string'
             ));
+        }
+
+        //install settings
+        try {
+            \Lazer\Classes\Helpers\Validate::table('settings')->exists();
+        } catch (\Lazer\Classes\LazerException $e) {
+            //Database doesn't exist
+
+            Lazer::create('settings', array(
+                'settingsid' => 'string',
+                'settingslabel' => 'string',
+                'settingsvalue' => 'string'
+            ));
+
+            $category = Lazer::table('settings');
+
+            $category->settingsid = "lowerVote";
+            $category->settingslabel = 'Lower voting value';
+            $category->settingsvalue = '0';
+            $category->save();
+
+            $category->settingsid = "higherVote";
+            $category->settingslabel = 'Higher voting value';
+            $category->settingsvalue = '5';
+            $category->save();
+
+            $category->settingsid = "startVoteDate";
+            $category->settingslabel = 'Start voting date';
+            $category->settingsvalue = '2015-09-26';
+            $category->save();
+
+            $category->settingsid = "endVoteDate";
+            $category->settingslabel = 'End voting date';
+            $category->settingsvalue = '2015-10-14';
+            $category->save();
+
+            $category->settingsid = "resultsDate";
+            $category->settingslabel = 'Show results date';
+            $category->settingsvalue = '2015-10-15';
+            $category->save();
         }
     }
 

@@ -45,6 +45,8 @@ function handleEvents() {
             clickedOnLogoutLink();
         } else if (el.getAttribute('data-target') === '#addUserModal') {
             clickedOnAddUserModal(el);
+        } else if (el.getAttribute('data-target') === '#settingsModal') {
+            clickedSettingsModal(el);
         } else if (el.getAttribute('data-target') === '#uploadModal') {
             clickedOnUploadModal(el);
         } else if (el.getAttribute('data-target') === '#resultsModal') {
@@ -376,8 +378,34 @@ function clickedOnAddUserModal(el) {
                 success: function (data) {
                     $('form.add-user-form .message').removeClass('alert-danger', 'alert-success');
                     data = JSON.parse(data);
-                    console.log(data);
                     $('form.add-user-form .message').text(data.message).addClass('alert').addClass(data.messageStatus === 'success' ? 'alert-success' : 'alert-danger');
+
+                }
+            });
+        });
+    }
+}
+function clickedSettingsModal(el) {
+
+    if (el.classList.contains('handled')) {
+        return;
+    } else {
+        el.classList.add('handled');
+
+        console.log('handle add-user-form submit');
+
+        $('form.settings-form').submit(function (event) {
+            event.preventDefault();
+            var data = $(this).serialize();
+            data += '&ajax=true';
+            $.ajax({
+                type: 'get',
+                data: data,
+                success: function (data) {
+                    $('form.settings-form .message').removeClass('alert-danger', 'alert-success');
+                    data = JSON.parse(data);
+
+                    $('form.settings-form .message').text(data.message).addClass('alert').addClass(data.messageStatus === 'success' ? 'alert-success' : 'alert-danger');
                 }
             });
         });

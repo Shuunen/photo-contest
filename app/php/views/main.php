@@ -1,6 +1,6 @@
 <div class="main fade">
     <?php
-    
+
     if ($app->isLogged) {
         require 'nav.php';
     }
@@ -10,7 +10,7 @@
     if (!$app->isLogged) {
 
         require 'login.php';
-        
+
     } else {
 
         require 'gallery.php';
@@ -21,9 +21,11 @@
 
         if ($app->isAdmin) {
             require 'addUserModal.php';
-            if ($app->showResults) {
-                require 'resultsModal.php';
-            }
+            require 'settingsModal.php';
+        }
+
+        if ((($app->isAdmin || $app->isModerator) && $app->voteEnded ) || $app->showResults){
+            require 'resultsModal.php';
         }
     }
     ?>
