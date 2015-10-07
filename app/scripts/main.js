@@ -101,13 +101,7 @@ function refresh() {
 
 function nextPrevFullscreenPhoto(next) {
 
-    var fullscreenContent = $('.photo-container');
-
-    // check if fullscreen
-    if (!fullscreenContent.size()) {
-        console.warn('cannot nextPrevFullscreenPhoto if no fullscreen photo');
-        return;
-    }
+    console.info('nextPrevFullscreenPhoto');
 
     var items = $('.grid').isotope('getFilteredItemElements');
     var targetItem;
@@ -134,7 +128,7 @@ function nextPrevFullscreenPhoto(next) {
 
     // trigger fake click
     if (targetItem) {
-        fullscreenContent.addClass('fade');
+        $('.photo-container').addClass('fade');
         setTimeout(function () {
             $(targetItem).find('img').click();
         }, 100);
@@ -203,14 +197,14 @@ function clickedOnGridFilter(el) {
     window.location.hash = $(el).attr('href');
 
     var filter = $(el).data('filter');
-    if (filter !== "") {
+    if (filter) {
         $('.grid').isotope({
             filter: filter
         });
     }
 
     var sort = $(el).data('sort');
-    if (sort !== "") {
+    if (sort) {
         $('.grid').isotope({
             sortBy: sort,
             sortAscending: false
@@ -293,13 +287,10 @@ function clickedOnResultsModal(el) {
 
 }
 
-function startFullscreenLoading(bDisableAutoNext) {
+function startFullscreenLoading() {
     var fullscreenPhoto = $('.fullscreen-photo');
     // fullscreenPhoto.children('.item').addClass('fade');
     fullscreenPhoto.html('<div class="item"><i class="fa fa-spinner fa-spin fa-5x"></i></div>');
-    if (bDisableAutoNext) {
-        fullscreenPhoto.removeClass('auto-next');
-    }
 }
 
 function handlePhotoUpload() {
@@ -473,23 +464,6 @@ function initMasonry() {
             console.info('layoutComplete removing fade');
             document.body.classList.add('loaded');
             $('.main').addClass('in');
-        })
-        .on('arrangeComplete', function () {
-
-            var fullscreen = document.querySelector('.fullscreen-photo');
-
-            if ($('.grid-item:visible').size() === 0) {
-                console.log('no more photo');
-                if (fullscreen.childElementCount) {
-                    console.log('exiting fullscreen');
-                    fullscreen.innerHTML = '';
-                }
-                console.log('going back to "all" filter');
-                $('.grid-filter').first().click();
-            } else if (fullscreen.childElementCount && fullscreen.classList.contains('auto-next')) {
-                console.log('automagically goes to next photo');
-                nextPrevFullscreenPhoto(true);
-            }
         });
 
     if (window.location.hash !== "") {
@@ -541,7 +515,7 @@ function handleLoginForm() {
 function initRating() {
 
     $('input.rating').rating().on('change', function (event) {
-        $('.fullscreen-photo').removeClass('auto-next');
+
         var category = $(event.currentTarget).parents(".rating-category");
         $.ajax({
             type: 'get',
@@ -641,10 +615,12 @@ function afterModeration(jsonData) {
         $('.grid').isotope('remove', item).isotope('layout');
         item.remove();
     } else {
-        item.attr('data-photostatus', photostatus);
+        refreshThumb(photoid);
     }
 
     var activeFilter = $('.grid-filter.active').attr('href');
+
+    nextPrevFullscreenPhoto(true);
 
     $.ajax({
         type: 'get',
@@ -657,7 +633,7 @@ function afterModeration(jsonData) {
 
             if (ret.message && ret.messageStatus) {
                 $.smkAlert({
-                    text: ret.message, type: ret.messageStatus, time: 4
+                    text: ret.message, type: ret.messageStatus, time: 2
                 });
             }
         }

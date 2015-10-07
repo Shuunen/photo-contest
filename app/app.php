@@ -882,7 +882,8 @@ class App {
             Lazer::create('settings', array(
                 'settingsid' => 'string',
                 'settingslabel' => 'string',
-                'settingsvalue' => 'string'
+                'settingsvalue' => 'string',
+                'settingstype' => 'string',
             ));
 
             $category = Lazer::table('settings');
@@ -890,26 +891,31 @@ class App {
             $category->settingsid = "lowerVote";
             $category->settingslabel = 'Lower voting value';
             $category->settingsvalue = '0';
+            $category->settingstype = 'number';
             $category->save();
 
             $category->settingsid = "higherVote";
             $category->settingslabel = 'Higher voting value';
             $category->settingsvalue = '5';
+            $category->settingstype = 'number';
             $category->save();
 
             $category->settingsid = "startVoteDate";
             $category->settingslabel = 'Start voting date';
             $category->settingsvalue = '2015-09-26';
+            $category->settingstype = 'date';
             $category->save();
 
             $category->settingsid = "endVoteDate";
             $category->settingslabel = 'End voting date';
             $category->settingsvalue = '2015-10-14';
+            $category->settingstype = 'date';
             $category->save();
 
             $category->settingsid = "resultsDate";
             $category->settingslabel = 'Show results date';
             $category->settingsvalue = '2015-10-15';
+            $category->settingstype = 'date';
             $category->save();
         }
     }

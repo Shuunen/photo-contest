@@ -9,7 +9,7 @@
             <?php require 'gallery-thumb.php' ?>
         <?php endforeach; ?>
     </div>
-    <div class="fullscreen-photo auto-next"></div>
+    <div class="fullscreen-photo"></div>
 <?php else : ?>
     <div class="container-fluid">
         <div class="row">

@@ -34,7 +34,7 @@
 
     <?php if ($app->currentUser->userid !== $photo->userid || (!$app->voteOpened && $app->voteEnded && $this->showResults)) : ?>
         <?php $categories = $app->getCategories() ?>
-        <?php if ($app->voteOpened) : ?>
+        <?php if ($app->voteOpened && $photo->status === "approved") : ?>
             <div class="ratings">
                 <?php foreach ($categories as $category) : ?>
                     <div class="rating col-md-6">
@@ -46,6 +46,8 @@
                     </div>
                 <?php endforeach; ?>
             </div>
+        <?php elseif ($app->voteOpened && $photo->status !== "approved"): ?>
+          <div class="countdown-container">Votes on non-approved photo is not allowed.</div>
         <?php elseif ($app->voteEnded && !$this->showResults): ?>
             <div class="countdown-container">Votes are closed, the results will come soon.</div>
         <?php elseif ($this->showResults): ?>
@@ -81,10 +83,12 @@
                 <div class="text-center">Results cannot be loaded.</div>
             <?php endif; ?>
 
-        <?php else : ?>
+        <?php elseif (!$app->voteOpened &&  !$app->voteEnded) : ?>
             <div class="countdown-container">Votes will be opened in&nbsp;
                 <div class="countdown voteOpened"></div>
             </div>
+        <?php else:?>
+          <div class="countdown-container">Case not supported, contact the administrator if you find him!</div>
         <?php endif; ?>
 
     <?php elseif (!$app->voteOpened && !$app->voteEnded) : ?>

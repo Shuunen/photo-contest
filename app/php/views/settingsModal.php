@@ -21,7 +21,7 @@
                       <div class="form-group">
                         <label class="col-md-4 control-label" for="<?php print $setting->settingsid?>"><?php print $setting->settingslabel;?> : </label>
                         <div class="col-md-5">
-                          <input id="<?php print $setting->settingsid?>" name="<?php print $setting->settingsid?>" type="text" value="<?php print $setting->settingsvalue;?>" class="form-control input-md" required="">
+                          <input id="<?php print $setting->settingsid?>" name="<?php print $setting->settingsid?>" type="<?php print $setting->settingstype;?>" value="<?php print $setting->settingsvalue;?>" class="form-control input-md" required="">
                         </div>
                       </div>
 
