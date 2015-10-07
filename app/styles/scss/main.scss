@@ -144,6 +144,7 @@ body {
     flex-wrap: wrap;
     justify-content: center;
     height: 50px;
+    align-items: center;
 }
 
 .moderation-controls {
@@ -292,26 +293,26 @@ body {
             margin-bottom: 15px;
         }
         h3{
-          border-bottom: 1px solid grey;
-          padding-bottom: 10px;
+            border-bottom: 1px solid grey;
+            padding-bottom: 10px;
         }
         .media-left{
-          img {
-              margin: auto;
-              max-width: 50px
-          }
+            img {
+                margin: auto;
+                max-width: 50px
+            }
         }
         .photo-infos {
-          .author a{
-            color: lighten($brand-primary, 10%);
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            display: block;
-            overflow: hidden;
-          }
-          .small{
-            font-size:0.7em;
-          }
+            .author a{
+                color: lighten($brand-primary, 10%);
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                display: block;
+                overflow: hidden;
+            }
+            .small{
+                font-size:0.7em;
+            }
         }
     }
 }
@@ -349,5 +350,19 @@ body {
     }
     &.rate-complete {
         background-image: url('../images/rate-complete.png');
+    }
+}
+
+.input-daterange {
+    display: flex;
+    align-items: center;
+    & > input,
+    & > input:first-child,
+        & > input:last-child {
+        border-radius: inherit;
+        text-align: inherit;
+    }
+    & > .input-group-addon {
+        margin: 0 10px;
     }
 }

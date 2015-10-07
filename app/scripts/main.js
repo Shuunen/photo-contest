@@ -46,7 +46,7 @@ function handleEvents() {
         } else if (el.getAttribute('data-target') === '#addUserModal') {
             clickedOnAddUserModal(el);
         } else if (el.getAttribute('data-target') === '#settingsModal') {
-            clickedSettingsModal(el);
+            clickedOnSettingsModal(el);
         } else if (el.getAttribute('data-target') === '#uploadModal') {
             clickedOnUploadModal(el);
         } else if (el.getAttribute('data-target') === '#resultsModal') {
@@ -376,14 +376,14 @@ function clickedOnAddUserModal(el) {
         });
     }
 }
-function clickedSettingsModal(el) {
+function clickedOnSettingsModal(el) {
 
     if (el.classList.contains('handled')) {
         return;
     } else {
         el.classList.add('handled');
 
-        console.log('handle add-user-form submit');
+        console.log('handle settings-form submit & datepicker');
 
         $('form.settings-form').submit(function (event) {
             event.preventDefault();
@@ -392,13 +392,19 @@ function clickedSettingsModal(el) {
             $.ajax({
                 type: 'get',
                 data: data,
-                success: function (data) {
-                    $('form.settings-form .message').removeClass('alert-danger', 'alert-success');
-                    data = JSON.parse(data);
-
-                    $('form.settings-form .message').text(data.message).addClass('alert').addClass(data.messageStatus === 'success' ? 'alert-success' : 'alert-danger');
+                success: function (ret) {
+                    ret = JSON.parse(ret);
+                    var message = $('form.settings-form .message');
+                    message.removeClass('alert-danger', 'alert-success');
+                    message.text(ret.message).addClass('alert').addClass(ret.messageStatus === 'success' ? 'alert-success' : 'alert-danger');
                 }
             });
+        });
+
+        $('[data-type="date"]').datepicker({
+            format: "yyyy-mm-dd",
+            orientation: "top auto",
+            autoclose: true
         });
     }
 }

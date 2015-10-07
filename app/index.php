@@ -28,6 +28,7 @@ function __autoload($class_name) {
         <link href="../bower_components/fineuploader-dist/dist/fine-uploader-gallery.min.css" rel="stylesheet">
         <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
         <link href="../bower_components/smoke/dist/css/smoke.min.css" rel="stylesheet">
+        <link href="../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.standalone.min.css" rel="stylesheet">
         <link href="./styles/main.css" rel="stylesheet">
         <!-- endbuild -->
     </head>
@@ -50,6 +51,7 @@ function __autoload($class_name) {
         <script type="text/javascript" src="../bower_components/jquery.countdown/dist/jquery.countdown.min.js"></script>
         <script type="text/javascript" src="../bower_components/isotope/dist/isotope.pkgd.min.js"></script>
         <script type="text/javascript" src="../bower_components/smoke/dist/js/smoke.min.js"></script>
+        <script type="text/javascript" src="../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
         <!-- endbuild -->
 
         <!-- build:js scripts/app.js -->
