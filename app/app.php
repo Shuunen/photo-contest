@@ -18,7 +18,7 @@ class App {
 
         $this->installDB();
 
-        $this->version = '6.1';
+        $this->version = '7.0';
         $this->photoPath = './photos/';
         $this->isUser = false;
         $this->isVisitor = false;

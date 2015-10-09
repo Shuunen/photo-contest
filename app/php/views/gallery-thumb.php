@@ -17,7 +17,11 @@
         $sortAttrs = 'data-result-global="' . $photoResultArray["totalStars"] . '"';
         $categories = $app->getCategories();
         foreach ($categories as $category) {
+          if($photo["status"] === 'approved'){
             $sortAttrs .= ' data-result-' . $category->categoryid . '="' . $photoResultArray["total".$category->categoryid] . '"';
+          }else{
+            $sortAttrs .= ' data-result-' . $category->categoryid . '="-1"';
+          }
         }
     }
     ?>
@@ -25,7 +29,7 @@
     <?php if ($app->isAdmin || $app->isModerator || $app->isUser && $photo["status"] === 'approved' || $app->isUser && $photo["userid"] === $app->currentUser->userid) : ?>
         <div class="grid-item <?php print $class; ?>" data-photostatus="<?php echo $photo["status"] ?>" data-griditem-photoid="<?php echo $photo["photoid"] ?>" <?php print $sortAttrs ?>>
 
-            <?php if ($app->voteOpened) : ?>
+            <?php if ($app->voteOpened && $photo["status"] === 'approved') : ?>
                 <?php $rateCount = $app->getRatesCountForPhoto($photo["photoid"]) ?>
                 <div class="rate-status <?php echo ($rateCount > 0) ? 'rate-complete' : '' ?>"></div>
             <?php endif; ?>
