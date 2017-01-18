@@ -14,6 +14,9 @@
     } else {
 
         require 'gallery.php';
+        if($app->voteOpened && !$app->voteEnded){
+          require 'podium.php';
+        }
 
         if ($app->submitOpened) {
             require 'uploadModal.php';

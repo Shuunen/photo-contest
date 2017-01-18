@@ -23,15 +23,17 @@
                 <?php $photos_user = $app->getUserPhotos(); ?>
                 <?php $photos_moderate = $app->getPhotosToModerate(); ?>
 
-                <li>
-                    <a href="#" class="grid-filter btn btn-info" event-emitter data-filter="*">
-                        All photos
-                        <?php $count = ($app->isAdmin || $app->isModerator) ? count($photos) : count($photos_user) + count($photos_vote) ?>
-                        <?php if ($count) : ?>
-                            <span class="badge"><?php echo $count ?></span>
-                        <?php endif; ?>
-                    </a>
-                </li>
+                <?php if($app->startVoteDate <= new DateTime('now') || $app->isModerator) : ?>
+                  <li>
+                      <a href="#" class="grid-filter btn btn-info" event-emitter data-filter="*">
+                          All photos
+                          <?php $count = ($app->isAdmin || $app->isModerator) ? count($photos) : count($photos_user) + count($photos_vote) ?>
+                          <?php if ($count) : ?>
+                              <span class="badge"><?php echo $count ?></span>
+                          <?php endif; ?>
+                      </a>
+                  </li>
+                <?php endif; ?>
 
                 <li>
                     <a href="#my-photos" class="grid-filter btn btn-info" event-emitter data-filter=".my-photos">
@@ -65,14 +67,16 @@
                     </li>
                 <?php endif; ?>
 
-                <li>
-                    <a href="#vote" class="grid-filter btn btn-info" event-emitter data-filter=".vote">
-                        Opened to vote
-                        <?php if (count($photos_vote)) : ?>
-                            <span class="badge"><?php echo count($photos_vote) ?></span>
-                        <?php endif; ?>
-                    </a>
-                </li>
+                <?php if($app->startVoteDate <= new DateTime('now')) : ?>
+                  <li>
+                      <a href="#vote" class="grid-filter btn btn-info" event-emitter data-filter=".vote">
+                          Opened to vote
+                          <?php if (count($photos_vote)) : ?>
+                              <span class="badge"><?php echo count($photos_vote) ?></span>
+                          <?php endif; ?>
+                      </a>
+                  </li>
+                <?php endif; ?>
 
             <?php else : ?>
 

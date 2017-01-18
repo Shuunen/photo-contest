@@ -41,7 +41,12 @@
         </div>
         <div class="radio">
           <label for="role-2">
-            <input type="radio" name="role" id="role-2" value="admin"> Admin
+            <input type="radio" name="role" id="role-2" value="moderator"> Moderator
+          </label>
+        </div>
+        <div class="radio">
+          <label for="role-3">
+            <input type="radio" name="role" id="role-3" value="admin"> Admin
           </label>
         </div>
       </div>

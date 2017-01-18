@@ -17,7 +17,7 @@
         <i class="fa fa-times fa-3x"></i>
     </button>
 
-    <?php if ($app->currentUser->role === 'moderator'): ?>
+    <?php if ($app->isModerator): ?>
         <div class="moderation-controls <?php echo($app->showResults ? 'on-side' : '') ?>">
             <button data-action="approve" type="button" event-emitter class="moderation-control btn btn-success" <?php print $photo->status === "approved" ? "disabled" : ""; ?>>
                 <span class="fa fa-check-circle" aria-hidden="true"></span> Approve<?php print $photo->status === "approved" ? "d" : ""; ?>

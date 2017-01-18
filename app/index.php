@@ -21,11 +21,11 @@ function __autoload($class_name) {
         <meta name="author" content="UXD">
         <link rel="shortcut icon" href="favicon.gif" />
 
-        <title>Photo contest 2015 | <?php print $app->version ?></title>
+        <title>Photo contest 2017 | <?php print $app->version ?></title>
 
         <!-- build:css styles/styles.css -->
         <link href="../bower_components/bootstrap-rating/bootstrap-rating.css" rel="stylesheet">
-        <link href="../bower_components/fineuploader-dist/dist/fine-uploader-gallery.min.css" rel="stylesheet">
+        <link href="../bower_components/fine-uploader/dist/fine-uploader-gallery.min.css" rel="stylesheet">
         <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
         <link href="../bower_components/smoke/dist/css/smoke.min.css" rel="stylesheet">
         <link href="../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.standalone.min.css" rel="stylesheet">
@@ -45,7 +45,8 @@ function __autoload($class_name) {
 
         <!-- build:js scripts/scripts.js -->
         <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
-        <script type="text/javascript" src="../bower_components/fineuploader-dist/dist/fine-uploader.min.js"></script>
+        <script type="text/javascript" src="../bower_components/fine-uploader/dist/all.fine-uploader.core.min.js"></script>
+        <script type="text/javascript" src="../bower_components/fine-uploader/dist/jquery.fine-uploader.js"></script>
         <script type="text/javascript" src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="../bower_components/bootstrap-rating/bootstrap-rating.min.js"></script>
         <script type="text/javascript" src="../bower_components/jquery.countdown/dist/jquery.countdown.min.js"></script>
