@@ -36,6 +36,8 @@ class App {
         $endVotingDate = $this->getSettingsValue('endVoteDate','2017-02-10');
         $startResultsDate = $this->getSettingsValue('resultsDate','2017-02-10');
 
+        $this->votingMode = $this->getSettingsValue('votingMode','podium');
+
         $now = new DateTime('now');
         $this->startVoteDate = new DateTime($startVotingDate, new DateTimeZone('Pacific/Niue'));
         $this->startVoteDate->setTimezone($now->getTimezone());
@@ -96,9 +98,17 @@ class App {
     }
 
     function getSettingsValue($settingsId,$defaultValue){
-        $date = Lazer::table('settings')->where('settingsid', '=', $settingsId)->find();
-        if(count($date) === 1){
-          return $date->settingsvalue;
+        $setting = Lazer::table('settings')->where('settingsid', '=', $settingsId)->find();
+        if(count($setting) === 1){
+          if($setting->settingstype === "radio"){
+            $values = json_decode($setting->settingsvalue);
+            foreach($values as $value){
+              if($value->selected){
+                return $value->value;
+              }
+            }
+          }
+          return $setting->settingsvalue;
         }else{
           return $defaultValue;
         }
@@ -519,7 +529,23 @@ class App {
         if($key != 'type' && $key != 'save' && $key != 'ajax'){
           $existingSettings = Lazer::table('settings')->where('settingsid', '=', $key)->andWhere('settingsvalue', '!=', $paramValue)->find();
           if (count($existingSettings) == 1) {
-              $existingSettings->settingsvalue = $paramValue;
+
+              if($existingSettings->settingstype === "radio"){
+                $previousValues = json_decode($existingSettings->settingsvalue);
+
+                foreach($previousValues as $previousValue){
+                  if($previousValue->value === $paramValue){
+                    $previousValue->selected = true;
+                  }else{
+                    $previousValue->selected = false;
+                  }
+                }
+                $existingSettings->settingsvalue = json_encode($previousValues);
+
+              }else{
+                $existingSettings->settingsvalue = $paramValue;
+              }
+
               $existingSettings->save();
               $settingsSaved[] = $key;
           }

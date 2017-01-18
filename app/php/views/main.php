@@ -14,7 +14,7 @@
     } else {
 
         require 'gallery.php';
-        if($app->voteOpened && !$app->voteEnded){
+        if($app->votingMode === "podium" && $app->voteOpened && !$app->voteEnded){
           require 'podium.php';
         }
 

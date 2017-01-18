@@ -712,7 +712,7 @@ function allowDrop(ev) {
 
 function drag(ev) {
   var elem = ev.target;
-  console.log(elem);
+  //console.log(elem);
   ev.dataTransfer.setData("photoId", elem.getAttribute('data-photoid'));
   ev.dataTransfer.setData("photoSrc", elem.getAttribute('src'));
 }
@@ -720,19 +720,18 @@ function drag(ev) {
 function drop(ev) {
     ev.preventDefault();
     //console.log(ev);
-    console.log(ev);
 
     var photoId = ev.dataTransfer.getData("photoId");
     var photoSrc = ev.dataTransfer.getData("photoSrc");
     if(photoId && photoSrc) {
       console.log("drop -> photoId : ",photoId);
       var podium = ev.target.parentElement;
-      console.log(podium);
+      //console.log(podium);
 
       var podiumSteps = podium.children;
       var alreadyOnTheSteps = false;
       for(var i = 0; i < podiumSteps.length;i++){
-        console.log(podiumSteps[i]);
+        //console.log(podiumSteps[i]);
         if(podiumSteps[i].style.backgroundImage.indexOf(photoSrc) !== -1){
           podiumSteps[i].style.backgroundImage = "";
           podiumSteps[i].removeAttribute('data-photoid');

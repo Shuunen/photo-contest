@@ -1,0 +1,101 @@
+
+body.podium-expanded{
+  margin-bottom: 150px;
+}
+
+.podium-banner {
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background-color: rgba(255,255,255,0.1);
+  height:120px;
+  transition: height .5s ease-in-out;
+
+  &.expanded{
+    height:120px;
+  }
+
+  &.collapsed{
+    height:0px;
+  }
+
+  .expander.fa{
+    width: 30px;
+    height: 30px;
+    padding: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    position: absolute;
+    top: -30px;
+    left: 15px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 2.5rem;
+    background-color: $brand-info;
+
+    &:hover{
+      background-color: $brand-info-darker;
+    }
+
+  }
+
+  h5{
+    text-align: center;
+  }
+
+  .steps{
+    height:100%;
+    display:flex;
+    align-items: flex-end;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 10px 0;
+
+    .step{
+      text-align: center;
+      background-size: auto 100%;
+      margin: 0 5px;
+      position: relative;
+      &:before{
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+    }
+
+    .step-1{
+      background-color: rgba(255,255,255,0.1);
+      width:60px;
+      height:60px;
+      //margin: 10px 20%;
+      &:before{
+        content: "1";
+        font-size: 2rem;
+      }
+
+    }
+    .step-2{
+      background-color: rgba(255,255,255,0.1);
+      width:45px;
+      height:45px;
+      //margin: 10px 15%;
+      //margin-top:0;
+      &:before{
+        content: "2";
+        font-size: 1.5rem;
+      }
+    }
+    .step-3{
+      background-color: rgba(255,255,255,0.1);
+      width:30px;
+      height:30px;
+      //margin: 10px 10%;
+      &:before{
+        content: "3";
+        font-size: 1rem;
+      }
+      //margin-top:0;
+    }
+  }
+}

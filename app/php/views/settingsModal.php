@@ -11,27 +11,41 @@
                         <legend>Application settings</legend>
 
                         <div class="message"></div>
-                        
+
                         <?php $dates = array() ?>
-                        
+
                         <?php foreach ($settings as $setting): ?>
 
                             <?php
-                            if ($setting->settingsid === 'startVoteDate' || $setting->settingsid === 'endVoteDate') {                                
+                            if ($setting->settingsid === 'startVoteDate' || $setting->settingsid === 'endVoteDate') {
                                 $dates[$setting->settingsid] = $setting->settingsvalue;
                                 continue;
                             }
                             ?>
 
+                            <?php if($setting->settingstype !== "radio"): ?>
                             <div class="form-group">
                                 <label class="col-md-4 control-label" for="<?php print $setting->settingsid ?>"><?php print $setting->settingslabel; ?> : </label>
-                                <div class="col-md-5">              
-                                    <input id="<?php print $setting->settingsid ?>" name="<?php print $setting->settingsid ?>" type="text" data-type="<?php print $setting->settingstype; ?>" value="<?php print $setting->settingsvalue; ?>" class="form-control input-md" required="">                     
+                                <div class="col-md-5">
+                                    <input id="<?php print $setting->settingsid ?>" name="<?php print $setting->settingsid ?>" type="text" data-type="<?php print $setting->settingstype; ?>" value="<?php print $setting->settingsvalue; ?>" class="form-control input-md" required="">
                                 </div>
                             </div>
+                            <?php else: ?>
+                              <div class="form-group">
+                                  <label class="col-md-4 control-label" for="<?php print $setting->settingsid ?>"><?php print $setting->settingslabel; ?> : </label>
+                                  <div class="col-md-5">
+                                    <?php $radioValues = json_decode($setting->settingsvalue); ?>
+                                    <?php foreach($radioValues as $radioValue):?>
+                                      <label class="radio-inline">
+                                        <input id="<?php print $setting->settingsid ?>-<?php print $radioValue->label ?>" name="<?php print $setting->settingsid ?>" type="radio" data-type="<?php print $setting->settingstype; ?>" value="<?php print $radioValue->value; ?>" <?php if($radioValue->selected):?>checked<?php endif;?> required=""> <?php print $radioValue->label ?>
+                                      </label>
+                                    <?php endforeach;?>
+                                  </div>
+                              </div>
+                            <?php endif;?>
 
                         <?php endforeach; ?>
-                        
+
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="voting-period">Voting period : </label>
                             <div class="col-md-5">
