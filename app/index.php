@@ -29,7 +29,7 @@ function __autoload($class_name) {
           <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
           <link href="../bower_components/smoke/dist/css/smoke.min.css" rel="stylesheet">
           <link href="../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.standalone.min.css" rel="stylesheet">
-          <link href="./styles/main.css" rel="stylesheet">
+          <link href="styles/main.css" rel="stylesheet">
         <!-- endbuild -->
     </head>
 
@@ -56,8 +56,8 @@ function __autoload($class_name) {
         <!-- endbuild -->
 
         <!-- build:js scripts/app.js -->
-          <script type="text/javascript" src="./scripts/main.js"></script>
-          <script type="text/javascript" src="./scripts/bokeh2.js"></script>
+          <script type="text/javascript" src="scripts/main.js"></script>
+          <script type="text/javascript" src="scripts/bokeh2.js"></script>
         <!-- endbuild -->
 
         <?php require './php/views/analytics.php' ?>
