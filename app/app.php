@@ -499,21 +499,27 @@ class App {
                 $user->role = isset($request['role']) ? $request['role'] : 'user';
                 $user->save();
 
-                $_SESSION['message'] = 'New user ' . $user->name . ' with the email ' . $user->email . ' and the password : ' . $user->pass . ' has been created.';
-                $_SESSION['messageStatus'] = 'success';
-
+                $mailSuccess = FALSE;
                 // TODO: send email to user
-                if(ini_get("SMTP") !== "localhost"){
+                //if(ini_get("SMTP") !== "localhost"){
                   $msg = "Hi ".$user->name.", \n\n";
                   $msg.= "your account has been created for the PhotoShop Contest.\n\n";
                   $msg.= "email: ".$user->email."\n";
                   $msg.= "password: ".$user->pass."\n\n";
                   $msg.= "Thanks\n";
-                  $msg.= "The PhotShop Team";
+                  $msg.= "The PhotoShop Team";
 
                   $headers = "From: webmaster@photos-contest.svobodny.fr" . "\r\n";
-                  mail($user->email,"Account creation",$msg,$headers);
+                  $mailSuccess = mail($user->email,"Account creation",$msg,$headers);
+                //}
+
+
+                $_SESSION['message'] = 'New user ' . $user->name . ' with the email ' . $user->email . ' and the password : ' . $user->pass . ' has been created.';
+                if($mailSuccess){
+                  $_SESSION['message'].="\n" . "An email has been sent successfully to ". $user->email;
                 }
+                $_SESSION['messageStatus'] = 'success';
+
             } else {
                 $_SESSION['message'] = 'User ' . $request['name'] . ' with the email ' . $request['email'] . ' already exists';
                 $_SESSION['messageStatus'] = 'error';

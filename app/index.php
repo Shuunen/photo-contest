@@ -23,13 +23,13 @@ function __autoload($class_name) {
 
         <title>Photo contest 2017 | <?php print $app->version ?></title>
 
-        <!-- build:css styles/styles.css -->
-        <link href="../bower_components/bootstrap-rating/bootstrap-rating.css" rel="stylesheet">
-        <link href="../bower_components/fine-uploader/dist/fine-uploader-gallery.min.css" rel="stylesheet">
-        <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-        <link href="../bower_components/smoke/dist/css/smoke.min.css" rel="stylesheet">
-        <link href="../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.standalone.min.css" rel="stylesheet">
-        <link href="./styles/main.css" rel="stylesheet">
+        <!-- build:css styles/app.css -->
+          <link href="../bower_components/bootstrap-rating/bootstrap-rating.css" rel="stylesheet">
+          <link href="../bower_components/fine-uploader/dist/fine-uploader-gallery.min.css" rel="stylesheet">
+          <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+          <link href="../bower_components/smoke/dist/css/smoke.min.css" rel="stylesheet">
+          <link href="../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.standalone.min.css" rel="stylesheet">
+          <link href="./styles/main.css" rel="stylesheet">
         <!-- endbuild -->
     </head>
 
@@ -37,26 +37,27 @@ function __autoload($class_name) {
 
         <?php require './php/views/main.php' ?>
 
-        <?php require './php/views/bokeh.php' ?>
+        <?php require './php/views/bokeh2.php' ?>
 
         <script>
           var voteOpenDate = "<?php print $app->startVoteDate->format('Y-m-d H:i:s') ?>";
         </script>
 
         <!-- build:js scripts/scripts.js -->
-        <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
-        <script type="text/javascript" src="../bower_components/fine-uploader/dist/all.fine-uploader.core.min.js"></script>
-        <script type="text/javascript" src="../bower_components/fine-uploader/dist/jquery.fine-uploader.js"></script>
-        <script type="text/javascript" src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="../bower_components/bootstrap-rating/bootstrap-rating.min.js"></script>
-        <script type="text/javascript" src="../bower_components/jquery.countdown/dist/jquery.countdown.min.js"></script>
-        <script type="text/javascript" src="../bower_components/isotope/dist/isotope.pkgd.min.js"></script>
-        <script type="text/javascript" src="../bower_components/smoke/dist/js/smoke.min.js"></script>
-        <script type="text/javascript" src="../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+          <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
+          <script type="text/javascript" src="../bower_components/fine-uploader/dist/all.fine-uploader.core.min.js"></script>
+          <script type="text/javascript" src="../bower_components/fine-uploader/dist/jquery.fine-uploader.js"></script>
+          <script type="text/javascript" src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+          <script type="text/javascript" src="../bower_components/bootstrap-rating/bootstrap-rating.min.js"></script>
+          <script type="text/javascript" src="../bower_components/jquery.countdown/dist/jquery.countdown.min.js"></script>
+          <script type="text/javascript" src="../bower_components/isotope/dist/isotope.pkgd.min.js"></script>
+          <script type="text/javascript" src="../bower_components/smoke/dist/js/smoke.min.js"></script>
+          <script type="text/javascript" src="../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
         <!-- endbuild -->
 
         <!-- build:js scripts/app.js -->
-        <script type="text/javascript" src="./scripts/main.js"></script>
+          <script type="text/javascript" src="./scripts/main.js"></script>
+          <script type="text/javascript" src="./scripts/bokeh2.js"></script>
         <!-- endbuild -->
 
         <?php require './php/views/analytics.php' ?>
