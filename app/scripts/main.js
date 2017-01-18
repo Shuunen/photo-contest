@@ -55,6 +55,8 @@ function handleEvents() {
             clickedOnSlideControl(el);
         } else if (el.classList.contains('expander')){
             togglePodiumBanner(el);
+        }else if (el.classList.contains('forgot-password-link')){
+            clickedOnForgotPasswordLink(el);
         }else{
           console.log(el);
         }
@@ -245,6 +247,11 @@ function clickedOnLogoutLink() {
             refresh();
         }
     });
+}
+
+function clickedOnForgotPasswordLink(){
+  $('form.login').hide();
+  $('form.forgot').show();
 }
 
 function clickedOnUploadModal(el) {
@@ -508,6 +515,31 @@ function initMasonry() {
 function handleLoginForm() {
 
     var form = $('form.login');
+
+    document.querySelector('.main').classList.add('in');
+
+    if (form.size() === 0) {
+        return;
+    }
+
+
+    form.submit(function (event) {
+        event.preventDefault();
+        var data = $(this).serialize();
+        data += '&ajax=true';
+        $.ajax({
+            type: 'get',
+            data: data,
+            success: function () {
+                refresh();
+            }
+        });
+    });
+}
+
+function handleForgotForm() {
+
+    var form = $('form.forgot');
 
     document.querySelector('.main').classList.add('in');
 

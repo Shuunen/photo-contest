@@ -10,6 +10,7 @@
     if (!$app->isLogged) {
 
         require 'login.php';
+        require 'forgotPassword.php';
 
     } else {
 

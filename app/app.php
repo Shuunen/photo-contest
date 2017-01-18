@@ -166,6 +166,57 @@ class App {
         }
     }
 
+    function handleForgotPassword($request) {
+
+        // var_dump($request);
+
+        if (!isset($request["email"])) {
+            $_SESSION['message'] = 'Missing email';
+            $_SESSION['messageStatus'] = 'error';
+            return false;
+        }
+
+        $email = $request["email"];
+
+        $user = Lazer::table('users')->with('rights')->where('email', '=', $email)->find();
+
+        if (count($user) === 1) {
+            $_SESSION['messageStatus'] = 'success';
+        } else if (count($user) > 1) {
+            $_SESSION['message'] = 'User ' . $email . ' has multiple instances';
+            $_SESSION['messageStatus'] = 'error';
+        } else {
+            $_SESSION['message'] = 'User ' . $email . ' does not exists';
+            $_SESSION['messageStatus'] = 'error';
+        }
+
+        $user->pass = $this->randomPassword();
+        $user->save();
+
+        $mailSuccess = FALSE;
+        // TODO: send email to user
+        //if(ini_get("SMTP") !== "localhost"){
+          $msg = "Hi ".$user->name.", \n\n";
+          $msg.= "please find below the new password for your PhotoShop Contest account: ".$user->pass."\n\n";
+          //$msg.= "email: ".$user->email."\n";
+          //$msg.= "password: ".$user->pass."\n\n";
+          $msg.= "Thanks\n";
+          $msg.= "The PhotoShop Team";
+
+          $headers = "From: webmaster@photos-contest.svobodny.fr" . "\r\n";
+          $mailSuccess = mail($user->email,"Reset Password",$msg,$headers);
+        //}
+
+        if($mailSuccess){
+          $_SESSION['message']="An email has been sent successfully to ". $user->email ." with the new password";
+          $_SESSION['messageStatus'] = 'success';
+        }else{
+          $_SESSION['message'] = 'An error occurred during the email send.';
+          $_SESSION['messageStatus'] = 'error';
+        }
+
+    }
+
     function regenThumbnails() {
         $photos = $this->getAllPhotos();
 
@@ -594,7 +645,9 @@ class App {
                  */
                 if ($type === 'login') {
                     $this->handleLogin($request);
-                } else {
+                } else if($type === 'forgotPassword' ){
+                    $this->handleForgotPassword($request);
+                }else {
                     $_SESSION['message'] = 'This method is not handled or for logged in users only.';
                 }
             } else if ($this->isLogged) {
