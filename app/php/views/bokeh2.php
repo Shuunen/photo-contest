@@ -1,4 +1,4 @@
-<?php if($app->onDesktop) : ?>
+<?php if(true) : ?>
 <style>
   canvas {
     bottom: 0;
