@@ -271,7 +271,7 @@ function clickedOnUploadModal(el) {
         .on('update.countdown', function (event) {
             var totalHours = event.offset.totalDays * 24 + event.offset.hours;
             var totalSeconds = totalHours * 3600 + event.offset.seconds;
-            var format = '%-D day%!D or ' + totalSeconds + ' seconds if you\'re a robot.';
+            var format = '%-D day%!D %H:%M:%S or ' + totalSeconds + ' seconds if you\'re a robot.';
             $(this).html(event.strftime(format));
         })
         .on('finish.countdown', function () {

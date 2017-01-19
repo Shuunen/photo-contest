@@ -3,12 +3,17 @@
 <div id="settingsModal" tabindex="-1" role="dialog" class="modal fullscreen fade">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
+          <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Application settings</h4>
+            </div>
             <div class="modal-body">
                 <form class="settings-form form-horizontal">
                     <fieldset>
 
                         <!-- Form Name -->
-                        <legend>Application settings</legend>
+                        <!-- <legend>Application settings</legend> -->
 
                         <div class="message"></div>
 
@@ -60,16 +65,14 @@
                         <!-- Button -->
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="save"></label>
-                            <div class="col-md-4">
-                                <button id="save" name="save" class="btn btn-primary">Save</button>
+                            <div class="col-md-5">
+                                <button id="save" name="save" class="btn btn-primary pull-right">Save</button>
                             </div>
                         </div>
                         <input type="hidden" name="type" value="setSettings">
-
                     </fieldset>
                 </form>
             </div>
-            <button type="button" class="btn btn-default refresh-button" event-emitter data-dismiss="modal">Close</button>
         </div>
     </div>
 </div>

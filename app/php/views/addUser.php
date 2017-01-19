@@ -3,7 +3,7 @@
   <fieldset>
 
     <!-- Form Name -->
-    <legend>Create new user</legend>
+    <!-- <legend>Create new user</legend> -->
 
     <div class="message"></div>
 
@@ -55,8 +55,8 @@
     <!-- Button -->
     <div class="form-group">
       <label class="col-md-4 control-label" for="create"></label>
-      <div class="col-md-4">
-        <button id="create" name="create" class="btn btn-primary">Create User</button>
+      <div class="col-md-5">
+        <button id="create" name="create" class="btn btn-primary pull-right">Create User</button>
       </div>
     </div>
     <input type="hidden" name="type" value="createUser">
