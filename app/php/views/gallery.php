@@ -1,7 +1,7 @@
 <?php
 
 
-  if($app->startVoteDate <= new DateTime('now') || $app->isModerator){
+  if($app->startVoteDate <= new DateTime('now') || $app->isModerator || $app->isAdmin){
     // Phase 1 : Submission only, owned photos only available
     $photos = $app->getAllPhotos()->asArray();
   }
