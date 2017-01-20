@@ -27,7 +27,7 @@
     ?>
 
     <?php if ($app->isAdmin || $app->isModerator || $app->isUser && $photo["status"] === 'approved' || $app->isUser && $photo["userid"] === $app->currentUser->userid) : ?>
-        <div class="grid-item <?php print $class; ?>" data-photostatus="<?php echo $photo["status"] ?>" data-griditem-photoid="<?php echo $photo["photoid"] ?>" <?php print $sortAttrs ?> <?php if($photo["userid"] != $app->currentUser->userid):?>draggable="true" ondragstart="drag(event)"<?php endif;?>>
+        <div class="grid-item <?php print $class; ?>" data-photostatus="<?php echo $photo["status"] ?>" data-griditem-photoid="<?php echo $photo["photoid"] ?>" <?php print $sortAttrs ?> <?php if($photo["userid"] != $app->currentUser->userid && $photo["status"] === 'approved'):?>draggable="true" ondragstart="drag(event)"<?php endif;?>>
 
             <?php if ($app->voteOpened && $photo["status"] === 'approved' && $app->votingMode === "stars") : ?>
                 <?php $rateCount = $app->getRatesCountForPhoto($photo["photoid"]) ?>

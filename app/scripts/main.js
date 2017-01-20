@@ -218,9 +218,13 @@ function clickedOnGridFilter(el) {
     var sort = $(el).data('sort');
     if (sort) {
         $('.grid').isotope({
-            sortBy: sort,
-            sortAscending: false
+          getSortData: {
+            number: '[data-result-'+sort+'] parseFloat'
+          },
+          sortBy: 'number',
+          sortAscending: false
         });
+        $('.grid').isotope('updateSortData').isotope();
     }
 }
 

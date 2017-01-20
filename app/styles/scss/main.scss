@@ -304,6 +304,12 @@ body {
                 max-width: 50px
             }
         }
+        .media-body{
+          img{
+            margin: auto;
+            max-width: 100px;
+          }
+        }
         .photo-infos {
             .author a{
                 color: lighten($brand-primary, 10%);

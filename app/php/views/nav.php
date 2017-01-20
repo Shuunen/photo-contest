@@ -5,7 +5,7 @@
             <a class="navbar-brand refresh-button" event-emitter href="#">Photo contest 2017
                 <small class="text-muted">v<?php echo $app->version ?></small>
             </a>
-            <?php if ($app->voteOpened || $app->showResults): ?>
+            <?php if (false && ($app->voteOpened || $app->showResults)): ?>
                 <span><?php echo $app->getNbRates() ?> rates submitted</span>
             <?php endif; ?>
         </div>
