@@ -38,7 +38,7 @@ gulp.task('html', ['styles'], function () {
 
   return gulp.src('app/index.php')
     .pipe(assets)
-    .pipe($.if('*.js', $.uglify()))
+    .pipe($.if('*.js', $.uglify({ compress: { drop_console: true } })))
     .pipe($.if('*.css', $.csso()))
     .pipe(assets.restore())
     .pipe($.useref())
@@ -64,7 +64,7 @@ gulp.task('js', function() {
     ])
     /*.pipe(concat('app.js'))*/
     .pipe( gulp.dest('dist/scripts/'))
-    .pipe($.uglify())
+    .pipe($.uglify({ compress: { drop_console: true } }))
     .pipe( gulp.dest('dist/scripts/'));
 });
 
