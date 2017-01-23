@@ -1,0 +1,1 @@
+{"last_id":1,"schema":{"id":"integer","userid":"string","name":"string","email":"string","pass":"string","role":"string"},"relations":{"rights":{"type":"belongsTo","keys":{"local":"role","foreign":"role"}}}}

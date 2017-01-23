@@ -1,0 +1,1 @@
+{"last_id":6,"schema":{"id":"integer","role":"string","see_login":"boolean","see_nav":"boolean","see_approved_photos":"boolean","see_results":"boolean","vote":"boolean","see_censored":"boolean","moderate":"boolean","add_users":"boolean","see_pre_results":"boolean","delete_photo":"boolean"},"relations":{}}
