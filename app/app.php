@@ -185,9 +185,11 @@ class App {
         } else if (count($user) > 1) {
             $_SESSION['message'] = 'User ' . $email . ' has multiple instances';
             $_SESSION['messageStatus'] = 'error';
+          return;
         } else {
             $_SESSION['message'] = 'User ' . $email . ' does not exists';
             $_SESSION['messageStatus'] = 'error';
+          return;
         }
 
         $user->pass = $this->randomPassword();
@@ -554,7 +556,7 @@ class App {
                 // TODO: send email to user
                 //if(ini_get("SMTP") !== "localhost"){
                   $msg = "Hi ".$user->name.", \n\n";
-                  $msg.= "your account has been created for the PhotoShop Contest.\n\n";
+                  $msg.= "your account has been created for the PhotoShop Contest (http://ezzo.stream/).\n\n";
                   $msg.= "email: ".$user->email."\n";
                   $msg.= "password: ".$user->pass."\n\n";
                   $msg.= "Thanks\n";
