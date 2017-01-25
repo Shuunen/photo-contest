@@ -791,9 +791,15 @@ function voteForThisPhoto(photoId, categoryId, position ){
             type: 'get',
             data: 'type=rate&photoId=' + photoId + '&categoryId=' + categoryId + '&position=' + position + '&ajax=true',
             success: function (json) {
-                var json = JSON.parse(json);
+                var data = JSON.parse(json);
                 // console.log(json);
-                refreshThumb(json.data.photoid);
+                if(data.data && data.data.photoid){
+                  refreshThumb(data.data.photoid);
+                }else{
+                  if(data.forceReload){
+                    refresh();
+                  }
+                }
             }
         });
 }

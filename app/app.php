@@ -34,16 +34,17 @@ class App {
 
         $startVotingDate = $this->getSettingsValue('startVoteDate','2017-02-02');
         $endVotingDate = $this->getSettingsValue('endVoteDate','2017-02-10');
+        $endVotingHour = $this->getSettingsValue('endVoteHour','16:00');
         $startResultsDate = $this->getSettingsValue('resultsDate','2017-02-10');
 
         $this->votingMode = $this->getSettingsValue('votingMode','podium');
 
         $now = new DateTime('now');
-        $this->startVoteDate = new DateTime($startVotingDate, new DateTimeZone('Pacific/Niue'));
-        $this->startVoteDate->setTimezone($now->getTimezone());
+        $this->startVoteDate = new DateTime($startVotingDate);
+        //$this->startVoteDate->setTimezone($now->getTimezone());
 
-        $this->endVoteDate = new DateTime($endVotingDate, new DateTimeZone('Pacific/Niue'));
-        $this->endVoteDate->setTimezone($now->getTimezone());
+        $this->endVoteDate = new DateTime($endVotingDate." ".$endVotingHour);
+        //$this->endVoteDate->setTimezone($now->getTimezone());
 
         $this->resultsDate = new DateTime($startResultsDate);
 
@@ -323,12 +324,19 @@ class App {
 
     function handleRate($request) {
 
+      if($this->voteOpened && !$this->voteEnded){
+
         $rate = $this->storeRateToDB($request);
 
         $_SESSION['message'] = 'Rate ' . $request['photoId'] . ' for the category ' . $request['categoryId'] . ' with ' . $rate;
         $_SESSION['messageStatus'] = 'success';
 
         return array('photoid' => $request['photoId']);
+      }else{
+        $_SESSION['message'] = 'Rating is not allowed ';
+        $_SESSION['messageStatus'] = 'error';
+        $_SESSION['forceReload'] = true;
+      }
     }
 
     function getResults($limit=NULL) {
@@ -662,7 +670,7 @@ class App {
                     $data = $this->handleAddPhoto($request);
                 } else if ($type === 'removePhoto') {
                     $data = $this->handleRemovePhoto($request);
-                } else if ($this->voteOpened && $type === 'rate') {
+                } else if ($type === 'rate') {
                     $data = $this->handleRate($request);
                 } else if ($this->isModerator) {
                     /*
@@ -700,9 +708,10 @@ class App {
 
             if (isset($request['ajax'])) {
                 // if ajax, print json and exit
-                echo json_encode(array('message' => $_SESSION['message'], 'messageStatus' => $_SESSION['messageStatus'], 'data' => $data));
+                echo json_encode(array('message' => $_SESSION['message'], 'messageStatus' => $_SESSION['messageStatus'], 'data' => $data, 'forceReload'=> isset($_SESSION['forceReload'])?$_SESSION['forceReload']:false ));
                 $_SESSION['message'] = '';
                 $_SESSION['messageStatus'] = '';
+                $_SESSION['forceReload'] = false;
                 die();
             }
         }

@@ -22,7 +22,7 @@
                         <?php foreach ($settings as $setting): ?>
 
                             <?php
-                            if ($setting->settingsid === 'startVoteDate' || $setting->settingsid === 'endVoteDate') {
+                            if ($setting->settingsid === 'startVoteDate' || $setting->settingsid === 'endVoteDate' || $setting->settingsid === 'endVoteHour') {
                                 $dates[$setting->settingsid] = $setting->settingsvalue;
                                 continue;
                             }
@@ -59,6 +59,11 @@
                                     <span class="input-group-addon">to</span>
                                     <input type="text" class="form-control" name="endVoteDate" value="<?php print $dates['endVoteDate']; ?>" />
                                 </div>
+                            </div>
+                        </div>
+                       <div class="form-group">
+                            <div class="col-md-offset-7 col-md-2 pull-right">
+                                <input id="endVoteHour" name="endVoteHour" type="text" data-type="hour" value="<?php print $dates['endVoteHour'];?>" class="form-control" maxlength="5" size="5">
                             </div>
                         </div>
 
