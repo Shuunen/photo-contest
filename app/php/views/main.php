@@ -10,10 +10,14 @@
     if (!$app->isLogged) {
 
         require 'login.php';
+        require 'forgotPassword.php';
 
     } else {
 
         require 'gallery.php';
+        if($app->votingMode === "podium" && $app->voteOpened && !$app->voteEnded){
+          require 'podium.php';
+        }
 
         if ($app->submitOpened) {
             require 'uploadModal.php';

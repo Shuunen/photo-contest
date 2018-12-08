@@ -3,35 +3,54 @@
 <div id="settingsModal" tabindex="-1" role="dialog" class="modal fullscreen fade">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
+          <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="refresh-button" event-emitter>&times;</span></button>
+                <h4 class="modal-title">Application settings</h4>
+            </div>
             <div class="modal-body">
                 <form class="settings-form form-horizontal">
                     <fieldset>
 
                         <!-- Form Name -->
-                        <legend>Application settings</legend>
+                        <!-- <legend>Application settings</legend> -->
 
                         <div class="message"></div>
-                        
+
                         <?php $dates = array() ?>
-                        
+
                         <?php foreach ($settings as $setting): ?>
 
                             <?php
-                            if ($setting->settingsid === 'startVoteDate' || $setting->settingsid === 'endVoteDate') {                                
+                            if ($setting->settingsid === 'startVoteDate' || $setting->settingsid === 'endVoteDate' || $setting->settingsid === 'endVoteHour') {
                                 $dates[$setting->settingsid] = $setting->settingsvalue;
                                 continue;
                             }
                             ?>
 
+                            <?php if($setting->settingstype !== "radio"): ?>
                             <div class="form-group">
                                 <label class="col-md-4 control-label" for="<?php print $setting->settingsid ?>"><?php print $setting->settingslabel; ?> : </label>
-                                <div class="col-md-5">              
-                                    <input id="<?php print $setting->settingsid ?>" name="<?php print $setting->settingsid ?>" type="text" data-type="<?php print $setting->settingstype; ?>" value="<?php print $setting->settingsvalue; ?>" class="form-control input-md" required="">                     
+                                <div class="col-md-5">
+                                    <input id="<?php print $setting->settingsid ?>" name="<?php print $setting->settingsid ?>" type="text" data-type="<?php print $setting->settingstype; ?>" value="<?php print $setting->settingsvalue; ?>" class="form-control input-md" required="">
                                 </div>
                             </div>
+                            <?php else: ?>
+                              <div class="form-group">
+                                  <label class="col-md-4 control-label" for="<?php print $setting->settingsid ?>"><?php print $setting->settingslabel; ?> : </label>
+                                  <div class="col-md-5">
+                                    <?php $radioValues = json_decode($setting->settingsvalue); ?>
+                                    <?php foreach($radioValues as $radioValue):?>
+                                      <label class="radio-inline">
+                                        <input id="<?php print $setting->settingsid ?>-<?php print $radioValue->label ?>" name="<?php print $setting->settingsid ?>" type="radio" data-type="<?php print $setting->settingstype; ?>" value="<?php print $radioValue->value; ?>" <?php if($radioValue->selected):?>checked<?php endif;?> required=""> <?php print $radioValue->label ?>
+                                      </label>
+                                    <?php endforeach;?>
+                                  </div>
+                              </div>
+                            <?php endif;?>
 
                         <?php endforeach; ?>
-                        
+
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="voting-period">Voting period : </label>
                             <div class="col-md-5">
@@ -42,20 +61,23 @@
                                 </div>
                             </div>
                         </div>
+                       <div class="form-group">
+                            <div class="col-md-offset-7 col-md-2 pull-right">
+                                <input id="endVoteHour" name="endVoteHour" type="text" data-type="hour" value="<?php print $dates['endVoteHour'];?>" class="form-control" maxlength="5" size="5">
+                            </div>
+                        </div>
 
                         <!-- Button -->
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="save"></label>
-                            <div class="col-md-4">
-                                <button id="save" name="save" class="btn btn-primary">Save</button>
+                            <div class="col-md-5">
+                                <button id="save" name="save" class="btn btn-primary pull-right">Save</button>
                             </div>
                         </div>
                         <input type="hidden" name="type" value="setSettings">
-
                     </fieldset>
                 </form>
             </div>
-            <button type="button" class="btn btn-default refresh-button" event-emitter data-dismiss="modal">Close</button>
         </div>
     </div>
 </div>

@@ -26,9 +26,11 @@ body {
     z-index: 0;
 }
 
-.login {
+.login,
+.forgot{
     max-width: 460px;
     margin: 40px auto;
+    padding: 10px;
 }
 
 .navbar {
@@ -131,7 +133,7 @@ body {
 .desktop .navbar-default .navbar-nav > li > a {
     transition: all 0.3s ease-out;
     &:hover {
-        background-color: #275c6c;
+        background-color: $brand-info-darker;
     }
 }
 
@@ -302,6 +304,12 @@ body {
                 max-width: 50px
             }
         }
+        .media-body{
+          img{
+            margin: auto;
+            max-width: 100px;
+          }
+        }
         .photo-infos {
             .author a{
                 color: lighten($brand-primary, 10%);
@@ -366,3 +374,5 @@ body {
         margin: 0 10px;
     }
 }
+
+@import "podium"

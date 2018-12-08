@@ -33,12 +33,12 @@ gulp.task('jshint', function () {
     .pipe($.if(!browserSync.active, $.jshint.reporter('fail')));
 });
 
-gulp.task('html', ['js','styles'], function () {
+gulp.task('html', ['styles'], function () {
   var assets = $.useref.assets({searchPath: ['.tmp', 'app', '.']});
 
   return gulp.src('app/index.php')
     .pipe(assets)
-    .pipe($.if('*.js', $.uglify()))
+    .pipe($.if('*.js', $.uglify({ compress: { drop_console: true } })))
     .pipe($.if('*.css', $.csso()))
     .pipe(assets.restore())
     .pipe($.useref())
@@ -64,7 +64,7 @@ gulp.task('js', function() {
     ])
     /*.pipe(concat('app.js'))*/
     .pipe( gulp.dest('dist/scripts/'))
-    .pipe($.uglify())
+    .pipe($.uglify({ compress: { drop_console: true } }))
     .pipe( gulp.dest('dist/scripts/'));
 });
 
@@ -93,7 +93,7 @@ gulp.task('extras', function () {
 
   gulp.src('app/images/**/*.gif').pipe(gulp.dest('dist/images'));
 
-  gulp.src(['bower_components/fineuploader-dist/dist/*.gif'])
+  gulp.src(['bower_components/fineuploader/dist/*.gif'])
   .pipe(gulp.dest('dist/styles/'));
 
   gulp.src(['bower_components/font-awesome/fonts/*'])
@@ -103,7 +103,7 @@ gulp.task('extras', function () {
   .pipe(gulp.dest('dist/database/Lazer'));
 });
 
-gulp.task('clean', require('del').bind(null, ['.tmp', 'dist']));
+gulp.task('clean', require('del').bind(null, ['.tmp', 'dist','dist.zip']));
 
 gulp.task('serve', ['styles', 'fonts'], function () {
   browserSync({
@@ -190,8 +190,8 @@ gulp.task('wiredep', function () {
     .pipe(gulp.dest('app'));
 });
 
-gulp.task('build', [/*'jshint',*/ 'html', 'images', 'fonts', 'extras'], function () {
-  return gulp.src('dist/**/*')
+gulp.task('build', [/*'jshint',*/ 'wiredep', 'html', 'images', 'fonts', 'extras'], function () {
+  return gulp.src(['dist/**/*', '!dist/{database,database/**}','!dist/{photos,photos/**}'])
     .pipe($.size({title: 'build', gzip: true}))
     .pipe($.zip('dist.zip'))
     .pipe(gulp.dest('.'));

@@ -18,7 +18,7 @@ class App {
 
         $this->installDB();
 
-        $this->version = '7.0';
+        $this->version = '10.0';
         $this->photoPath = './photos/';
         $this->isUser = false;
         $this->isVisitor = false;
@@ -27,19 +27,24 @@ class App {
         $this->isLogged = false;
         $this->currentUser = null;
 
+        $this->podiumSize = 3;
+
         $this->lowerVote = $this->getSettingsValue('lowerVote','0');
         $this->higherVote = $this->getSettingsValue('higherVote','5');
 
-        $startVotingDate = $this->getSettingsValue('startVoteDate','2015-09-26');
-        $endVotingDate = $this->getSettingsValue('endVoteDate','2015-10-14');
-        $startResultsDate = $this->getSettingsValue('resultsDate','2015-10-14');
+        $startVotingDate = $this->getSettingsValue('startVoteDate','2017-02-02');
+        $endVotingDate = $this->getSettingsValue('endVoteDate','2017-02-10');
+        $endVotingHour = $this->getSettingsValue('endVoteHour','16:00');
+        $startResultsDate = $this->getSettingsValue('resultsDate','2017-02-10');
+
+        $this->votingMode = $this->getSettingsValue('votingMode','podium');
 
         $now = new DateTime('now');
-        $this->startVoteDate = new DateTime($startVotingDate, new DateTimeZone('Pacific/Niue'));
-        $this->startVoteDate->setTimezone($now->getTimezone());
+        $this->startVoteDate = new DateTime($startVotingDate);
+        //$this->startVoteDate->setTimezone($now->getTimezone());
 
-        $this->endVoteDate = new DateTime($endVotingDate, new DateTimeZone('Pacific/Niue'));
-        $this->endVoteDate->setTimezone($now->getTimezone());
+        $this->endVoteDate = new DateTime($endVotingDate." ".$endVotingHour);
+        //$this->endVoteDate->setTimezone($now->getTimezone());
 
         $this->resultsDate = new DateTime($startResultsDate);
 
@@ -74,7 +79,7 @@ class App {
         }
 
         $this->onDesktop = true;
-        $useragent = $_SERVER['HTTP_USER_AGENT'];
+        $useragent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : "NONE";
         if (preg_match('/android|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i', $useragent) || preg_match('/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i', substr($useragent, 0, 4))) {
             $this->onDesktop = false;
         }
@@ -94,9 +99,17 @@ class App {
     }
 
     function getSettingsValue($settingsId,$defaultValue){
-        $date = Lazer::table('settings')->where('settingsid', '=', $settingsId)->find();
-        if(count($date) === 1){
-          return $date->settingsvalue;
+        $setting = Lazer::table('settings')->where('settingsid', '=', $settingsId)->find();
+        if(count($setting) === 1){
+          if($setting->settingstype === "radio"){
+            $values = json_decode($setting->settingsvalue);
+            foreach($values as $value){
+              if($value->selected){
+                return $value->value;
+              }
+            }
+          }
+          return $setting->settingsvalue;
         }else{
           return $defaultValue;
         }
@@ -152,6 +165,59 @@ class App {
             $_SESSION['message'] = 'Email or password does not match';
             $_SESSION['messageStatus'] = 'error';
         }
+    }
+
+    function handleForgotPassword($request) {
+
+        // var_dump($request);
+
+        if (!isset($request["email"])) {
+            $_SESSION['message'] = 'Missing email';
+            $_SESSION['messageStatus'] = 'error';
+            return false;
+        }
+
+        $email = $request["email"];
+
+        $user = Lazer::table('users')->with('rights')->where('email', '=', $email)->find();
+
+        if (count($user) === 1) {
+            $_SESSION['messageStatus'] = 'success';
+        } else if (count($user) > 1) {
+            $_SESSION['message'] = 'User ' . $email . ' has multiple instances';
+            $_SESSION['messageStatus'] = 'error';
+          return;
+        } else {
+            $_SESSION['message'] = 'User ' . $email . ' does not exists';
+            $_SESSION['messageStatus'] = 'error';
+          return;
+        }
+
+        $user->pass = $this->randomPassword();
+        $user->save();
+
+        $mailSuccess = FALSE;
+        // TODO: send email to user
+        //if(ini_get("SMTP") !== "localhost"){
+          $msg = "Hi ".$user->name.", \n\n";
+          $msg.= "please find below the new password for your PhotoShop Contest account: ".$user->pass."\n\n";
+          //$msg.= "email: ".$user->email."\n";
+          //$msg.= "password: ".$user->pass."\n\n";
+          $msg.= "Thanks\n";
+          $msg.= "The PhotoShop Team";
+
+          $headers = "From: webmaster@photos-contest.svobodny.fr" . "\r\n";
+          $mailSuccess = mail($user->email,"Reset Password",$msg,$headers);
+        //}
+
+        if($mailSuccess){
+          $_SESSION['message']="An email has been sent successfully to ". $user->email ." with the new password";
+          $_SESSION['messageStatus'] = 'success';
+        }else{
+          $_SESSION['message'] = 'An error occurred during the email send.';
+          $_SESSION['messageStatus'] = 'error';
+        }
+
     }
 
     function regenThumbnails() {
@@ -258,12 +324,19 @@ class App {
 
     function handleRate($request) {
 
+      if($this->voteOpened && !$this->voteEnded){
+
         $rate = $this->storeRateToDB($request);
 
         $_SESSION['message'] = 'Rate ' . $request['photoId'] . ' for the category ' . $request['categoryId'] . ' with ' . $rate;
         $_SESSION['messageStatus'] = 'success';
 
         return array('photoid' => $request['photoId']);
+      }else{
+        $_SESSION['message'] = 'Rating is not allowed ';
+        $_SESSION['messageStatus'] = 'error';
+        $_SESSION['forceReload'] = true;
+      }
     }
 
     function getResults($limit=NULL) {
@@ -277,7 +350,7 @@ class App {
         }
         foreach ($categories as $category) {
 
-            $query = "SELECT id, photoid, userid, categoryId,  sum(rate) as totalCat, (SELECT sum(rate) from rates r2 where r1.photoid = r2.photoid group by photoid) as totalStars, (select avg(rate) from rates r3 where r1.userid = r3.userid) as avgStars from rates r1 WHERE categoryId=\"$category->categoryid\" group by photoid order by 	totalCat DESC".$limitStatement;
+            $query = "SELECT id, photoid, userid, categoryId,  sum(rate) as totalCat, (SELECT sum(rate) from rates r2 where r1.photoid = r2.photoid group by photoid) as totalStars, (select avg(rate) from rates r3 where r1.userid = r3.userid) as avgStars from rates r1 WHERE categoryId=\"$category->categoryid\" group by photoid order by totalCat DESC".$limitStatement;
             $res = $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
 
             if (count($res) > 0) {
@@ -337,6 +410,20 @@ class App {
 
     }
 
+    function getRatesForUser($userId, $categoryId=NULL) {
+
+      $query = "SELECT * FROM rates WHERE userid=\"$userId\" AND rate > 0";
+
+        if ($categoryId) {
+            $query .= " AND categoryid=\"$categoryId\"";
+        }
+
+        $results = $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+
+        return $results;
+
+    }
+
     function setRate($photoId, $categoryId, $userId, $rate) {
 
         $existingRate = $this->getRates($photoId, $categoryId, $userId);
@@ -357,7 +444,12 @@ class App {
     function storeRateToDB($request) {
 
         // Security check
-        $newRate = $request['rate'];
+        if(isset($request['rate'])){
+          $newRate = $request['rate'];
+        }else if(isset($request['position'])) {
+          $newRate = $this->podiumSize - $request['position'] + 1;
+        }
+
         if (floatval($newRate) > floatval($this->higherVote)) {
             $newRate = $this->higherVote;
         } elseif (floatval($newRate) < floatval($this->lowerVote)) {
@@ -468,8 +560,27 @@ class App {
                 $user->role = isset($request['role']) ? $request['role'] : 'user';
                 $user->save();
 
+                $mailSuccess = FALSE;
+                // TODO: send email to user
+                //if(ini_get("SMTP") !== "localhost"){
+                  $msg = "Hi ".$user->name.", \n\n";
+                  $msg.= "your account has been created for the PhotoShop Contest (http://ezzo.stream/).\n\n";
+                  $msg.= "email: ".$user->email."\n";
+                  $msg.= "password: ".$user->pass."\n\n";
+                  $msg.= "Thanks\n";
+                  $msg.= "The PhotoShop Team";
+
+                  $headers = "From: webmaster@photos-contest.svobodny.fr" . "\r\n";
+                  $mailSuccess = mail($user->email,"Account creation",$msg,$headers);
+                //}
+
+
                 $_SESSION['message'] = 'New user ' . $user->name . ' with the email ' . $user->email . ' and the password : ' . $user->pass . ' has been created.';
+                if($mailSuccess){
+                  $_SESSION['message'].="\n" . "An email has been sent successfully to ". $user->email;
+                }
                 $_SESSION['messageStatus'] = 'success';
+
             } else {
                 $_SESSION['message'] = 'User ' . $request['name'] . ' with the email ' . $request['email'] . ' already exists';
                 $_SESSION['messageStatus'] = 'error';
@@ -485,7 +596,23 @@ class App {
         if($key != 'type' && $key != 'save' && $key != 'ajax'){
           $existingSettings = Lazer::table('settings')->where('settingsid', '=', $key)->andWhere('settingsvalue', '!=', $paramValue)->find();
           if (count($existingSettings) == 1) {
-              $existingSettings->settingsvalue = $paramValue;
+
+              if($existingSettings->settingstype === "radio"){
+                $previousValues = json_decode($existingSettings->settingsvalue);
+
+                foreach($previousValues as $previousValue){
+                  if($previousValue->value === $paramValue){
+                    $previousValue->selected = true;
+                  }else{
+                    $previousValue->selected = false;
+                  }
+                }
+                $existingSettings->settingsvalue = json_encode($previousValues);
+
+              }else{
+                $existingSettings->settingsvalue = $paramValue;
+              }
+
               $existingSettings->save();
               $settingsSaved[] = $key;
           }
@@ -528,7 +655,9 @@ class App {
                  */
                 if ($type === 'login') {
                     $this->handleLogin($request);
-                } else {
+                } else if($type === 'forgotPassword' ){
+                    $this->handleForgotPassword($request);
+                }else {
                     $_SESSION['message'] = 'This method is not handled or for logged in users only.';
                 }
             } else if ($this->isLogged) {
@@ -541,7 +670,7 @@ class App {
                     $data = $this->handleAddPhoto($request);
                 } else if ($type === 'removePhoto') {
                     $data = $this->handleRemovePhoto($request);
-                } else if ($this->voteOpened && $type === 'rate') {
+                } else if ($type === 'rate') {
                     $data = $this->handleRate($request);
                 } else if ($this->isModerator) {
                     /*
@@ -579,9 +708,10 @@ class App {
 
             if (isset($request['ajax'])) {
                 // if ajax, print json and exit
-                echo json_encode(array('message' => $_SESSION['message'], 'messageStatus' => $_SESSION['messageStatus'], 'data' => $data));
+                echo json_encode(array('message' => $_SESSION['message'], 'messageStatus' => $_SESSION['messageStatus'], 'data' => $data, 'forceReload'=> isset($_SESSION['forceReload'])?$_SESSION['forceReload']:false ));
                 $_SESSION['message'] = '';
                 $_SESSION['messageStatus'] = '';
+                $_SESSION['forceReload'] = false;
                 die();
             }
         }
@@ -669,6 +799,13 @@ class App {
         $results = $this->getRates($photoId, $categoryId, $this->currentUser->userid);
         $rate = isset($results[0]) ? $results[0]['rate'] : 0;
         return $rate;
+    }
+
+    function getRatesCategory($categoryId){
+
+        $results = $this->getRatesForUser($this->currentUser->userid, $categoryId);
+        return $results;
+
     }
 
     function getRatesCountForPhoto($photoId) {

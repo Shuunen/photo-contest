@@ -1,5 +1,15 @@
 <?php
-  $photos = $app->getAllPhotos()->asArray();
+
+
+  if($app->startVoteDate <= new DateTime('now') || $app->isModerator || $app->isAdmin){
+    // Phase 1 : Submission only, owned photos only available
+    $photos = $app->getAllPhotos()->asArray();
+  }
+  else {
+    // Phase 2 : Voting, all approved photos displayed, only not owned are allowed or voting
+    $photos = $app->getUserPhotos()->asArray();
+  }
+
   shuffle($photos);
 ?>
 <?php if (count($photos)) : ?>

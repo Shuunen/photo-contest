@@ -3,7 +3,7 @@
   <fieldset>
 
     <!-- Form Name -->
-    <legend>Create new user</legend>
+    <!-- <legend>Create new user</legend> -->
 
     <div class="message"></div>
 
@@ -41,7 +41,12 @@
         </div>
         <div class="radio">
           <label for="role-2">
-            <input type="radio" name="role" id="role-2" value="admin"> Admin
+            <input type="radio" name="role" id="role-2" value="moderator"> Moderator
+          </label>
+        </div>
+        <div class="radio">
+          <label for="role-3">
+            <input type="radio" name="role" id="role-3" value="admin"> Admin
           </label>
         </div>
       </div>
@@ -50,8 +55,8 @@
     <!-- Button -->
     <div class="form-group">
       <label class="col-md-4 control-label" for="create"></label>
-      <div class="col-md-4">
-        <button id="create" name="create" class="btn btn-primary">Create User</button>
+      <div class="col-md-5">
+        <button id="create" name="create" class="btn btn-primary pull-right">Create User</button>
       </div>
     </div>
     <input type="hidden" name="type" value="createUser">

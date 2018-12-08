@@ -3,14 +3,14 @@
         <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
 
         <div class="col-sm-10">
-            <input type="text" name="email" class="form-control" placeholder="Email">
+            <input id="inputEmail3" type="text" name="email" class="form-control" placeholder="Email">
         </div>
     </div>
     <div class="form-group">
         <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
 
         <div class="col-sm-10">
-            <input type="password" name="password" class="form-control" placeholder="Password">
+            <input id="inputPassword3" type="password" name="password" class="form-control" placeholder="Password">
         </div>
     </div>
     <div class="form-group">
@@ -19,4 +19,6 @@
             <button type="submit" class="btn btn-default">Log in</button>
         </div>
     </div>
+  <a href="#" event-emitter class="forgot-password-link">Forgot password ?</a>
 </form>
+

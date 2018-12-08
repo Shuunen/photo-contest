@@ -17,7 +17,7 @@
         <i class="fa fa-times fa-3x"></i>
     </button>
 
-    <?php if ($app->currentUser->role === 'moderator'): ?>
+    <?php if ($app->isModerator): ?>
         <div class="moderation-controls <?php echo($app->showResults ? 'on-side' : '') ?>">
             <button data-action="approve" type="button" event-emitter class="moderation-control btn btn-success" <?php print $photo->status === "approved" ? "disabled" : ""; ?>>
                 <span class="fa fa-check-circle" aria-hidden="true"></span> Approve<?php print $photo->status === "approved" ? "d" : ""; ?>
@@ -32,79 +32,81 @@
         </button>
     <?php endif; ?>
 
-    <?php if ($app->currentUser->userid !== $photo->userid || (!$app->voteOpened && $app->voteEnded && $this->showResults)) : ?>
-        <?php $categories = $app->getCategories() ?>
-        <?php if ($app->voteOpened && $photo->status === "approved") : ?>
-            <div class="ratings">
-                <?php foreach ($categories as $category) : ?>
-                    <div class="rating col-md-6">
-                        <div class="category"><?php print $category->label; ?> :</div>
-                        <div class="stars rating-category" data-catgerory-id="<?php print $category->categoryid; ?>" data-photo-id="<?php print $photo->photoid ?>">
-                            <input name="rating-<?php print $category->categoryid; ?>" type="hidden" class="rating" data-fractions="2" data-start="<?php print $app->lowerVote; ?>" data-stop="<?php print $app->higherVote; ?>" data-filled="fa fa-star fa-2x" data-filled-selected="fa fa-star fa-2x" data-empty="fa fa-star-o fa-2x" value="<?php print $app->getRateForPhotoAndCategory($photo->photoid, $category->categoryid); ?>">
-                            <span class="clear-vote fa fa-times" title="Clear vote"></span>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        <?php elseif ($app->voteOpened && $photo->status !== "approved"): ?>
-          <div class="countdown-container">Votes on non-approved photo is not allowed.</div>
-        <?php elseif ($app->voteEnded && !$this->showResults): ?>
-            <div class="countdown-container">Votes are closed, the results will come soon.</div>
-        <?php elseif ($this->showResults): ?>
-
-            <?php $user = $app->getUserByUserid($photo->userid) ?>
-            <?php $results = $app->getResultsByPhoto($photo->photoid); ?>
-
-            <?php if (isset($results)): ?>
-
-                <div class="results-container center text-left">
-
-                    <div class="author">
-                        <i>by</i>&nbsp;<?php print count($user) === 1 ? $user->name : $photo->userid; ?>,&nbsp;<i>total stars :</i>&nbsp;<?php echo $results['totalStars'] ?>&nbsp;<i class="fa fa-star"></i>
-                    </div>
-
+    <?php if($app->votingMode === "stars"):?>
+        <?php if ($app->currentUser->userid !== $photo->userid || (!$app->voteOpened && $app->voteEnded && $this->showResults)) : ?>
+            <?php $categories = $app->getCategories() ?>
+            <?php if ($app->voteOpened && $photo->status === "approved") : ?>
+                <div class="ratings">
                     <?php foreach ($categories as $category) : ?>
-
-                        <div class="media col-xs-6">
-                            <div class="media-left media-middle">
-                                <?php print $category->label; ?>
-                            </div>
-                            <div class="media-body media-middle">
-                                : <strong><?php print $results["total".$category->categoryid]; ?></strong>
-                                <i class="fa fa-star"></i>
+                        <div class="rating col-md-6">
+                            <div class="category"><?php print $category->label; ?> :</div>
+                            <div class="stars rating-category" data-catgerory-id="<?php print $category->categoryid; ?>" data-photo-id="<?php print $photo->photoid ?>">
+                                <input name="rating-<?php print $category->categoryid; ?>" type="hidden" class="rating" data-fractions="2" data-start="<?php print $app->lowerVote; ?>" data-stop="<?php print $app->higherVote; ?>" data-filled="fa fa-star fa-2x" data-filled-selected="fa fa-star fa-2x" data-empty="fa fa-star-o fa-2x" value="<?php print $app->getRateForPhotoAndCategory($photo->photoid, $category->categoryid); ?>">
+                                <span class="clear-vote fa fa-times" title="Clear vote"></span>
                             </div>
                         </div>
-
-
                     <?php endforeach; ?>
-
                 </div>
-            <?php else : ?>
-                <div class="text-center">Results cannot be loaded.</div>
+            <?php elseif ($app->voteOpened && $photo->status !== "approved"): ?>
+              <div class="countdown-container">Votes on non-approved photo is not allowed.</div>
+            <?php elseif ($app->voteEnded && !$this->showResults): ?>
+                <div class="countdown-container">Votes are closed, the results will come soon.</div>
+            <?php elseif ($this->showResults): ?>
+
+                <?php $user = $app->getUserByUserid($photo->userid) ?>
+                <?php $results = $app->getResultsByPhoto($photo->photoid); ?>
+
+                <?php if (isset($results)): ?>
+
+                    <div class="results-container center text-left">
+
+                        <div class="author">
+                            <i>by</i>&nbsp;<?php print count($user) === 1 ? $user->name : $photo->userid; ?>,&nbsp;<i>total stars :</i>&nbsp;<?php echo $results['totalStars'] ?>&nbsp;<i class="fa fa-star"></i>
+                        </div>
+
+                        <?php foreach ($categories as $category) : ?>
+
+                            <div class="media col-xs-6">
+                                <div class="media-left media-middle">
+                                    <?php print $category->label; ?>
+                                </div>
+                                <div class="media-body media-middle">
+                                    : <strong><?php print $results["total".$category->categoryid]; ?></strong>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                            </div>
+
+
+                        <?php endforeach; ?>
+
+                    </div>
+                <?php else : ?>
+                    <div class="text-center">Results cannot be loaded.</div>
+                <?php endif; ?>
+
+            <?php elseif (!$app->voteOpened &&  !$app->voteEnded) : ?>
+                <div class="countdown-container">Votes will be opened in&nbsp;
+                    <div class="countdown voteOpened"></div>
+                </div>
+            <?php else:?>
+              <div class="countdown-container">Case not supported, contact the administrator if you find him!</div>
             <?php endif; ?>
 
-        <?php elseif (!$app->voteOpened &&  !$app->voteEnded) : ?>
-            <div class="countdown-container">Votes will be opened in&nbsp;
-                <div class="countdown voteOpened"></div>
+        <?php elseif (!$app->voteOpened && !$app->voteEnded) : ?>
+            <button type="button" title="Delete this photo" event-emitter class="btn btn-danger delete-photo">
+                Delete my photo&nbsp;&nbsp;<span class="fa fa-trash" aria-hidden="true"></span>
+            </button>
+            <div class="moderation-controls">
+                <div class="status-box">
+                    <span class="fa fa-<?php echo($photo->status === 'approved' ? 'check-circle' : ($photo->status === 'censored' ? 'ban' : 'hourglass-half')) ?>" aria-hidden="true"></span>
+                    &nbsp;<span><?php echo ucwords($photo->status) ?></span>
+                </div>
             </div>
-        <?php else:?>
-          <div class="countdown-container">Case not supported, contact the administrator if you find him!</div>
+        <?php elseif ($app->currentUser->userid === $photo->userid && $app->voteOpened) : ?>
+            <div class="countdown-container">You can't vote for your own photo.</div>
+        <?php elseif ($app->voteEnded && !$this->showResults): ?>
+            <div class="countdown-container">Votes are closed, the results will come soon.</div>
         <?php endif; ?>
-
-    <?php elseif (!$app->voteOpened && !$app->voteEnded) : ?>
-        <button type="button" title="Delete this photo" event-emitter class="btn btn-danger delete-photo">
-            Delete my photo&nbsp;&nbsp;<span class="fa fa-trash" aria-hidden="true"></span>
-        </button>
-        <div class="moderation-controls">
-            <div class="status-box">
-                <span class="fa fa-<?php echo($photo->status === 'approved' ? 'check-circle' : ($photo->status === 'censored' ? 'ban' : 'hourglass-half')) ?>" aria-hidden="true"></span>
-                &nbsp;<span><?php echo ucwords($photo->status) ?></span>
-            </div>
-        </div>
-    <?php elseif ($app->currentUser->userid === $photo->userid && $app->voteOpened) : ?>
-        <div class="countdown-container">You can't vote for your own photo.</div>
-    <?php elseif ($app->voteEnded && !$this->showResults): ?>
-        <div class="countdown-container">Votes are closed, the results will come soon.</div>
     <?php endif; ?>
 
 </div>
